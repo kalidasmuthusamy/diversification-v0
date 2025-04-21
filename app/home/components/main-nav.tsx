@@ -3,16 +3,17 @@
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
-import { ChevronDown } from "lucide-react"
+import { Menu } from "lucide-react"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import { useResponsive } from "@/hooks/use-responsive"
 
 export function MainNav() {
   const pathname = usePathname()
+  const { isMobile, isTablet } = useResponsive()
 
-  // Verify that the navItems array doesn't include any explore links
   const navItems = [
     { label: "Home", href: "/home" },
-    { label: "Diversification", href: "/diversification", highlight: true },
+    { label: "Diversification Score", href: "/calculate-score", highlight: true },
     { label: "Trends", href: "/trends" },
     { label: "Asset Classes", href: "/asset-classes" },
     { label: "Sectors", href: "/sectors" },
@@ -21,11 +22,22 @@ export function MainNav() {
     { label: "Diversification Marketplace", href: "/partners" },
   ]
 
+  // Determine visible nav items based on device type
+  const getVisibleNavItems = () => {
+    if (isMobile) return navItems.slice(0, 3) // Show only first 3 items on mobile
+    if (isTablet) return navItems.slice(0, 5) // Show first 5 items on tablet
+    return navItems // Show all items on desktop
+  }
+
+  const visibleNavItems = getVisibleNavItems()
+  // Only show dropdown on mobile and tablet
+  const dropdownItems = isMobile ? navItems.slice(3) : isTablet ? navItems.slice(5) : []
+
   return (
     <header className="sticky top-0 z-50 w-full bg-white border-b border-gray-200">
       <div className="container flex h-14 items-center">
-        <nav className="flex items-center space-x-1 lg:space-x-2 overflow-x-auto">
-          {navItems.map((item) => (
+        <nav className="flex items-center space-x-1 lg:space-x-2 overflow-x-auto scrollbar-hide">
+          {visibleNavItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -40,30 +52,31 @@ export function MainNav() {
           ))}
         </nav>
 
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild className="md:hidden ml-auto">
-            <button className="flex items-center text-sm font-medium text-gray-700">
-              Menu
-              <ChevronDown className="ml-1 h-4 w-4" />
-            </button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="start" className="w-56">
-            {navItems.map((item) => (
-              <DropdownMenuItem key={item.href} asChild>
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "w-full",
-                    item.highlight ? "text-blue-600 font-semibold" : "",
-                    pathname === item.href ? "bg-gray-50" : "",
-                  )}
-                >
-                  {item.label}
-                </Link>
-              </DropdownMenuItem>
-            ))}
-          </DropdownMenuContent>
-        </DropdownMenu>
+        {dropdownItems.length > 0 && (
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild className="ml-auto">
+              <button className="flex items-center text-sm font-medium text-gray-700 p-2 rounded-md hover:bg-gray-100">
+                <Menu className="h-5 w-5" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              {dropdownItems.map((item) => (
+                <DropdownMenuItem key={item.href} asChild>
+                  <Link
+                    href={item.href}
+                    className={cn(
+                      "w-full",
+                      item.highlight ? "text-blue-600 font-semibold" : "",
+                      pathname === item.href ? "bg-gray-50" : "",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        )}
       </div>
     </header>
   )

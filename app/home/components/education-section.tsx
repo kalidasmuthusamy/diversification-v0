@@ -1,43 +1,47 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import Link from "next/link"
+import { BookOpen } from "lucide-react"
 
 export default function EducationSection() {
   return (
-    <Card>
-      <CardHeader className="pb-2">
-        <div className="flex items-center">
-          <CardTitle></CardTitle>
+    <div className="border rounded-lg p-6">
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-2">
+          <BookOpen className="h-5 w-5 text-blue-500" />
+          <h2 className="text-xl font-semibold">Education Center</h2>
         </div>
-      </CardHeader>
-      <CardContent>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <ArticleCard
-            image="/placeholder.svg?height=200&width=300"
-            title="The Importance of Asset Allocation"
-            description="Learn why asset allocation is the most important decision for your portfolio's performance."
-            category="Fundamentals"
-            readTime="5 min read"
-          />
+        <Link href="/education" className="text-blue-500 hover:text-blue-700 text-sm font-medium">
+          View All
+        </Link>
+      </div>
 
-          <ArticleCard
-            image="/placeholder.svg?height=200&width=300"
-            title="Beyond Stocks and Bonds"
-            description="Discover alternative asset classes that can enhance your portfolio's diversification."
-            category="Alternative Assets"
-            readTime="7 min read"
-          />
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <ArticleCard
+          image="/building-financial-future.png"
+          title="The Importance of Asset Allocation"
+          description="Learn why asset allocation is the most important decision for your portfolio's performance."
+          category="Fundamentals"
+          readTime="5 min read"
+        />
 
-          <ArticleCard
-            image="/placeholder.svg?height=200&width=300"
-            title="Rebalancing Strategies"
-            description="How and when to rebalance your portfolio to maintain optimal diversification."
-            category="Portfolio Management"
-            readTime="6 min read"
-          />
-        </div>
-      </CardContent>
-    </Card>
+        <ArticleCard
+          image="/diverse-alternative-investments.png"
+          title="Beyond Stocks and Bonds"
+          description="Discover alternative asset classes that can enhance your portfolio's diversification."
+          category="Alternative Assets"
+          readTime="7 min read"
+        />
+
+        <ArticleCard
+          image="/balanced-growth-path.png"
+          title="Rebalancing Strategies"
+          description="How and when to rebalance your portfolio to maintain optimal diversification."
+          category="Portfolio Management"
+          readTime="6 min read"
+        />
+      </div>
+    </div>
   )
 }
 
@@ -65,7 +69,7 @@ function ArticleCard({
         <p className="text-sm text-muted-foreground mb-3">{description}</p>
         <div className="flex items-center justify-between">
           <span className="text-xs text-muted-foreground">{readTime}</span>
-          <Button variant="link" className="p-0 h-auto text-sm">
+          <Button variant="link" className="p-0 h-auto text-sm text-blue-500 hover:text-blue-700">
             Read more
           </Button>
         </div>
