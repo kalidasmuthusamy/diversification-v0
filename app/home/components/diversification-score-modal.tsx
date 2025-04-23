@@ -32,9 +32,11 @@ import {
   PieChart,
   TrendingUp,
   Shield,
+  HelpCircle,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useDiversification } from "@/app/contexts/diversification-context"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface DiversificationScoreModalProps {
   children?: ReactNode
@@ -62,6 +64,7 @@ export default function DiversificationScoreModal({
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [loadingStep, setLoadingStep] = useState(0)
+  const [showDisclosure, setShowDisclosure] = useState(false)
   const loadingSteps = [
     {
       title: "Analyzing Holdings Concentration",
@@ -102,9 +105,14 @@ export default function DiversificationScoreModal({
     if (defaultOpen !== open) {
       setOpen(defaultOpen)
 
-      // If opening the modal and we should skip the input step, calculate score immediately
-      if (defaultOpen && skipInputStep && initialPortfolioText && !calculatedScore) {
-        calculateScore()
+      // If opening the modal and we should skip the input step, show disclosure first
+      if (defaultOpen && skipInputStep && initialPortfolioText) {
+        if (!calculatedScore) {
+          setStep(1)
+          setShowDisclosure(true)
+        } else {
+          setStep(2)
+        }
       }
     }
   }, [defaultOpen])
@@ -183,12 +191,13 @@ export default function DiversificationScoreModal({
 
   const handleNext = () => {
     if (step === 1) {
-      calculateScore()
+      setShowDisclosure(true)
     }
   }
 
-  const handleBack = () => {
-    setStep(step - 1)
+  const acknowledgeDisclosure = () => {
+    setShowDisclosure(false)
+    calculateScore()
   }
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -256,6 +265,10 @@ GLD, 5%`
         riskReduction: 0,
         growthPotential: 0,
       }
+
+  const handleBack = () => {
+    setStep(1)
+  }
 
   return (
     <>
@@ -538,6 +551,31 @@ SPY, 25%"
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
+
+                <div className="mt-6 pt-4 border-t border-gray-200">
+                  <div className="text-sm font-medium mb-2 flex items-center">
+                    <span>How We Calculate Your Score</span>
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+                        </TooltipTrigger>
+                        <TooltipContent className="w-80">
+                          <p className="text-xs">
+                            The Diversification Score evaluates your portfolio across multiple dimensions including:
+                            asset class distribution, sector allocation, geographic exposure, investment style, and
+                            correlation between holdings.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-4">
+                    Your Diversification Score is calculated using a proprietary algorithm that evaluates correlation
+                    between assets, exposure across asset classes, geographic distribution, sector allocation, and
+                    factor exposures. The score ranges from 0-100, with higher scores indicating better diversification.
+                  </p>
+                </div>
               </div>
 
               <DialogFooter className="mt-4">
@@ -550,6 +588,33 @@ SPY, 25%"
                 <Button onClick={handleClose}>Close</Button>
               </DialogFooter>
             </>
+          )}
+
+          {showDisclosure && (
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 rounded-lg z-50">
+              <div className="w-full max-w-md px-6 py-8 bg-white border rounded-lg shadow-lg">
+                <h3 className="text-xl font-semibold mb-4 text-center">Interactive Tool Disclosure</h3>
+                <div className="space-y-4 mb-6">
+                  <p className="text-sm">
+                    This calculator is provided for <strong>educational and informational purposes only</strong>. It is
+                    not intended to provide investment advice.
+                  </p>
+                  <p className="text-sm">
+                    The Diversification Score is one measure of portfolio diversification and should not be the sole
+                    basis for investment decisions. Past performance does not guarantee future results.
+                  </p>
+                  <p className="text-sm">
+                    Before making any investment decisions, you should consult with a qualified financial advisor to
+                    ensure that your investment strategy aligns with your individual needs and circumstances.
+                  </p>
+                </div>
+                <div className="flex justify-center">
+                  <Button onClick={acknowledgeDisclosure} className="w-full md:w-auto">
+                    I Understand
+                  </Button>
+                </div>
+              </div>
+            </div>
           )}
 
           {loading && (

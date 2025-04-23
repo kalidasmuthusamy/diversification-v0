@@ -2,12 +2,14 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { BarChart2, Info, ExternalLink, Lock } from "lucide-react"
+import { BarChart2, ExternalLink, Lock, HelpCircle } from "lucide-react"
 import Link from "next/link"
 import SectorCorrelation from "./components/sector-correlation"
 import SectorPerformance from "./components/sector-performance"
 import SectorNews from "./components/sector-news"
 import TopSecurities from "./components/top-securities"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { SectorInfoModal } from "@/app/components/sector-info-modal"
 
 export default function SectorsPage() {
   return (
@@ -22,14 +24,38 @@ export default function SectorsPage() {
             <span className="text-sm">Sectors</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold">Market Sectors</h1>
-          <p className="text-muted-foreground">Explore performance, trends, and insights across major market sectors</p>
+          <div className="flex items-center">
+            <p className="text-muted-foreground">
+              Explore performance, trends, and insights across major market sectors
+            </p>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="w-80">
+                  <p className="text-xs font-medium mb-1">Sector Data Sources:</p>
+                  <ul className="text-xs space-y-1">
+                    <li>• Technology: Technology Select Sector SPDR Fund (XLK)</li>
+                    <li>• Healthcare: Health Care Select Sector SPDR Fund (XLV)</li>
+                    <li>• Financials: Financial Select Sector SPDR Fund (XLF)</li>
+                    <li>• Energy: Energy Select Sector SPDR Fund (XLE)</li>
+                    <li>• Consumer Discretionary: Consumer Discretionary Select Sector SPDR Fund (XLY)</li>
+                    <li>• Consumer Staples: Consumer Staples Select Sector SPDR Fund (XLP)</li>
+                    <li>• Utilities: Utilities Select Sector SPDR Fund (XLU)</li>
+                    <li>• Industrials: Industrial Select Sector SPDR Fund (XLI)</li>
+                  </ul>
+                  <p className="text-xs mt-1">
+                    Sector performance data updated daily. Historical correlation calculations based on 3-year weekly
+                    returns.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Info className="h-4 w-4 mr-2" />
-            What are Sectors?
-          </Button>
-          <Button size="sm">Calculate Your Diversification</Button>
+          <SectorInfoModal />
         </div>
       </div>
 
@@ -124,7 +150,27 @@ export default function SectorsPage() {
 
       <Card className="mb-6">
         <CardHeader className="pb-2">
-          <CardTitle>Sector Correlation Matrix</CardTitle>
+          <div className="flex items-center">
+            <CardTitle>Sector Correlation Matrix</CardTitle>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="w-80">
+                  <p className="text-xs">
+                    This correlation matrix displays the relationship between different market sectors based on price
+                    movement over the past 3 years. Values range from -1.0 (perfect negative correlation) to +1.0
+                    (perfect positive correlation).
+                  </p>
+                  <p className="text-xs mt-1.5">
+                    Calculations use weekly returns of sector ETFs representing each sector. Lower correlation between
+                    sectors generally indicates better diversification opportunities.
+                  </p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </CardHeader>
         <CardContent>
           <SectorCorrelation />
@@ -272,7 +318,24 @@ export default function SectorsPage() {
           </div>
 
           <div className="space-y-6">
-            <TopSecurities sector="technology" />
+            <div className="relative">
+              <TopSecurities sector="technology" />
+              <div className="absolute top-4 right-4">
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-4 w-4 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="w-60">
+                      <p className="text-xs">
+                        Securities are selected based on market capitalization, trading volume, and sector
+                        representation. Data updated daily from IEX and AlphaVantage.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              </div>
+            </div>
 
             <Card>
               <CardHeader className="pb-2">
@@ -315,8 +378,10 @@ export default function SectorsPage() {
                   </div>
 
                   <div className="pt-2">
-                    <Button className="w-full bg-[#0066cc] hover:bg-[#0055b3]">
-                      Calculate Your Diversification Score
+                    <Button asChild className="w-full bg-[#0066cc] hover:bg-[#0055b3]">
+                      <a href="/sectors/technology" className="w-full">
+                        View Full Sector Analysis
+                      </a>
                     </Button>
                   </div>
                 </div>

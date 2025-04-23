@@ -5,6 +5,14 @@ import { ArrowUpRight, TrendingUp, Info } from "lucide-react"
 import Link from "next/link"
 import TrendNews from "./components/trend-news"
 import TrendImpact from "./components/trend-impact"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
 export default function TrendsPage() {
   return (
@@ -24,13 +32,54 @@ export default function TrendsPage() {
           </p>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Info className="h-4 w-4 mr-2" />
-            About Macro Trends
-          </Button>
-          <Link href="/diversification">
-            <Button size="sm">Calculate Your Diversification</Button>
-          </Link>
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button variant="outline" size="sm">
+                <Info className="h-4 w-4 mr-2" />
+                About Macro Trends
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="sm:max-w-[625px]">
+              <DialogHeader>
+                <DialogTitle>About Macro Trends</DialogTitle>
+                <DialogDescription>
+                  Understanding the major economic and market forces that shape investment opportunities
+                </DialogDescription>
+              </DialogHeader>
+              <div className="space-y-4 py-4">
+                <p className="text-sm text-muted-foreground">
+                  Macro trends are large-scale patterns or movements that influence multiple sectors, asset classes, and
+                  regions over extended periods. These trends often emerge from fundamental shifts in economics,
+                  technology, demographics, geopolitics, or consumer behavior.
+                </p>
+
+                <h4 className="text-sm font-medium">Why Macro Trends Matter</h4>
+                <p className="text-sm text-muted-foreground">
+                  Identifying and understanding macro trends can help investors:
+                </p>
+                <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                  <li>Anticipate market shifts before they're fully reflected in asset prices</li>
+                  <li>Make more informed strategic asset allocation decisions</li>
+                  <li>Identify sectors and industries positioned for long-term growth</li>
+                  <li>Better understand potential risks to existing investments</li>
+                </ul>
+
+                <h4 className="text-sm font-medium">Our Methodology</h4>
+                <p className="text-sm text-muted-foreground">
+                  We identify and analyze macro trends through a combination of quantitative data analysis, expert
+                  insights, and continuous monitoring of global economic indicators, policy developments, and
+                  technological innovations. Our trend strength and impact assessments are updated quarterly.
+                </p>
+
+                <div className="bg-muted p-3 rounded-md mt-4">
+                  <p className="text-xs text-muted-foreground">
+                    Note: Macro trend analysis is one of many tools for investment decision-making and should be
+                    considered alongside your personal financial situation, goals, and risk tolerance.
+                  </p>
+                </div>
+              </div>
+            </DialogContent>
+          </Dialog>
         </div>
       </div>
 
@@ -307,30 +356,6 @@ export default function TrendsPage() {
               </div>
             </CardContent>
           </Card>
-        </div>
-      </div>
-
-      <div className="mt-12 border-t pt-8">
-        <div className="text-xs text-muted-foreground space-y-2">
-          <p>
-            <strong>IMPORTANT DISCLOSURES:</strong> The information provided on Diversification.com is for informational
-            and educational purposes only. It should not be considered financial advice. Global Predictions Inc. is an
-            SEC registered investment advisor under CRD #305943.
-          </p>
-          <p>
-            The trends, market analysis, and other information presented on this page represent our observations of
-            current market conditions and should not be interpreted as a recommendation to buy, sell, or hold any
-            particular investment or security.
-          </p>
-          <p>
-            Past performance is not indicative of future results. All investments involve risk, including the possible
-            loss of principal. Diversification does not guarantee a profit or protect against a loss in a declining
-            market.
-          </p>
-          <p>
-            Please consult with a qualified financial advisor, tax professional, or legal counsel before making any
-            investment decisions based on the information provided on this website.
-          </p>
         </div>
       </div>
     </div>

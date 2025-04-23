@@ -3,23 +3,23 @@
 import type React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Search, Menu } from "lucide-react"
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
+import { Mail } from "lucide-react"
 import { useResponsive } from "@/hooks/use-responsive"
+import { Input } from "@/components/ui/input"
+import { useState } from "react"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 
 export function TopNav() {
-  const [searchQuery, setSearchQuery] = useState("")
-  const router = useRouter()
-  const { deviceType, isMobile, isTablet } = useResponsive()
+  const { isMobile } = useResponsive()
+  const [email, setEmail] = useState("")
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSubscribe = (e: React.FormEvent) => {
     e.preventDefault()
-    if (searchQuery.trim()) {
-      router.push(`/search/${searchQuery.trim()}`)
-    }
+    // Handle newsletter subscription
+    alert("Thanks for subscribing!")
+    setEmail("")
+    setIsDialogOpen(false)
   }
 
   return (
@@ -34,95 +34,66 @@ export function TopNav() {
           </Link>
         </div>
 
-        {/* Desktop search */}
-        <form onSubmit={handleSearch} className="relative hidden lg:block max-w-md w-full mx-4">
-          <div className="flex items-center">
-            <Input
-              type="search"
-              placeholder="Search quotes, news & insights"
-              className="w-full h-10 pr-10 bg-gray-50 border-gray-200"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="submit" className="absolute right-3 top-1/2 -translate-y-1/2">
-              <Search className="h-4 w-4 text-gray-500" />
-            </button>
-          </div>
-        </form>
-
-        {/* Tablet search - smaller version */}
-        <form onSubmit={handleSearch} className="relative hidden md:block lg:hidden max-w-[200px] w-full mx-2">
-          <div className="flex items-center">
-            <Input
-              type="search"
-              placeholder="Search..."
-              className="w-full h-9 pr-8 bg-gray-50 border-gray-200 text-sm"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <button type="submit" className="absolute right-2 top-1/2 -translate-y-1/2">
-              <Search className="h-3.5 w-3.5 text-gray-500" />
-            </button>
-          </div>
-        </form>
-
-        {/* Mobile search button */}
-        <button
-          onClick={() => document.getElementById("mobile-search")?.focus()}
-          className="md:hidden p-2 rounded-md hover:bg-gray-100"
-          aria-label="Search"
-        >
-          <Search className="h-5 w-5 text-gray-700" />
-        </button>
-
-        {/* Desktop buttons */}
-        <div className="hidden lg:flex items-center space-x-4">
-          <Button size="sm" variant="outline">
-            SIGN IN
-          </Button>
-          <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-            CREATE FREE ACCOUNT
-          </Button>
-        </div>
-
-        {/* Tablet buttons - more compact */}
-        <div className="hidden md:flex lg:hidden items-center space-x-2">
-          <Button size="sm" variant="outline" className="text-xs px-2.5 py-1">
-            SIGN IN
-          </Button>
-          <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-xs px-2.5 py-1">
-            SIGN UP
-          </Button>
-        </div>
-
-        {/* Mobile menu */}
-        <Sheet>
-          <SheetTrigger asChild className="sm:hidden ml-2">
-            <Button variant="ghost" size="icon" aria-label="Menu">
-              <Menu className="h-5 w-5" />
-            </Button>
-          </SheetTrigger>
-          <SheetContent side="right" className="w-[250px] sm:w-[300px]">
-            <div className="py-4">
-              <form onSubmit={handleSearch} className="mb-6">
-                <Input
-                  id="mobile-search"
-                  type="search"
-                  placeholder="Search quotes, news & insights"
-                  className="w-full h-10 bg-gray-50 border-gray-200"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </form>
-              <div className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
-                  SIGN IN
-                </Button>
-                <Button className="w-full justify-start bg-blue-600 hover:bg-blue-700">CREATE FREE ACCOUNT</Button>
+        {/* Desktop newsletter signup */}
+        <div className="hidden md:flex items-center flex-1 justify-end">
+          <div className="flex items-center w-full max-w-md">
+            <form onSubmit={handleSubscribe} className="flex items-center w-full">
+              <div className="flex-shrink-0 flex items-center mr-2">
+                <Mail className="h-4 w-4 text-blue-600 mr-2" />
+                <span className="text-sm font-medium hidden lg:inline whitespace-nowrap">Join 30,000 investors:</span>
               </div>
-            </div>
-          </SheetContent>
-        </Sheet>
+              <div className="flex flex-1 min-w-0">
+                <Input
+                  type="email"
+                  placeholder="Your email"
+                  className="w-full h-9 rounded-r-none border-r-0"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <Button
+                  type="submit"
+                  size="sm"
+                  className="h-9 rounded-l-none bg-blue-600 hover:bg-blue-700 flex-shrink-0"
+                >
+                  Subscribe
+                </Button>
+              </div>
+            </form>
+          </div>
+        </div>
+
+        {/* Mobile subscribe button */}
+        <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+          <DialogTrigger asChild className="md:hidden">
+            <Button size="sm" className="bg-blue-600 hover:bg-blue-700 flex items-center">
+              <Mail className="h-4 w-4 mr-1" />
+              Subscribe
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-md">
+            <DialogHeader>
+              <DialogTitle>Join 30,000 informed investors</DialogTitle>
+            </DialogHeader>
+            <form onSubmit={handleSubscribe} className="space-y-4 mt-2">
+              <p className="text-sm text-muted-foreground">
+                Get news for long-term investors across all 30+ asset classes
+              </p>
+              <Input
+                type="email"
+                placeholder="Your email address"
+                className="w-full"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+              />
+              <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
+                Subscribe
+              </Button>
+              <p className="text-xs text-center text-muted-foreground">You can unsubscribe at any time</p>
+            </form>
+          </DialogContent>
+        </Dialog>
       </div>
     </div>
   )

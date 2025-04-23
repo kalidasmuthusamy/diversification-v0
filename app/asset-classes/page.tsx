@@ -2,11 +2,13 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { BarChart2, Info, ExternalLink, Lock } from "lucide-react"
+import { BarChart2, ExternalLink, Lock, HelpCircle } from "lucide-react"
 import Link from "next/link"
 import AssetClassPerformance from "./components/asset-class-performance"
 import AssetClassNews from "./components/asset-class-news"
 import TopSecurities from "./components/top-securities"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { AssetClassInfoModal } from "@/app/components/asset-class-info-modal"
 
 export default function AssetClassesPage() {
   return (
@@ -21,16 +23,34 @@ export default function AssetClassesPage() {
             <span className="text-sm">Asset Classes</span>
           </div>
           <h1 className="text-2xl md:text-3xl font-bold">Asset Classes</h1>
-          <p className="text-muted-foreground">
-            Explore performance, correlations, and trends across major investment categories
-          </p>
+          <div className="flex items-center">
+            <p className="text-muted-foreground">
+              Explore performance, correlations, and trends across major investment categories
+            </p>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent className="w-80">
+                  <p className="text-xs font-medium mb-1">Data Sources by Asset Class:</p>
+                  <ul className="text-xs space-y-1">
+                    <li>• US Stocks: S&P 500 Index (SPY)</li>
+                    <li>• Int'l Stocks: MSCI EAFE Index (EFA)</li>
+                    <li>• Bonds: Bloomberg US Aggregate Bond Index (AGG)</li>
+                    <li>• Real Estate: Dow Jones US Real Estate Index (IYR)</li>
+                    <li>• Commodities: Bloomberg Commodity Index (DBC)</li>
+                    <li>• Crypto: CoinDesk Bitcoin Price Index (BTC)</li>
+                    <li>• Cash: 3-Month US Treasury Bill Rate</li>
+                  </ul>
+                  <p className="text-xs mt-1">Data updated daily. Performance figures may vary from other sources.</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
         <div className="flex items-center gap-2">
-          <Button variant="outline" size="sm">
-            <Info className="h-4 w-4 mr-2" />
-            What are Asset Classes?
-          </Button>
-          <Button size="sm">Calculate Your Diversification</Button>
+          <AssetClassInfoModal />
         </div>
       </div>
 
