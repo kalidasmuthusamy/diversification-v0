@@ -1,16 +1,9 @@
-import { cn } from "@/lib/utils";
-import type React from "react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import {
-  Search,
-  AlertTriangle,
-  Globe,
-  Calculator,
-  PieChart,
-  Layers,
-} from "lucide-react";
-import Link from "next/link";
+import { cn } from "@/lib/utils"
+import type React from "react"
+import { Card, CardContent } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Search, AlertTriangle, Globe, Calculator, PieChart, Layers } from "lucide-react"
+import Link from "next/link"
 
 export default function ToolsPage() {
   return (
@@ -18,9 +11,7 @@ export default function ToolsPage() {
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-6 gap-4">
         <div>
           <h1 className="text-3xl font-bold">Investment Tools & Insights</h1>
-          <p className="text-muted-foreground">
-            Powerful tools to help you make informed investment decisions
-          </p>
+          <p className="text-muted-foreground">Powerful tools to help you make informed investment decisions</p>
         </div>
       </div>
 
@@ -70,7 +61,7 @@ export default function ToolsPage() {
         />
       </div>
     </div>
-  );
+  )
 }
 
 function ToolCard({
@@ -80,18 +71,15 @@ function ToolCard({
   href,
   featured = false,
 }: {
-  title: string;
-  description: string;
-  icon: React.ReactNode;
-  href: string;
-  featured?: boolean;
+  title: string
+  description: string
+  icon: React.ReactNode
+  href: string
+  featured?: boolean
 }) {
   return (
     <Card
-      className={cn(
-        "overflow-hidden transition-all hover:shadow-md",
-        featured ? "border-primary/50 bg-primary/5" : ""
-      )}
+      className={cn("overflow-hidden transition-all hover:shadow-md", featured ? "border-primary/50 bg-primary/5" : "")}
     >
       <CardContent className="p-6">
         <div className="flex flex-col h-full">
@@ -104,5 +92,38 @@ function ToolCard({
         </div>
       </CardContent>
     </Card>
-  );
+  )
+}
+
+function InsightCard({
+  title,
+  description,
+  category,
+  date,
+  icon,
+}: {
+  title: string
+  description: string
+  category: string
+  date: string
+  icon: React.ReactNode
+}) {
+  return (
+    <Card className="overflow-hidden transition-all hover:shadow-md">
+      <CardContent className="p-6">
+        <div className="flex items-center gap-2 mb-3">
+          {icon}
+          <span className="text-sm font-medium">{category}</span>
+        </div>
+        <h3 className="text-lg font-bold mb-2">{title}</h3>
+        <p className="text-sm text-muted-foreground mb-3">{description}</p>
+        <div className="flex items-center justify-between">
+          <span className="text-xs text-muted-foreground">{date}</span>
+          <Button variant="link" className="p-0 h-auto">
+            Read Analysis
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
+  )
 }

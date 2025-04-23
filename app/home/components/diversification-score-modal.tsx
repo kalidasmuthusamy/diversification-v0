@@ -1,6 +1,8 @@
 "use client"
 
-import { useState, type ReactNode, useEffect } from "react"
+import type React from "react"
+
+import { useState, type ReactNode, useEffect, useRef } from "react"
 import {
   Dialog,
   DialogContent,
@@ -13,7 +15,24 @@ import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { ArrowRight, ArrowLeft, Check, AlertTriangle, Info, Bot, ExternalLink, Share2 } from "lucide-react"
+import {
+  ArrowRight,
+  ArrowLeft,
+  Check,
+  AlertTriangle,
+  Info,
+  Bot,
+  ExternalLink,
+  Share2,
+  Upload,
+  Copy,
+  Lock,
+  BarChart4,
+  Globe,
+  PieChart,
+  TrendingUp,
+  Shield,
+} from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useDiversification } from "@/app/contexts/diversification-context"
 
@@ -40,6 +59,36 @@ export default function DiversificationScoreModal({
   const [loading, setLoading] = useState(false)
   const [portfolioText, setPortfolioText] = useState(initialPortfolioText)
   const [calculatedScore, setCalculatedScore] = useState<number | null>(null)
+  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [loadingStep, setLoadingStep] = useState(0)
+  const loadingSteps = [
+    {
+      title: "Analyzing Holdings Concentration",
+      description: "Evaluating the distribution of your investments across different securities",
+      icon: <BarChart4 className="h-6 w-6 text-blue-500" />,
+    },
+    {
+      title: "Measuring Sector Diversification",
+      description: "Assessing your exposure across different market sectors",
+      icon: <PieChart className="h-6 w-6 text-indigo-500" />,
+    },
+    {
+      title: "Evaluating Geographic Exposure",
+      description: "Analyzing your portfolio's global market distribution",
+      icon: <Globe className="h-6 w-6 text-green-500" />,
+    },
+    {
+      title: "Calculating Asset Class Mix",
+      description: "Measuring the balance between stocks, bonds, and alternative investments",
+      icon: <TrendingUp className="h-6 w-6 text-amber-500" />,
+    },
+    {
+      title: "Assessing Risk Factors",
+      description: "Evaluating your portfolio's resilience to market volatility",
+      icon: <Shield className="h-6 w-6 text-red-500" />,
+    },
+  ]
 
   // Update portfolioText if initialPortfolioText changes
   useEffect(() => {
@@ -59,6 +108,21 @@ export default function DiversificationScoreModal({
       }
     }
   }, [defaultOpen])
+
+  // Loading animation effect
+  useEffect(() => {
+    let interval: NodeJS.Timeout
+
+    if (loading) {
+      interval = setInterval(() => {
+        setLoadingStep((prev) => (prev + 1) % loadingSteps.length)
+      }, 2000)
+    }
+
+    return () => {
+      if (interval) clearInterval(interval)
+    }
+  }, [loading, loadingSteps.length])
 
   const handleOpen = () => {
     setOpen(true)
@@ -104,6 +168,8 @@ export default function DiversificationScoreModal({
 
   const calculateScore = () => {
     setLoading(true)
+    setLoadingStep(0)
+
     // Simulate loading and score calculation
     setTimeout(() => {
       // Calculate a score between 40 and 95 based on the portfolio text length
@@ -112,7 +178,7 @@ export default function DiversificationScoreModal({
       setCalculatedScore(score)
       setLoading(false)
       setStep(2)
-    }, 1500)
+    }, 10000) // Longer loading time to show the animation
   }
 
   const handleNext = () => {
@@ -123,6 +189,22 @@ export default function DiversificationScoreModal({
 
   const handleBack = () => {
     setStep(step - 1)
+  }
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (file) {
+      setUploadedFile(file)
+
+      // Simulate reading the file and extracting portfolio data
+      setTimeout(() => {
+        setPortfolioText(samplePortfolio)
+      }, 1000)
+    }
+  }
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click()
   }
 
   // Sample portfolio text
@@ -197,10 +279,28 @@ GLD, 5%`
                 </DialogDescription>
               </DialogHeader>
 
+              <div className="bg-blue-50 border border-blue-200 rounded-md p-3 mb-4 flex items-start gap-2">
+                <Lock className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-blue-800 font-medium">Your privacy is protected</p>
+                  <p className="text-xs text-blue-600">
+                    We do not store your personal information or portfolio details.
+                  </p>
+                </div>
+              </div>
+
               <Tabs defaultValue="copy-paste" className="w-full">
-                <TabsList className="grid w-full grid-cols-1">
-                  <TabsTrigger value="copy-paste">Copy/Paste Portfolio</TabsTrigger>
+                <TabsList className="grid w-full grid-cols-2">
+                  <TabsTrigger value="copy-paste" className="flex items-center gap-1">
+                    <Copy className="h-4 w-4" />
+                    <span>Copy/Paste Portfolio</span>
+                  </TabsTrigger>
+                  <TabsTrigger value="upload" className="flex items-center gap-1">
+                    <Upload className="h-4 w-4" />
+                    <span>Upload Statement</span>
+                  </TabsTrigger>
                 </TabsList>
+
                 <TabsContent value="copy-paste" className="space-y-4 mt-4">
                   <div className="space-y-2">
                     <label className="text-sm font-medium">Paste your portfolio (ticker, allocation percentage)</label>
@@ -228,13 +328,44 @@ SPY, 25%"
                     </Button>
                   </div>
                 </TabsContent>
+
+                <TabsContent value="upload" className="space-y-4 mt-4">
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
+                    <input
+                      type="file"
+                      ref={fileInputRef}
+                      onChange={handleFileUpload}
+                      className="hidden"
+                      accept=".csv,.xlsx,.pdf"
+                    />
+                    {!uploadedFile ? (
+                      <>
+                        <Upload className="h-10 w-10 text-gray-400 mx-auto mb-2" />
+                        <h3 className="text-lg font-medium mb-1">Upload your brokerage statement</h3>
+                        <p className="text-sm text-muted-foreground mb-4">
+                          We support CSV, Excel, and PDF files from major brokerages
+                        </p>
+                        <Button onClick={triggerFileUpload}>Select File</Button>
+                      </>
+                    ) : (
+                      <>
+                        <Check className="h-10 w-10 text-green-500 mx-auto mb-2" />
+                        <h3 className="text-lg font-medium mb-1">File uploaded successfully</h3>
+                        <p className="text-sm text-green-600 mb-4">{uploadedFile.name}</p>
+                        <Button variant="outline" onClick={() => setUploadedFile(null)}>
+                          Change File
+                        </Button>
+                      </>
+                    )}
+                  </div>
+                </TabsContent>
               </Tabs>
 
               <DialogFooter>
                 <Button variant="outline" onClick={handleClose}>
                   Cancel
                 </Button>
-                <Button onClick={handleNext} disabled={loading || portfolioText.trim() === ""}>
+                <Button onClick={handleNext} disabled={loading || (portfolioText.trim() === "" && !uploadedFile)}>
                   {loading ? "Analyzing..." : "Calculate Score"}
                   {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
@@ -356,7 +487,7 @@ SPY, 25%"
                     </div>
 
                     <div className="flex justify-end">
-                      <Button variant="outline" size="sm" className="text-blue-600">
+                      <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white">
                         <Share2 className="mr-1 h-4 w-4" />
                         Share Results
                       </Button>
@@ -396,14 +527,14 @@ SPY, 25%"
                 <div className="bg-[#0066cc]/10 p-4 rounded-md">
                   <div className="flex items-center gap-2 mb-2">
                     <Bot className="h-5 w-5 text-[#0066cc]" />
-                    <h4 className="font-medium text-[#0066cc]">PortfolioPilot Recommendation</h4>
+                    <h4 className="font-medium text-[#0066cc]">Get Professional Recommendations</h4>
                   </div>
                   <p className="text-sm mb-3">
-                    Your portfolio could benefit from improved diversification in commodities and inflation-protected
-                    assets. Consider adding 5-10% allocation to these asset classes.
+                    Unlock full analysis and specific fiduciary recommendations, all completely automated. Our advanced
+                    algorithms can help optimize your portfolio for better returns.
                   </p>
                   <Button className="w-full bg-[#0066cc] hover:bg-[#0055b3]">
-                    Get Full Analysis at PortfolioPilot.com
+                    Start Your 14-Day Free Trial
                     <ExternalLink className="ml-2 h-4 w-4" />
                   </Button>
                 </div>
@@ -422,9 +553,46 @@ SPY, 25%"
           )}
 
           {loading && (
-            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/80 rounded-lg">
-              <div className="h-8 w-8 rounded-full border-t-2 border-b-2 border-primary animate-spin"></div>
-              <p className="mt-2 text-sm text-muted-foreground">Analyzing your portfolio...</p>
+            <div className="absolute inset-0 flex flex-col items-center justify-center bg-white/95 rounded-lg">
+              <div className="w-full max-w-md px-4">
+                <div className="flex items-center gap-4 mb-6">
+                  <div className="h-10 w-10 rounded-full border-t-2 border-b-2 border-blue-500 animate-spin"></div>
+                  <div>
+                    <h3 className="font-medium text-lg">{loadingSteps[loadingStep].title}</h3>
+                    <p className="text-sm text-muted-foreground">{loadingSteps[loadingStep].description}</p>
+                  </div>
+                </div>
+
+                <div className="space-y-4">
+                  {loadingSteps.map((step, index) => (
+                    <div key={index} className="flex items-center gap-3">
+                      <div className={`flex-shrink-0 ${index === loadingStep ? "opacity-100" : "opacity-40"}`}>
+                        {step.icon}
+                      </div>
+                      <div className="flex-1">
+                        <div className="flex justify-between mb-1">
+                          <span className={`text-sm font-medium ${index === loadingStep ? "" : "text-gray-500"}`}>
+                            {step.title}
+                          </span>
+                          <span className="text-xs text-gray-500">
+                            {index < loadingStep ? "100%" : index === loadingStep ? "In progress" : "Pending"}
+                          </span>
+                        </div>
+                        <Progress
+                          value={
+                            index < loadingStep ? 100 : index === loadingStep ? ((Date.now() % 2000) / 2000) * 100 : 0
+                          }
+                          className="h-1.5"
+                        />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+
+                <p className="text-center text-sm text-muted-foreground mt-6">
+                  Analyzing your portfolio across multiple risk factors...
+                </p>
+              </div>
             </div>
           )}
         </DialogContent>
