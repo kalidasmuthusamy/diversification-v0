@@ -10,10 +10,10 @@ export default function NewsletterSignup({ compact = false }: { compact?: boolea
         <CardContent className="p-4">
           <div className="flex items-center gap-2 mb-2">
             <Mail className="h-4 w-4 text-primary" />
-            <h3 className="font-bold">Complete Asset Coverage</h3>
+            <h3 className="font-bold">Long-Term Investor News</h3>
           </div>
           <p className="text-sm text-muted-foreground mb-3">
-            The only newsletter covering all 30+ asset classes. Never miss an opportunity.
+            Join 30,000 investors staying informed across all 30+ asset classes.
           </p>
           <div className="space-y-2">
             <Input type="email" placeholder="Your email address" className="text-sm" />
@@ -31,28 +31,23 @@ export default function NewsletterSignup({ compact = false }: { compact?: boolea
           <div>
             <div className="flex items-center gap-2 mb-2">
               <Mail className="h-5 w-5 text-primary" />
-              <h3 className="text-xl font-bold">The Only Newsletter Covering Every Asset Class</h3>
+              <h3 className="text-xl font-bold">Current News for Long-Term Investors</h3>
             </div>
             <p className="text-muted-foreground mb-4">
-              Get comprehensive market coverage across all asset classes - from traditional stocks to the most exotic
-              alternatives. Never miss an investment opportunity again.
+              Join 30,000 investors who stay properly informed with comprehensive coverage across all 30+ asset classes.
             </p>
             <ul className="space-y-2 text-sm">
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                <span>Complete coverage of 30+ asset classes</span>
+                <span>Comprehensive coverage of 30+ asset classes</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                <span>Discover opportunities others are missing</span>
+                <span>Long-term investment trends and analysis</span>
               </li>
               <li className="flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                <span>Correlation insights across all markets</span>
-              </li>
-              <li className="flex items-center gap-2">
-                <span className="w-1.5 h-1.5 rounded-full bg-primary"></span>
-                <span>Exclusive alternative investment alerts</span>
+                <span>Focus on proper diversification</span>
               </li>
             </ul>
           </div>
@@ -63,9 +58,7 @@ export default function NewsletterSignup({ compact = false }: { compact?: boolea
                 <Input type="email" placeholder="Email Address" />
               </div>
               <Button className="w-full">Subscribe to Daily Newsletter</Button>
-              <p className="text-xs text-center text-muted-foreground">
-                Get daily market insights and diversification tips. You can unsubscribe at any time.
-              </p>
+              <p className="text-xs text-center text-muted-foreground">You can unsubscribe at any time.</p>
             </div>
           </div>
         </div>

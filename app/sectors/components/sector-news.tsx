@@ -1,123 +1,56 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Clock, Play } from "lucide-react"
+import { Clock, ArrowUpRight } from "lucide-react"
+import Link from "next/link"
 
 interface SectorNewsProps {
   sector: string
 }
 
 export default function SectorNews({ sector }: SectorNewsProps) {
-  // Mock news data
-  const newsItems = {
-    technology: [
-      {
-        title: "Semiconductor stocks surge on AI chip demand",
-        time: "2 hours ago",
-        category: "Semiconductors",
-        hasVideo: true,
-      },
-      {
-        title: "Cloud computing giants report strong earnings growth",
-        time: "5 hours ago",
-        category: "Cloud",
-        hasVideo: false,
-      },
-      {
-        title: "Software-as-a-Service valuations under pressure as interest rates rise",
-        time: "1 day ago",
-        category: "Software",
-        hasVideo: true,
-      },
-      {
-        title: "Tech layoffs continue despite strong sector performance",
-        time: "1 day ago",
-        category: "Employment",
-        hasVideo: false,
-      },
-    ],
-    healthcare: [
-      {
-        title: "Biotech stocks rally on breakthrough cancer treatment approval",
-        time: "3 hours ago",
-        category: "Biotech",
-        hasVideo: true,
-      },
-      {
-        title: "Healthcare providers face margin pressure from rising costs",
-        time: "6 hours ago",
-        category: "Providers",
-        hasVideo: false,
-      },
-      {
-        title: "Medical device makers report supply chain improvements",
-        time: "1 day ago",
-        category: "Devices",
-        hasVideo: false,
-      },
-      {
-        title: "Pharmaceutical giants announce major merger",
-        time: "2 days ago",
-        category: "Pharma",
-        hasVideo: true,
-      },
-    ],
-    financials: [
-      {
-        title: "Banks report strong net interest income despite deposit challenges",
-        time: "4 hours ago",
-        category: "Banking",
-        hasVideo: true,
-      },
-      {
-        title: "Insurance companies benefit from higher interest rates",
-        time: "7 hours ago",
-        category: "Insurance",
-        hasVideo: false,
-      },
-      {
-        title: "Fintech companies struggle with rising customer acquisition costs",
-        time: "1 day ago",
-        category: "Fintech",
-        hasVideo: true,
-      },
-      {
-        title: "Asset managers see inflows to fixed income products",
-        time: "2 days ago",
-        category: "Asset Management",
-        hasVideo: false,
-      },
-    ],
-    energy: [
-      {
-        title: "Oil prices drop on increased production and weakening demand",
-        time: "2 hours ago",
-        category: "Oil & Gas",
-        hasVideo: true,
-      },
-      {
-        title: "Renewable energy companies secure major project financing",
-        time: "5 hours ago",
-        category: "Renewables",
-        hasVideo: false,
-      },
-      {
-        title: "Natural gas prices volatile amid geopolitical tensions",
-        time: "1 day ago",
-        category: "Natural Gas",
-        hasVideo: false,
-      },
-      {
-        title: "Energy infrastructure companies announce dividend increases",
-        time: "2 days ago",
-        category: "Infrastructure",
-        hasVideo: true,
-      },
-    ],
-  }
-
-  // Default to technology if the sector is not found
-  const news = newsItems[sector as keyof typeof newsItems] || newsItems.technology
+  // Mock news data - in a real app, this would come from an API
+  const newsItems = [
+    {
+      id: 1,
+      title: "AI chip demand continues to drive semiconductor sector growth",
+      source: "Tech Insider",
+      time: "3 hours ago",
+      category: "Semiconductors",
+      url: "/news/ai-chip-demand",
+    },
+    {
+      id: 2,
+      title: "Cloud computing revenues exceed expectations in Q2 earnings reports",
+      source: "Business Tech",
+      time: "6 hours ago",
+      category: "Cloud Services",
+      url: "/news/cloud-computing-revenues",
+    },
+    {
+      id: 3,
+      title: "Cybersecurity spending increases amid rising global threats",
+      source: "Security Today",
+      time: "10 hours ago",
+      category: "Cybersecurity",
+      url: "/news/cybersecurity-spending",
+    },
+    {
+      id: 4,
+      title: "Tech layoffs slow as industry stabilizes after post-pandemic adjustment",
+      source: "Workforce Report",
+      time: "1 day ago",
+      category: "Employment",
+      url: "/news/tech-layoffs-slow",
+    },
+    {
+      id: 5,
+      title: "Software-as-a-Service valuations recover as interest rate concerns ease",
+      source: "Investor Daily",
+      time: "1 day ago",
+      category: "SaaS",
+      url: "/news/saas-valuations-recover",
+    },
+  ]
 
   return (
     <Card>
@@ -126,28 +59,29 @@ export default function SectorNews({ sector }: SectorNewsProps) {
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
-          {news.map((item, index) => (
-            <div key={index} className="border-b last:border-b-0 pb-4 last:pb-0">
-              <div className="flex justify-between items-start gap-3">
-                <h3 className="font-medium">{item.title}</h3>
-                {item.hasVideo && (
-                  <div className="flex-shrink-0 bg-primary/10 rounded-full p-1">
-                    <Play className="h-4 w-4 text-primary" />
-                  </div>
-                )}
-              </div>
-              <div className="flex items-center justify-between mt-2">
-                <div className="flex items-center text-sm text-muted-foreground">
-                  <Clock className="h-3.5 w-3.5 mr-1" />
+          {newsItems.map((item) => (
+            <div key={item.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
+              <div className="flex justify-between items-start mb-1">
+                <Badge variant="outline" className="text-xs font-normal">
+                  {item.category}
+                </Badge>
+                <div className="flex items-center text-xs text-muted-foreground">
+                  <Clock className="h-3 w-3 mr-1" />
                   {item.time}
                 </div>
-                <Badge variant="outline">{item.category}</Badge>
+              </div>
+              <Link href={item.url} className="font-medium hover:text-blue-600 block mb-1">
+                {item.title}
+              </Link>
+              <div className="flex justify-between items-center">
+                <span className="text-xs text-muted-foreground">{item.source}</span>
+                <Link href={item.url} className="text-xs text-blue-600 hover:text-blue-800 flex items-center">
+                  Read Article
+                  <ArrowUpRight className="h-3 w-3 ml-1" />
+                </Link>
               </div>
             </div>
           ))}
-        </div>
-        <div className="mt-4 text-center">
-          <Button variant="outline">View All News</Button>
         </div>
       </CardContent>
     </Card>

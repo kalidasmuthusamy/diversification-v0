@@ -56,7 +56,7 @@ export function MarketTicker() {
   }
 
   return (
-    <div className="bg-muted/40 py-2 overflow-hidden">
+    <div className="w-full overflow-hidden bg-muted/20 border-y py-1.5">
       <div className="container">
         {/* Desktop view - show all tickers */}
         <div className="hidden lg:flex items-center justify-between">

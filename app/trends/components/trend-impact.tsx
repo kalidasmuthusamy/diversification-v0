@@ -1,10 +1,35 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { HelpCircle } from "lucide-react"
 
 export default function TrendImpact() {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle>Investment Implications</CardTitle>
+        <div className="flex items-center">
+          <CardTitle>Investment Implications</CardTitle>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent className="w-80">
+                <p className="text-xs mb-2">
+                  Investment implications are determined through analysis of historical correlations, sensitivity
+                  studies, and expert assessments of how macro trends affect various industries and asset classes.
+                </p>
+                <p className="text-xs mb-2">
+                  Our methodology evaluates multiple factors including: competitive landscape shifts, regulatory
+                  impacts, consumer adoption patterns, and supply chain dependencies.
+                </p>
+                <p className="text-xs">
+                  This analysis is updated quarterly and represents potential opportunities and challenges, not specific
+                  investment recommendations.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">

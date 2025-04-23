@@ -11,6 +11,14 @@ export const metadata: Metadata = {
   title: "diversification.com - The religion of investing",
   description:
     "Discover how well your investments are protected against market volatility, inflation, and sector risks.",
+  icons: {
+    icon: [
+      { url: "/favicon.ico" },
+      { url: "/favicon-16x16.png", sizes: "16x16", type: "image/png" },
+      { url: "/favicon-32x32.png", sizes: "32x32", type: "image/png" },
+    ],
+    apple: [{ url: "/apple-touch-icon.png" }],
+  },
     generator: 'v0.dev'
 }
 

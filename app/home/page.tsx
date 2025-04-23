@@ -13,11 +13,13 @@ import { TodaysTopFive } from "./components/todays-top-five"
 import { VideoRecap } from "./components/video-recap"
 import { TopTrendsSection } from "./components/top-trends-section"
 import { ClientDiversificationWrapper } from "./components/client-diversification-wrapper"
+import { NewsletterPromotionBanner } from "./components/newsletter-promotion-banner"
 
 export default function HomePage() {
   return (
     <div>
       <HeroSection />
+      <NewsletterPromotionBanner />
 
       <div className="container py-8">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">

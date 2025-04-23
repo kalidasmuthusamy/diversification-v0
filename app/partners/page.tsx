@@ -18,137 +18,208 @@ import {
   Palette,
   Shield,
   Star,
+  HelpCircle,
+  ChevronLeft,
 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Slider } from "@/components/ui/slider"
 import { Separator } from "@/components/ui/separator"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
 
-// Alternative investment data
-const investments = [
-  {
-    id: 1,
-    name: "Private Real Estate",
-    platform: "Fundrise",
-    category: "Real Estate",
-    description: "Fractional ownership in a diversified portfolio of private real estate assets across the US.",
-    minInvestment: "$10",
-    rating: 4.8,
-    marketCorrelation: 0.3,
-    riskLevel: 3,
-    returnPotential: "8-12%",
-    liquidityLevel: 2,
-    accreditedOnly: false,
-    logo: "/fundrise-growth.png",
-    tags: ["Passive Income", "Tax Benefits", "Inflation Hedge"],
-    performance: [4.2, 5.1, 7.8, 9.2, 8.7, 10.3, 9.8],
-    pros: ["Low minimum investment", "Quarterly liquidity options", "Diversified across markets"],
-    cons: ["Early redemption penalties", "Returns can vary by market", "Not FDIC insured"],
-    icon: Building,
-  },
-  {
-    id: 2,
-    name: "Blue-Chip Art",
-    platform: "Masterworks",
-    category: "Art",
-    description: "Invest in shares of iconic artwork by world-renowned artists like Banksy, Basquiat, and Warhol.",
-    minInvestment: "$1,000",
-    rating: 4.6,
-    marketCorrelation: 0.1,
-    riskLevel: 4,
-    returnPotential: "9-15%",
-    liquidityLevel: 2,
-    accreditedOnly: false,
-    logo: "/art-gallery-showcase.png",
-    tags: ["Tangible Asset", "Cultural Value", "Inflation Hedge"],
-    performance: [5.9, 7.2, 9.8, 14.2, 11.7, 13.3, 14.8],
-    pros: ["Historical 14% annual returns", "Secondary market available", "Zero correlation to stocks"],
-    cons: ["Longer investment horizon", "Highly selective curation", "Success depends on art market trends"],
-    icon: Palette,
-  },
-  {
-    id: 3,
-    name: "Multi-Asset Alternative Portfolio",
-    platform: "Yieldstreet",
-    category: "Alternative Assets",
-    description: "Diversified portfolio across private credit, real estate, art, and other alternative assets.",
-    minInvestment: "$2,500",
-    rating: 4.5,
-    marketCorrelation: 0.2,
-    riskLevel: 4,
-    returnPotential: "7-15%",
-    liquidityLevel: 1,
-    accreditedOnly: true,
-    logo: "/yieldstreet-alternative-investments.png",
-    tags: ["Portfolio Diversification", "Private Markets", "Income Generation"],
-    performance: [6.5, 8.2, 7.8, 9.2, 10.7, 8.3, 9.8],
-    pros: ["Professional due diligence", "Access to institutional-quality investments", "Quarterly distributions"],
-    cons: ["Accredited investors only", "Limited liquidity", "Complex investment structures"],
-    icon: Briefcase,
-  },
-  {
-    id: 4,
-    name: "Fine Wine Portfolio",
-    platform: "Vinovest",
-    category: "Wine",
-    description:
-      "Curated portfolio of investment-grade wines stored in optimal conditions and authenticated by experts.",
-    minInvestment: "$1,000",
-    rating: 4.3,
-    marketCorrelation: 0.05,
-    riskLevel: 3,
-    returnPotential: "8-12%",
-    liquidityLevel: 2,
-    accreditedOnly: false,
-    logo: "/vinovest-wine-cellar.png",
-    tags: ["Consumable Asset", "Scarcity Value", "Portfolio Diversifier"],
-    performance: [5.5, 7.2, 9.8, 10.2, 8.7, 11.3, 10.8],
-    pros: ["Outperformed S&P 500 over 30 years", "Insured storage", "Can sell anytime"],
-    cons: ["Storage fees apply", "Requires patience", "Market knowledge helpful"],
-    icon: Wine,
-  },
-  {
-    id: 5,
-    name: "US Farmland",
-    platform: "FarmTogether",
-    category: "Farmland",
-    description: "Direct ownership in US farmland with both income from crop yields and land appreciation potential.",
-    minInvestment: "$15,000",
-    rating: 4.7,
-    marketCorrelation: 0.1,
-    riskLevel: 2,
-    returnPotential: "7-13%",
-    liquidityLevel: 1,
-    accreditedOnly: true,
-    logo: "/vibrant-community-farm.png",
-    tags: ["Essential Asset", "Sustainable", "Inflation Protection"],
-    performance: [6.5, 7.2, 8.8, 9.2, 10.7, 9.3, 8.8],
-    pros: ["Historically stable returns", "Income + appreciation", "ESG investment option"],
-    cons: ["Higher minimum investment", "Long hold periods", "Weather and commodity risks"],
-    icon: TreePine,
-  },
-  {
-    id: 6,
-    name: "Rare Collectibles",
-    platform: "Rally",
-    category: "Collectibles",
-    description:
-      "Fractional ownership in rare collectibles including vintage cars, watches, sports memorabilia, and more.",
-    minInvestment: "$50",
-    rating: 4.2,
-    marketCorrelation: 0.1,
-    riskLevel: 4,
-    returnPotential: "10-20%",
-    liquidityLevel: 2,
-    accreditedOnly: false,
-    logo: "/eclectic-collection-display.png",
-    tags: ["Passion Assets", "Cultural Value", "Micro Investments"],
-    performance: [8.5, 12.2, 15.8, 9.2, 18.7, 11.3, 14.8],
-    pros: ["Low entry point", "Trading windows", "Tangible assets"],
-    cons: ["Highly speculative", "Market-dependent liquidity", "Condition/authenticity risks"],
-    icon: Gem,
-  },
-]
+// Generate more investment options
+const generateInvestments = () => {
+  const baseInvestments = [
+    {
+      id: 1,
+      name: "Private Real Estate",
+      platform: "Fundrise",
+      category: "Real Estate",
+      description: "Fractional ownership in a diversified portfolio of private real estate assets across the US.",
+      minInvestment: "$10",
+      rating: 4.8,
+      marketCorrelation: "Low",
+      riskLevel: 3,
+      liquidityLevel: 2,
+      accreditedOnly: false,
+      logo: "/fundrise-growth.png",
+      tags: ["Passive Income", "Tax Benefits", "Inflation Hedge"],
+      pros: ["Low minimum investment", "Quarterly liquidity options", "Diversified across markets"],
+      cons: ["Early redemption penalties", "Returns can vary by market", "Not FDIC insured"],
+      icon: Building,
+    },
+    {
+      id: 2,
+      name: "Blue-Chip Art",
+      platform: "Masterworks",
+      category: "Art",
+      description: "Invest in shares of iconic artwork by world-renowned artists like Banksy, Basquiat, and Warhol.",
+      minInvestment: "$1,000",
+      rating: 4.6,
+      marketCorrelation: "Very Low",
+      riskLevel: 4,
+      liquidityLevel: 2,
+      accreditedOnly: false,
+      logo: "/art-gallery-showcase.png",
+      tags: ["Tangible Asset", "Cultural Value", "Inflation Hedge"],
+      pros: ["Historical 14% annual returns", "Secondary market available", "Zero correlation to stocks"],
+      cons: ["Longer investment horizon", "Highly selective curation", "Success depends on art market trends"],
+      icon: Palette,
+    },
+    {
+      id: 3,
+      name: "Multi-Asset Alternative Portfolio",
+      platform: "Yieldstreet",
+      category: "Alternative Assets",
+      description: "Diversified portfolio across private credit, real estate, art, and other alternative assets.",
+      minInvestment: "$2,500",
+      rating: 4.5,
+      marketCorrelation: "Low",
+      riskLevel: 4,
+      liquidityLevel: 1,
+      accreditedOnly: true,
+      logo: "/yieldstreet-alternative-investments.png",
+      tags: ["Portfolio Diversification", "Private Markets", "Income Generation"],
+      pros: ["Professional due diligence", "Access to institutional-quality investments", "Quarterly distributions"],
+      cons: ["Accredited investors only", "Limited liquidity", "Complex investment structures"],
+      icon: Briefcase,
+    },
+    {
+      id: 4,
+      name: "Fine Wine Portfolio",
+      platform: "Vinovest",
+      category: "Wine",
+      description:
+        "Curated portfolio of investment-grade wines stored in optimal conditions and authenticated by experts.",
+      minInvestment: "$1,000",
+      rating: 4.3,
+      marketCorrelation: "Very Low",
+      riskLevel: 3,
+      liquidityLevel: 2,
+      accreditedOnly: false,
+      logo: "/vinovest-wine-cellar.png",
+      tags: ["Consumable Asset", "Scarcity Value", "Portfolio Diversifier"],
+      pros: ["Outperformed S&P 500 over 30 years", "Insured storage", "Can sell anytime"],
+      cons: ["Storage fees apply", "Requires patience", "Market knowledge helpful"],
+      icon: Wine,
+    },
+    {
+      id: 5,
+      name: "US Farmland",
+      platform: "FarmTogether",
+      category: "Farmland",
+      description: "Direct ownership in US farmland with both income from crop yields and land appreciation potential.",
+      minInvestment: "$15,000",
+      rating: 4.7,
+      marketCorrelation: "Low",
+      riskLevel: 2,
+      liquidityLevel: 1,
+      accreditedOnly: true,
+      logo: "/vibrant-community-farm.png",
+      tags: ["Essential Asset", "Sustainable", "Inflation Protection"],
+      pros: ["Historically stable returns", "Income + appreciation", "ESG investment option"],
+      cons: ["Higher minimum investment", "Long hold periods", "Weather and commodity risks"],
+      icon: TreePine,
+    },
+    {
+      id: 6,
+      name: "Rare Collectibles",
+      platform: "Rally",
+      category: "Collectibles",
+      description:
+        "Fractional ownership in rare collectibles including vintage cars, watches, sports memorabilia, and more.",
+      minInvestment: "$50",
+      rating: 4.2,
+      marketCorrelation: "Low",
+      riskLevel: 4,
+      liquidityLevel: 2,
+      accreditedOnly: false,
+      logo: "/eclectic-collection-display.png",
+      tags: ["Passion Assets", "Cultural Value", "Micro Investments"],
+      pros: ["Low entry point", "Trading windows", "Tangible assets"],
+      cons: ["Highly speculative", "Market-dependent liquidity", "Condition/authenticity risks"],
+      icon: Gem,
+    },
+  ]
+
+  // Categories, platforms, and additional options for generating more investments
+  const categories = [
+    "Real Estate",
+    "Art",
+    "Alternative Assets",
+    "Wine",
+    "Farmland",
+    "Collectibles",
+    "Private Equity",
+    "Commodities",
+    "Crypto",
+    "Venture Capital",
+  ]
+  const platforms = [
+    "Fundrise",
+    "Masterworks",
+    "Yieldstreet",
+    "Vinovest",
+    "FarmTogether",
+    "Rally",
+    "AngelList",
+    "Republic",
+    "Percent",
+    "Cadence",
+    "Groundfloor",
+    "PeerStreet",
+    "Roofstock",
+    "Arrived Homes",
+    "Concreit",
+    "DiversyFund",
+    "EquityMultiple",
+    "RealtyMogul",
+  ]
+  const icons = [Building, Palette, Briefcase, Wine, TreePine, Gem]
+  const correlations = ["Very Low", "Low", "Medium", "High"]
+
+  // Generate additional investments
+  const additionalInvestments = []
+  for (let i = 7; i <= 30; i++) {
+    const categoryIndex = Math.floor(Math.random() * categories.length)
+    const platformIndex = Math.floor(Math.random() * platforms.length)
+    const iconIndex = Math.floor(Math.random() * icons.length)
+    const correlationIndex = Math.floor(Math.random() * correlations.length)
+    const riskLevel = Math.floor(Math.random() * 5) + 1
+    const minInvestment = [10, 50, 100, 500, 1000, 2500, 5000, 10000, 25000][Math.floor(Math.random() * 9)]
+    const accreditedOnly = Math.random() > 0.7
+
+    additionalInvestments.push({
+      id: i,
+      name: `${categories[categoryIndex]} Investment ${i}`,
+      platform: platforms[platformIndex],
+      category: categories[categoryIndex],
+      description: `A diversified ${categories[categoryIndex].toLowerCase()} investment opportunity with potential for both income and appreciation.`,
+      minInvestment: `$${minInvestment.toLocaleString()}`,
+      rating: (3.5 + Math.random() * 1.5).toFixed(1),
+      marketCorrelation: correlations[correlationIndex],
+      riskLevel: riskLevel,
+      liquidityLevel: Math.floor(Math.random() * 4) + 1,
+      accreditedOnly: accreditedOnly,
+      logo: "/diverse-alternative-assets.png",
+      tags: ["Alternative Investment", "Portfolio Diversifier", categories[categoryIndex]],
+      pros: ["Diversification benefits", "Potential for above-market returns", "Professional management"],
+      cons: ["Investment risks", "Potential liquidity constraints", "Market volatility"],
+      icon: icons[iconIndex],
+    })
+  }
+
+  return [...baseInvestments, ...additionalInvestments]
+}
+
+const investments = generateInvestments()
 
 export default function AlternativeInvestmentsPage() {
   const [filteredInvestments, setFilteredInvestments] = useState(investments)
@@ -158,6 +229,8 @@ export default function AlternativeInvestmentsPage() {
   const [filterMinInvestment, setFilterMinInvestment] = useState(100000)
   const [filterAccredited, setFilterAccredited] = useState("all")
   const [filterLiquidity, setFilterLiquidity] = useState("all")
+  const [currentPage, setCurrentPage] = useState(1)
+  const investmentsPerPage = 9
 
   // Filter and sort investments based on user selections
   useEffect(() => {
@@ -193,10 +266,11 @@ export default function AlternativeInvestmentsPage() {
     // Apply sorting
     switch (sortBy) {
       case "rating":
-        results.sort((a, b) => b.rating - a.rating)
+        results.sort((a, b) => Number.parseFloat(b.rating) - Number.parseFloat(a.rating))
         break
       case "correlation":
-        results.sort((a, b) => a.marketCorrelation - b.marketCorrelation)
+        const correlationOrder = { "Very Low": 0, Low: 1, Medium: 2, High: 3 }
+        results.sort((a, b) => correlationOrder[a.marketCorrelation] - correlationOrder[b.marketCorrelation])
         break
       case "minInvestment":
         results.sort((a, b) => {
@@ -208,6 +282,7 @@ export default function AlternativeInvestmentsPage() {
     }
 
     setFilteredInvestments(results)
+    setCurrentPage(1) // Reset to first page when filters change
   }, [filterCategory, filterRiskLevel, filterMinInvestment, filterAccredited, filterLiquidity, sortBy])
 
   // Get icon for category
@@ -230,6 +305,12 @@ export default function AlternativeInvestmentsPage() {
     }
   }
 
+  // Calculate pagination
+  const indexOfLastInvestment = currentPage * investmentsPerPage
+  const indexOfFirstInvestment = indexOfLastInvestment - investmentsPerPage
+  const currentInvestments = filteredInvestments.slice(indexOfFirstInvestment, indexOfLastInvestment)
+  const totalPages = Math.ceil(filteredInvestments.length / investmentsPerPage)
+
   return (
     <div className="container py-6">
       {/* Header Section */}
@@ -249,13 +330,18 @@ export default function AlternativeInvestmentsPage() {
                 <TooltipTrigger asChild>
                   <div className="flex items-center gap-1 text-sm text-blue-600 cursor-help">
                     <Info className="h-4 w-4" />
-                    <span>Affiliate Disclosure</span>
+                    <span>Disclosure</span>
                   </div>
                 </TooltipTrigger>
-                <TooltipContent className="max-w-xs">
-                  <p>
-                    Diversification.com may receive compensation from investment platforms if you open an account. This
-                    does not influence our evaluations or recommendations.
+                <TooltipContent className="w-80">
+                  <p className="text-xs mb-2">
+                    Information presented here is for educational purposes only. Performance data and risk
+                    classifications are based on historical data and may not predict future results.
+                  </p>
+                  <p className="text-xs">
+                    Alternative investments typically involve higher risks and fees than traditional investments and may
+                    have limited liquidity. They are not suitable for all investors. Carefully review all offering
+                    documents before investing.
                   </p>
                 </TooltipContent>
               </Tooltip>
@@ -274,6 +360,81 @@ export default function AlternativeInvestmentsPage() {
       {/* Filter Section */}
       <Card className="mb-6">
         <CardContent className="p-4 md:p-6">
+          <div className="flex justify-between items-center mb-4">
+            <h3 className="font-medium">Filter Investments</h3>
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button variant="outline" size="sm" className="flex items-center gap-1">
+                  <HelpCircle className="h-4 w-4" />
+                  <span>How We Measure</span>
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="sm:max-w-[625px]">
+                <DialogHeader>
+                  <DialogTitle>Our Measurement Methodology</DialogTitle>
+                  <DialogDescription>Understanding how we evaluate alternative investments</DialogDescription>
+                </DialogHeader>
+                <div className="space-y-4 py-4">
+                  <h4 className="text-sm font-medium">Market Correlation</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Market correlation measures how closely an investment's returns move in relation to traditional
+                    market indices like the S&P 500:
+                  </p>
+                  <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                    <li>
+                      <strong>Very Low:</strong> Correlation coefficient below 0.2
+                    </li>
+                    <li>
+                      <strong>Low:</strong> Correlation coefficient between 0.2 and 0.4
+                    </li>
+                    <li>
+                      <strong>Medium:</strong> Correlation coefficient between 0.4 and 0.7
+                    </li>
+                    <li>
+                      <strong>High:</strong> Correlation coefficient above 0.7
+                    </li>
+                  </ul>
+
+                  <h4 className="text-sm font-medium">Risk Level</h4>
+                  <p className="text-sm text-muted-foreground">
+                    Risk levels are determined by analyzing historical volatility, liquidity constraints, and potential
+                    for capital loss:
+                  </p>
+                  <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
+                    <li>
+                      <strong>Level 1 (Very Low):</strong> Minimal volatility, strong capital preservation
+                    </li>
+                    <li>
+                      <strong>Level 2 (Low):</strong> Below-average volatility, good capital preservation
+                    </li>
+                    <li>
+                      <strong>Level 3 (Medium):</strong> Average volatility, moderate risk of capital loss
+                    </li>
+                    <li>
+                      <strong>Level 4 (High):</strong> Above-average volatility, significant risk of capital loss
+                    </li>
+                    <li>
+                      <strong>Level 5 (Very High):</strong> High volatility, potential for substantial capital loss
+                    </li>
+                  </ul>
+
+                  <h4 className="text-sm font-medium">Minimum Investment</h4>
+                  <p className="text-sm text-muted-foreground">
+                    The minimum investment represents the smallest amount required to participate in the investment
+                    opportunity. This is based on platform requirements and may change over time.
+                  </p>
+
+                  <div className="bg-muted p-3 rounded-md mt-4">
+                    <p className="text-xs text-muted-foreground">
+                      Note: All measurements are based on historical data and industry research. Past performance is not
+                      indicative of future results. These classifications are for educational purposes only.
+                    </p>
+                  </div>
+                </div>
+              </DialogContent>
+            </Dialog>
+          </div>
+
           <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
             <div>
               <Select value={filterCategory} onValueChange={setFilterCategory}>
@@ -288,6 +449,10 @@ export default function AlternativeInvestmentsPage() {
                   <SelectItem value="Farmland">Farmland</SelectItem>
                   <SelectItem value="Collectibles">Collectibles</SelectItem>
                   <SelectItem value="Alternative Assets">Multi-Asset</SelectItem>
+                  <SelectItem value="Private Equity">Private Equity</SelectItem>
+                  <SelectItem value="Commodities">Commodities</SelectItem>
+                  <SelectItem value="Crypto">Crypto</SelectItem>
+                  <SelectItem value="Venture Capital">Venture Capital</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -313,7 +478,6 @@ export default function AlternativeInvestmentsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Investors</SelectItem>
-                  <SelectItem value="non-accredited">Non-Accredited Only</SelectItem>
                   <SelectItem value="accredited">Accredited Only</SelectItem>
                 </SelectContent>
               </Select>
@@ -377,13 +541,11 @@ export default function AlternativeInvestmentsPage() {
       <div className="mb-8">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-xl font-semibold">Explore Alternative Investments</h2>
-          <div className="text-sm text-gray-600">
-            Showing {filteredInvestments.length} of {investments.length} investments
-          </div>
+          <div className="text-sm text-gray-600">Showing {filteredInvestments.length} investments</div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {filteredInvestments.map((investment) => (
+          {currentInvestments.map((investment) => (
             <Card key={investment.id} className="overflow-hidden hover:shadow-md transition-shadow">
               <div className="p-4 flex justify-between items-start border-b">
                 <div className="flex items-center gap-3">
@@ -426,7 +588,7 @@ export default function AlternativeInvestmentsPage() {
                   </div>
                   <div>
                     <span className="text-gray-500">Market Correlation:</span>
-                    <span className="font-medium ml-1">{investment.marketCorrelation * 100}%</span>
+                    <span className="font-medium ml-1">{investment.marketCorrelation}</span>
                   </div>
                   <div>
                     <span className="text-gray-500">Risk Level:</span>
@@ -443,8 +605,16 @@ export default function AlternativeInvestmentsPage() {
                     </span>
                   </div>
                   <div>
-                    <span className="text-gray-500">Target Returns:</span>
-                    <span className="font-medium ml-1">{investment.returnPotential}</span>
+                    <span className="text-gray-500">Liquidity:</span>
+                    <span className="font-medium ml-1">
+                      {investment.liquidityLevel === 1
+                        ? "Very Low"
+                        : investment.liquidityLevel === 2
+                          ? "Low"
+                          : investment.liquidityLevel === 3
+                            ? "Medium"
+                            : "High"}
+                    </span>
                   </div>
                 </div>
 
@@ -466,6 +636,45 @@ export default function AlternativeInvestmentsPage() {
             </Card>
           ))}
         </div>
+
+        {/* Pagination */}
+        {totalPages > 1 && (
+          <div className="flex justify-center items-center mt-8 gap-2">
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+              disabled={currentPage === 1}
+            >
+              <ChevronLeft className="h-4 w-4" />
+              <span className="ml-1">Previous</span>
+            </Button>
+
+            <div className="flex items-center gap-1 mx-2">
+              {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
+                <Button
+                  key={page}
+                  variant={currentPage === page ? "default" : "outline"}
+                  size="sm"
+                  className="w-8 h-8 p-0"
+                  onClick={() => setCurrentPage(page)}
+                >
+                  {page}
+                </Button>
+              ))}
+            </div>
+
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+              disabled={currentPage === totalPages}
+            >
+              <span className="mr-1">Next</span>
+              <ChevronRight className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Educational Section */}

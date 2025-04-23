@@ -120,23 +120,18 @@ export function SiteFooter() {
         </div>
 
         <div className="mt-12 pt-8 border-t border-gray-200">
-          <div className="flex flex-col md:flex-row justify-between items-center">
+          <div className="flex flex-col md:flex-row justify-between items-center mb-6">
             <p className="text-sm text-gray-500 mb-4 md:mb-0">
               © {new Date().getFullYear()} diversification.com. All rights reserved.
             </p>
-            <p className="text-xs text-gray-500">
-              diversification.com is a technology product of Global Predictions Inc, a Registered Investment Advisor
-              with the SEC. Investment advisory services are only provided to investors who become Global Predictions
-              clients. Past performance is not a guarantee of future results. Investing involves risk.
-            </p>
           </div>
-        </div>
-        <div className="mt-8 pt-8 border-t border-gray-200">
           <div className="text-xs text-muted-foreground space-y-2">
             <p>
-              <strong>IMPORTANT DISCLOSURES:</strong> The information provided on diversification.com is for
-              informational and educational purposes only. It should not be considered financial advice. Global
-              Predictions Inc. is an SEC registered investment advisor under CRD #305943.
+              <strong>IMPORTANT DISCLOSURES:</strong> diversification.com is a technology product of Global Predictions
+              Inc, a Registered Investment Advisor with the SEC. The information provided on diversification.com is for
+              informational and educational purposes only. It should not be considered financial advice. Investment
+              advisory services are only provided to investors who become Global Predictions clients. Past performance
+              is not a guarantee of future results. Investing involves risk.
             </p>
             <p>
               The content on this website, including market analysis, diversification scores, and other information,
@@ -154,6 +149,34 @@ export function SiteFooter() {
               decisions.
             </p>
             <p>
+              <strong>DATA SOURCES:</strong> Market data, asset class information, sector analysis, and other financial
+              information displayed on this website are sourced from StockNewsAPI, Morningstar, AlphaVantage, IEX, and
+              TradingEconomics. We make every effort to ensure data accuracy but cannot guarantee that all information
+              is complete, accurate, or timely.
+            </p>
+            <p>
+              <strong>USER COUNT DISCLOSURE:</strong> References to "30,000 users/subscribers" reflect the combined user
+              base across Global Predictions, PortfolioPilot.com, and diversification.com platforms as of February 15,
+              2025.
+            </p>
+            <p>
+              <strong>REGULATORY INFORMATION:</strong> For Global Predictions' Form ADV Part 2A and other regulatory
+              disclosures, please visit{" "}
+              <a href="https://portfoliopilot.com/disclosures" className="underline hover:text-blue-600">
+                portfoliopilot.com/disclosures
+              </a>
+              .
+            </p>
+            <p>
+              <strong>FIDUCIARY ADVICE:</strong> Fiduciary financial advice is available through
+              <a href="https://portfoliopilot.com" className="underline hover:text-blue-600">
+                {" "}
+                PortfolioPilot.com
+              </a>
+              . The tools and calculators on diversification.com are for educational purposes and do not constitute
+              personalized investment advice.
+            </p>
+            <p>
               Before making any investment decisions, you should consult with a qualified financial advisor, tax
               professional, or legal counsel to ensure that your investment strategy aligns with your individual needs
               and circumstances.
@@ -163,7 +186,7 @@ export function SiteFooter() {
               the accuracy, completeness, or timeliness of the information provided on this website and shall not be
               liable for any losses, damages, or costs that may arise from its use.
             </p>
-            <p>© {new Date().getFullYear()} Global Predictions Inc. All rights reserved.</p>
+            {/* Copyright is already included in the main footer section */}
           </div>
         </div>
       </div>
