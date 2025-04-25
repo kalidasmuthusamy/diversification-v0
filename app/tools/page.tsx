@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils"
 import type React from "react"
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
-import { Search, AlertTriangle, Globe, Calculator, PieChart, Layers } from "lucide-react"
+import { Search, AlertTriangle, Globe, Calculator, PieChart, Layers, ExternalLink } from "lucide-react"
 import Link from "next/link"
 
 export default function ToolsPage() {
@@ -22,43 +22,56 @@ export default function ToolsPage() {
           icon={<Calculator className="h-8 w-8 text-primary" />}
           href="/diversification"
           featured={true}
+          isExternal={false}
         />
 
         <ToolCard
           title="Stock Screener"
           description="Filter stocks by performance, fundamentals, technical indicators, and more."
           icon={<Search className="h-8 w-8 text-primary" />}
-          href="/tools/stock-screener"
+          href="https://portfoliopilot.com/tools/stock-screener"
+          isExternal={true}
         />
 
         <ToolCard
           title="Fund Screener"
           description="Find ETFs and mutual funds that match your investment criteria and goals."
           icon={<Layers className="h-8 w-8 text-primary" />}
-          href="/tools/fund-screener"
+          href="https://portfoliopilot.com/tools/fund-screener"
+          isExternal={true}
         />
 
         <ToolCard
           title="Market Anomalies"
           description="Discover unusual market movements and potential investment opportunities."
           icon={<AlertTriangle className="h-8 w-8 text-primary" />}
-          href="/tools/market-anomalies"
+          href="https://portfoliopilot.com/tools/market-anomalies"
+          isExternal={true}
         />
 
         <ToolCard
           title="Macro Insights"
           description="Analyze economic indicators and their potential impact on your investments."
           icon={<Globe className="h-8 w-8 text-primary" />}
-          href="/tools/macro-insights"
+          href="https://portfoliopilot.com/tools/macro-insights"
+          isExternal={true}
         />
 
         <ToolCard
           title="Portfolio Optimizer"
           description="Visualize the efficient frontier and optimize your portfolio for maximum returns at your desired risk level."
           icon={<PieChart className="h-8 w-8 text-primary" />}
-          href="https://portfoliopilot.com/signup"
+          href="https://portfoliopilot.com/tools/optimizer"
           featured={true}
+          isExternal={true}
         />
+      </div>
+
+      <div className="mt-8 p-4 bg-muted/50 rounded-lg">
+        <p className="text-sm text-muted-foreground text-center">
+          Tools marked with <ExternalLink className="h-3 w-3 inline mx-1" /> are provided by PortfolioPilot, our premium
+          investment platform.
+        </p>
       </div>
     </div>
   )
@@ -70,12 +83,14 @@ function ToolCard({
   icon,
   href,
   featured = false,
+  isExternal = false,
 }: {
   title: string
   description: string
   icon: React.ReactNode
   href: string
   featured?: boolean
+  isExternal?: boolean
 }) {
   return (
     <Card
@@ -84,10 +99,21 @@ function ToolCard({
       <CardContent className="p-6">
         <div className="flex flex-col h-full">
           <div className="mb-4">{icon}</div>
-          <h3 className="text-xl font-bold mb-2">{title}</h3>
+          <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+            {title}
+            {isExternal && (
+              <span className="text-xs font-normal text-muted-foreground flex items-center">
+                <ExternalLink className="h-3 w-3 mr-1" />
+                PortfolioPilot
+              </span>
+            )}
+          </h3>
           <p className="text-muted-foreground mb-4 flex-grow">{description}</p>
           <Button asChild className={featured ? "bg-primary" : ""}>
-            <Link href={href}>Launch Tool</Link>
+            <Link href={href} target={isExternal ? "_blank" : undefined} className="flex items-center gap-2">
+              Launch Tool
+              {isExternal && <ExternalLink className="h-4 w-4" />}
+            </Link>
           </Button>
         </div>
       </CardContent>

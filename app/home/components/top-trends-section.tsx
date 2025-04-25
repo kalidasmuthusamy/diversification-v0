@@ -8,40 +8,30 @@ export function TopTrendsSection() {
     {
       id: 1,
       name: "AI and Automation",
-      description: "Artificial intelligence and automation transforming industries and labor markets",
-      strength: "Very Strong",
       direction: "up",
       impact: "High",
     },
     {
       id: 2,
       name: "Digital Transformation",
-      description: "Businesses accelerating digital adoption across operations and customer experiences",
-      strength: "Strong",
       direction: "up",
       impact: "High",
     },
     {
       id: 3,
       name: "Energy Transition",
-      description: "Shift from fossil fuels to renewable energy sources and technologies",
-      strength: "Strong",
       direction: "up",
       impact: "High",
     },
     {
       id: 4,
       name: "Remote Work Revolution",
-      description: "Permanent shift to flexible and hybrid work arrangements",
-      strength: "Strong",
       direction: "up",
       impact: "Medium",
     },
     {
       id: 5,
       name: "Supply Chain Restructuring",
-      description: "Companies diversifying suppliers and reshoring critical production",
-      strength: "Medium",
       direction: "up",
       impact: "Medium",
     },
@@ -62,14 +52,14 @@ export function TopTrendsSection() {
         </Link>
       </div>
 
-      <div className="grid grid-cols-1 gap-4">
+      <div className="grid grid-cols-1 gap-2">
         {trendsData.slice(0, 5).map((trend) => (
           <Link
             key={trend.id}
             href={`/trends/${trend.id}`}
-            className="flex items-start gap-3 p-3 rounded-lg border hover:bg-muted/30 transition-colors"
+            className="flex items-center gap-3 py-2 px-3 rounded-lg border hover:bg-muted/30 transition-colors"
           >
-            <div className="flex items-center justify-center w-8 h-8 rounded-full bg-primary/10 text-primary flex-shrink-0">
+            <div className="flex items-center justify-center w-7 h-7 rounded-full bg-primary/10 text-primary flex-shrink-0">
               {trend.id}
             </div>
             <div className="flex-1">
@@ -81,11 +71,9 @@ export function TopTrendsSection() {
                   <TrendingDown className="h-4 w-4 text-red-500" />
                 )}
               </div>
-              <p className="text-sm text-muted-foreground">{trend.description}</p>
             </div>
-            <div className="flex flex-col items-end gap-1 flex-shrink-0">
-              <span className="text-sm font-medium">{trend.strength}</span>
-              <span className="text-xs text-muted-foreground">{trend.impact} Impact</span>
+            <div className="flex-shrink-0">
+              <span className="text-xs px-2 py-1 rounded-full bg-muted">{trend.impact} Impact</span>
             </div>
           </Link>
         ))}
