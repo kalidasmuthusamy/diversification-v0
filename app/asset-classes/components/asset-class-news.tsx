@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Clock, ArrowUpRight } from "lucide-react"
+import { Clock } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 
 interface AssetClassNewsProps {
   assetClass: string
@@ -17,6 +17,7 @@ export default function AssetClassNews({ assetClass }: AssetClassNewsProps) {
       time: "2 hours ago",
       category: "Monetary Policy",
       url: "/news/fed-signals-rate-cuts",
+      image: "/financial-growth-chart.png",
     },
     {
       id: 2,
@@ -25,6 +26,7 @@ export default function AssetClassNews({ assetClass }: AssetClassNewsProps) {
       time: "5 hours ago",
       category: "Technology",
       url: "/news/tech-stocks-rally-ai",
+      image: "/interconnected-future.png",
     },
     {
       id: 3,
@@ -33,6 +35,7 @@ export default function AssetClassNews({ assetClass }: AssetClassNewsProps) {
       time: "8 hours ago",
       category: "Economy",
       url: "/news/supply-chain-improvements",
+      image: "/global-supply-network.png",
     },
     {
       id: 4,
@@ -41,6 +44,7 @@ export default function AssetClassNews({ assetClass }: AssetClassNewsProps) {
       time: "1 day ago",
       category: "Equities",
       url: "/news/small-cap-recovery",
+      image: "/upward-trend-chart.png",
     },
     {
       id: 5,
@@ -49,6 +53,7 @@ export default function AssetClassNews({ assetClass }: AssetClassNewsProps) {
       time: "1 day ago",
       category: "ESG",
       url: "/news/esg-investing-trends",
+      image: "/growth-with-purpose.png",
     },
   ]
 
@@ -60,27 +65,31 @@ export default function AssetClassNews({ assetClass }: AssetClassNewsProps) {
       <CardContent>
         <div className="space-y-4">
           {newsItems.map((item) => (
-            <div key={item.id} className="border-b border-gray-100 pb-4 last:border-0 last:pb-0">
-              <div className="flex justify-between items-start mb-1">
-                <Badge variant="outline" className="text-xs font-normal">
-                  {item.category}
-                </Badge>
-                <div className="flex items-center text-xs text-muted-foreground">
-                  <Clock className="h-3 w-3 mr-1" />
-                  {item.time}
+            <Link href={item.url} key={item.id} className="block">
+              <div className="flex gap-3 border-b border-gray-100 pb-4 last:border-0 last:pb-0 hover:bg-muted/20 p-2 rounded-md transition-colors">
+                <div className="flex-shrink-0">
+                  <Image
+                    src={item.image || "/placeholder.svg"}
+                    alt={item.title}
+                    width={70}
+                    height={70}
+                    className="rounded-md object-cover"
+                  />
+                </div>
+                <div className="flex-1">
+                  <span className="text-xs uppercase tracking-wider text-muted-foreground mb-1 block">
+                    {item.category}
+                  </span>
+                  <h4 className="font-medium text-sm mb-1 line-clamp-2">{item.title}</h4>
+                  <div className="flex items-center text-xs text-muted-foreground">
+                    <Clock className="h-3 w-3 mr-1" />
+                    <span>{item.time}</span>
+                    <span className="mx-1">•</span>
+                    <span className="font-medium">{item.source}</span>
+                  </div>
                 </div>
               </div>
-              <Link href={item.url} className="font-medium hover:text-blue-600 block mb-1">
-                {item.title}
-              </Link>
-              <div className="flex justify-between items-center">
-                <span className="text-xs text-muted-foreground">{item.source}</span>
-                <Link href={item.url} className="text-xs text-blue-600 hover:text-blue-800 flex items-center">
-                  Read Article
-                  <ArrowUpRight className="h-3 w-3 ml-1" />
-                </Link>
-              </div>
-            </div>
+            </Link>
           ))}
         </div>
       </CardContent>
