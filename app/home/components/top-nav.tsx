@@ -29,7 +29,7 @@ export function TopNav() {
           <Link href="/home" className="flex flex-col mr-6">
             <span className="text-lg md:text-xl font-bold text-blue-600">diversification.com</span>
             <div className={`text-xs text-muted-foreground italic ${isMobile ? "hidden" : "block"}`}>
-              The religion of investing
+              Powered by PortfolioPilot.com
             </div>
           </Link>
         </div>

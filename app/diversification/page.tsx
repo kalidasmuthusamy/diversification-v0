@@ -31,14 +31,15 @@ function DiversificationCalculator() {
   const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
 
-  // Sample portfolio text
-  const samplePortfolio = `AAPL, 15%
-MSFT, 12%
-AMZN, 10%
-SPY, 25%
-QQQ, 18%
-BND, 15%
-GLD, 5%`
+  // Sample portfolio text - updated to use dollar amounts and include real estate
+  const samplePortfolio = `AAPL, $45,000
+MSFT, $36,000
+AMZN, $30,000
+SPY, $75,000
+QQQ, $54,000
+BND, $30,000
+GLD, $15,000
+Real Estate, $15,000`
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
@@ -86,20 +87,18 @@ GLD, 5%`
 
               <TabsContent value="copy-paste" className="space-y-4 mt-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">
-                    Enter your portfolio holdings (ticker, allocation percentage)
-                  </label>
+                  <label className="text-sm font-medium">Enter your portfolio holdings (ticker, dollar amount)</label>
                   <Textarea
                     placeholder="Example:
-AAPL, 15%
-MSFT, 12%
-SPY, 25%"
+AAPL, $45,000
+MSFT, $36,000
+SPY, $75,000"
                     className="min-h-[250px]"
                     value={portfolioText}
                     onChange={(e) => setPortfolioText(e.target.value)}
                   />
                   <p className="text-xs text-muted-foreground">
-                    Enter one holding per line with ticker symbol and allocation percentage
+                    Enter one holding per line with ticker symbol and dollar amount
                   </p>
                 </div>
 
@@ -195,7 +194,7 @@ SPY, 25%"
                   <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                   <span>
                     <span className="font-medium">Get personalized recommendations</span> to improve your portfolio's
-                    risk-adjusted returns
+                    risk-adjusted returns (via PortfolioPilot.com)
                   </span>
                 </li>
               </ul>

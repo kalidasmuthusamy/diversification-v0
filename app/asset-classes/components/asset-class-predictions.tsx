@@ -1,13 +1,26 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
-import { ArrowUp, ArrowDown, TrendingUp, BarChart2, Calendar } from "lucide-react"
+import { ArrowUp, ArrowDown, TrendingUp, BarChart2, Calendar, HelpCircle } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export default function AssetClassPredictions() {
   return (
     <Card>
       <CardHeader className="pb-2">
         <div className="flex items-center justify-between">
-          <CardTitle>Market Outlook & Predictions</CardTitle>
+          <div className="flex items-center">
+            <CardTitle>Market Outlook & Predictions</CardTitle>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">Updated weekly</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
           <Badge variant="outline">Next 12 Months</Badge>
         </div>
       </CardHeader>
