@@ -9,7 +9,7 @@ export default function EducationSection() {
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-2">
           <BookOpen className="h-5 w-5 text-blue-500" />
-          <h2 className="text-xl font-semibold">Education Center</h2>
+          <h2 className="text-xl font-semibold">Get smarter about diversification</h2>
         </div>
         <Link href="/education" className="text-blue-500 hover:text-blue-700 text-sm font-medium">
           View All

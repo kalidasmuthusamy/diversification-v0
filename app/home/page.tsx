@@ -1,6 +1,6 @@
 import { Suspense } from "react"
 
-import HeroSection from "./components/hero-section"
+import HeroCarousel from "./components/hero-carousel"
 import AssetClassPerformance from "./components/asset-class-performance"
 import EducationSection from "./components/education-section"
 import MarketAnalysis from "./components/market-analysis"
@@ -11,11 +11,12 @@ import { VideoRecap } from "./components/video-recap"
 import { TopTrendsSection } from "./components/top-trends-section"
 import { ClientDiversificationWrapper } from "./components/client-diversification-wrapper"
 import { NewsletterPromotionBanner } from "./components/newsletter-promotion-banner"
+import { PortfolioPilotSidebarAd } from "./components/portfolio-pilot-sidebar-ad"
 
 export default function HomePage() {
   return (
     <div>
-      <HeroSection />
+      <HeroCarousel />
       <NewsletterPromotionBanner />
 
       <div className="container py-8">
@@ -46,7 +47,7 @@ export default function HomePage() {
 
             <PopularStocks />
 
-            <NewsletterSignup compact />
+            <PortfolioPilotSidebarAd />
           </div>
         </div>
       </div>

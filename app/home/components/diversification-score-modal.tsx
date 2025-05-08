@@ -13,10 +13,46 @@ import {
 } from "@/components/ui/dialog"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
+import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
-import { ArrowRight, Check, AlertTriangle, Upload, Copy, Lock } from "lucide-react"
+import { Input } from "@/components/ui/input"
+import { Checkbox } from "@/components/ui/checkbox"
+import { Label } from "@/components/ui/label"
+import {
+  ArrowRight,
+  ArrowLeft,
+  Check,
+  AlertTriangle,
+  Info,
+  Bot,
+  ExternalLink,
+  Share2,
+  Upload,
+  Copy,
+  Lock,
+  BarChart4,
+  Globe,
+  PieChart,
+  TrendingUp,
+  Shield,
+  HelpCircle,
+  ChevronDown,
+  ChevronUp,
+  Mail,
+  Zap,
+  Layers,
+  DollarSign,
+  Clock,
+  Shuffle,
+  Target,
+  LineChart,
+  BarChart,
+  Percent,
+} from "lucide-react"
+import { Badge } from "@/components/ui/badge"
 import { useDiversification } from "@/app/contexts/diversification-context"
-import DiversificationScoreReport from "@/app/components/diversification-score-report"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
 
 interface DiversificationScoreModalProps {
   children?: ReactNode
@@ -45,32 +81,36 @@ export default function DiversificationScoreModal({
   const fileInputRef = useRef<HTMLInputElement>(null)
   const [loadingStep, setLoadingStep] = useState(0)
   const [showDisclosure, setShowDisclosure] = useState(false)
-  const [showAllComponents, setShowAllComponents] = useState(false)
+  const [showMethodology, setShowMethodology] = useState(false)
   const [emailForReport, setEmailForReport] = useState("")
   const [subscribeNewsletter, setSubscribeNewsletter] = useState(true)
   const [emailSent, setEmailSent] = useState(false)
-  const [showShareOptions, setShowShareOptions] = useState(false)
 
   const loadingSteps = [
     {
       title: "Analyzing Holdings Concentration",
       description: "Evaluating the distribution of your investments across different securities",
+      icon: <BarChart4 className="h-6 w-6 text-blue-500" />,
     },
     {
       title: "Measuring Sector Diversification",
       description: "Assessing your exposure across different market sectors",
+      icon: <PieChart className="h-6 w-6 text-indigo-500" />,
     },
     {
       title: "Evaluating Geographic Exposure",
       description: "Analyzing your portfolio's global market distribution",
+      icon: <Globe className="h-6 w-6 text-green-500" />,
     },
     {
       title: "Calculating Asset Class Mix",
       description: "Measuring the balance between stocks, bonds, and alternative investments",
+      icon: <TrendingUp className="h-6 w-6 text-amber-500" />,
     },
     {
       title: "Assessing Risk Factors",
       description: "Evaluating your portfolio's resilience to market volatility",
+      icon: <Shield className="h-6 w-6 text-red-500" />,
     },
   ]
 
@@ -227,60 +267,90 @@ BND, $30,000
 GLD, $15,000
 Real Estate, $15,000`
 
-  // Mock diversification score data with the same component names as in the image
+  // Mock diversification score data with 10 components
   const scoreData = calculatedScore
     ? {
         overall: calculatedScore,
         components: [
           {
             name: "Asset Class Diversification",
-            score: Math.max(0, Math.min(100, calculatedScore - 5 + Math.floor(Math.random() * 10))),
-            description: "Balance between different types of investments",
+            score: Math.max(40, Math.min(95, calculatedScore - 5 + Math.floor(Math.random() * 10))),
+            description: "Balance across stocks, bonds, and alternative investments",
+            tooltip:
+              "Example: A portfolio with 100% stocks is at risk during market downturns, while a mix of stocks, bonds, and alternatives can provide more stability.",
+            icon: <Layers className="h-4 w-4 text-blue-500" />,
           },
           {
-            name: "Holdings Diversification",
-            score: Math.max(0, Math.min(100, calculatedScore - 15 + Math.floor(Math.random() * 10))),
-            description: "Too much weight in a single investment (uses look-through analysis)",
+            name: "Sector Allocation",
+            score: Math.max(40, Math.min(95, calculatedScore + 5 + Math.floor(Math.random() * 10))),
+            description: "Exposure across different market sectors",
+            tooltip:
+              "Example: Having 80% of your stock investments in technology creates sector risk if tech stocks decline simultaneously.",
+            icon: <PieChart className="h-4 w-4 text-indigo-500" />,
           },
           {
-            name: "Sector Diversification",
-            score: Math.max(0, Math.min(100, calculatedScore + 5 + Math.floor(Math.random() * 10))),
-            description: "Spread of investments across different industries",
+            name: "Geographic Exposure",
+            score: Math.max(40, Math.min(95, calculatedScore + 10 - Math.floor(Math.random() * 15))),
+            description: "Distribution across global markets",
+            tooltip:
+              "Example: A U.S.-only portfolio misses growth opportunities in emerging markets and is vulnerable to U.S.-specific economic issues.",
+            icon: <Globe className="h-4 w-4 text-green-500" />,
           },
           {
-            name: "Country Diversification",
-            score: Math.max(0, Math.min(100, calculatedScore + 10 - Math.floor(Math.random() * 15))),
-            description: "Single country or region concentration risk",
+            name: "Market Cap Distribution",
+            score: Math.max(40, Math.min(95, calculatedScore - 5 - Math.floor(Math.random() * 10))),
+            description: "Balance between large, mid, and small cap stocks",
+            tooltip:
+              "Example: Large-cap stocks may provide stability, while small-caps can offer growth potential. A mix provides better risk-adjusted returns.",
+            icon: <BarChart className="h-4 w-4 text-amber-500" />,
           },
           {
-            name: "Commodity Driver Risk",
-            score: Math.max(0, Math.min(100, calculatedScore - 5 - Math.floor(Math.random() * 10))),
-            description: "How much your investments depend on commodity prices",
+            name: "Investment Style",
+            score: Math.max(40, Math.min(95, calculatedScore - 2 + Math.floor(Math.random() * 8))),
+            description: "Balance between growth and value investments",
+            tooltip:
+              "Example: Growth stocks may outperform in bull markets, while value stocks often do better in bear markets. A mix helps in different market cycles.",
+            icon: <Shuffle className="h-4 w-4 text-purple-500" />,
           },
           {
-            name: "Inflation Driver Risk",
-            score: Math.max(0, Math.min(100, calculatedScore - 2 + Math.floor(Math.random() * 8))),
-            description: "Exposure to rising prices (CPI)",
+            name: "Holdings Concentration",
+            score: Math.max(40, Math.min(95, calculatedScore - 8 + Math.floor(Math.random() * 12))),
+            description: "Reliance on individual securities",
+            tooltip:
+              "Example: Having 25% of your portfolio in a single stock creates significant risk if that company faces problems.",
+            icon: <Target className="h-4 w-4 text-red-500" />,
           },
           {
-            name: "Credit Risk",
-            score: Math.max(0, Math.min(100, calculatedScore - 8 + Math.floor(Math.random() * 12))),
-            description: "Risk from changing macro credit conditions",
+            name: "Income vs. Growth",
+            score: Math.max(40, Math.min(95, calculatedScore + 3 - Math.floor(Math.random() * 7))),
+            description: "Balance between income-producing and growth assets",
+            tooltip:
+              "Example: Retirees need income-producing assets, while younger investors might focus on growth. A proper balance depends on your life stage.",
+            icon: <DollarSign className="h-4 w-4 text-emerald-500" />,
           },
           {
-            name: "Interest Rate Risk",
-            score: Math.max(0, Math.min(100, calculatedScore + 3 - Math.floor(Math.random() * 7))),
-            description: "How changing interest rates affect your investments",
+            name: "Time Horizon Alignment",
+            score: Math.max(40, Math.min(95, calculatedScore - 4 + Math.floor(Math.random() * 9))),
+            description: "Match between investments and time goals",
+            tooltip:
+              "Example: Short-term money (needed within 3 years) should be in stable assets, while long-term investments can withstand more volatility.",
+            icon: <Clock className="h-4 w-4 text-cyan-500" />,
           },
           {
-            name: "Liquidity Risk",
-            score: Math.max(0, Math.min(100, calculatedScore + 20 - Math.floor(Math.random() * 10))),
-            description: "Ability to sell in active markets",
+            name: "Correlation Between Assets",
+            score: Math.max(40, Math.min(95, calculatedScore + 7 - Math.floor(Math.random() * 14))),
+            description: "How investments move relative to each other",
+            tooltip:
+              "Example: If all your investments move up and down together, you're not truly diversified. Ideally, some assets should zig when others zag.",
+            icon: <LineChart className="h-4 w-4 text-orange-500" />,
           },
           {
-            name: "Growth Driver Risk",
-            score: Math.max(0, Math.min(100, calculatedScore + 15 - Math.floor(Math.random() * 10))),
-            description: "How your portfolio reacts to changing GDP expectations",
+            name: "Fee Efficiency",
+            score: Math.max(40, Math.min(95, calculatedScore - 6 + Math.floor(Math.random() * 11))),
+            description: "Impact of investment fees on returns",
+            tooltip:
+              "Example: A portfolio with an average expense ratio of 1.5% will significantly underperform a similar portfolio with 0.3% fees over time.",
+            icon: <Percent className="h-4 w-4 text-rose-500" />,
           },
         ],
       }
@@ -288,38 +358,6 @@ Real Estate, $15,000`
         overall: 0,
         components: [],
       }
-
-  // Get status for a score
-  const getScoreStatus = (score: number) => {
-    if (score >= 70)
-      return { status: "Good", color: "bg-green-500", textColor: "text-green-500", icon: <Check className="h-4 w-4" /> }
-    if (score >= 40)
-      return {
-        status: "Fair",
-        color: "bg-amber-500",
-        textColor: "text-amber-500",
-        icon: <AlertTriangle className="h-4 w-4" />,
-      }
-    return {
-      status: "Poor",
-      color: "bg-red-500",
-      textColor: "text-red-500",
-      icon: <AlertTriangle className="h-4 w-4" />,
-    }
-  }
-
-  // Get overall portfolio status
-  const getOverallStatus = (score: number) => {
-    if (score >= 70) return { status: "Well Diversified", color: "bg-green-500" }
-    if (score >= 40) return { status: "Moderately Diversified", color: "bg-amber-500" }
-    return { status: "Poorly Diversified", color: "bg-red-500" }
-  }
-
-  // Get top components to show (most important ones, not necessarily the worst)
-  const getTopComponents = () => {
-    // For this example, we'll show the first 4 components as the most important
-    return scoreData.components.slice(0, 4)
-  }
 
   const handleBack = () => {
     setStep(1)
@@ -336,9 +374,9 @@ Real Estate, $15,000`
           else handleOpen()
         }}
       >
-        <DialogContent className="sm:max-w-[650px] max-h-[90vh] overflow-y-auto p-0">
+        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
           {step === 1 && (
-            <div className="p-6">
+            <>
               <DialogHeader>
                 <DialogTitle>Calculate Your Diversification Score</DialogTitle>
                 <DialogDescription>
@@ -429,7 +467,7 @@ SPY, $75,000"
                 </TabsContent>
               </Tabs>
 
-              <DialogFooter className="mt-6">
+              <DialogFooter>
                 <Button variant="outline" onClick={handleClose}>
                   Cancel
                 </Button>
@@ -438,16 +476,245 @@ SPY, $75,000"
                   {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
               </DialogFooter>
-            </div>
+            </>
           )}
 
           {step === 2 && (
-            <DiversificationScoreReport
-              scoreData={scoreData}
-              onClose={handleClose}
-              onBack={handleBack}
-              skipInputStep={skipInputStep}
-            />
+            <>
+              <DialogHeader className="pb-2 border-b">
+                <div className="flex items-center justify-between">
+                  <DialogTitle className="text-xl">Your Diversification Score</DialogTitle>
+                  <div className="flex items-center text-xs text-muted-foreground">
+                    <span>Powered by</span>
+                    <span className="font-bold text-blue-600 ml-1">PortfolioPilot.com</span>
+                  </div>
+                </div>
+              </DialogHeader>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
+                {/* Left Column - Score Overview */}
+                <div className="flex flex-col items-center justify-start">
+                  <div className="relative">
+                    <svg className="w-36 h-36">
+                      <circle
+                        className="text-gray-200 stroke-current"
+                        strokeWidth="10"
+                        stroke="currentColor"
+                        fill="transparent"
+                        r="63"
+                        cx="72"
+                        cy="72"
+                      />
+                      <circle
+                        className={
+                          scoreData.overall >= 80
+                            ? "text-green-500 stroke-current"
+                            : scoreData.overall >= 60
+                              ? "text-amber-500 stroke-current"
+                              : "text-red-500 stroke-current"
+                        }
+                        strokeWidth="10"
+                        strokeDasharray={396}
+                        strokeDashoffset={396 - (scoreData.overall / 100) * 396}
+                        strokeLinecap="round"
+                        fill="transparent"
+                        r="63"
+                        cx="72"
+                        cy="72"
+                      />
+                    </svg>
+                    <div className="absolute inset-0 flex flex-col items-center justify-center">
+                      <span className="text-5xl font-bold">{scoreData.overall}</span>
+                      <span className="text-xs text-muted-foreground">Overall Score</span>
+                    </div>
+                  </div>
+
+                  <Badge
+                    className={`mt-2 px-3 py-1 text-sm ${
+                      scoreData.overall >= 80 ? "bg-green-500" : scoreData.overall >= 60 ? "bg-amber-500" : "bg-red-500"
+                    }`}
+                  >
+                    {scoreData.overall >= 80 ? (
+                      <Check className="h-3.5 w-3.5 mr-1" />
+                    ) : scoreData.overall >= 60 ? (
+                      <Info className="h-3.5 w-3.5 mr-1" />
+                    ) : (
+                      <AlertTriangle className="h-3.5 w-3.5 mr-1" />
+                    )}
+                    {scoreData.overall >= 80
+                      ? "Well Diversified"
+                      : scoreData.overall >= 60
+                        ? "Moderately Diversified"
+                        : "Poorly Diversified"}
+                  </Badge>
+
+                  <div className="mt-6 w-full">
+                    <div className="text-center mb-2">
+                      <h4 className="font-medium text-sm">Email Report</h4>
+                    </div>
+                    <div className="space-y-3">
+                      <Input
+                        type="email"
+                        placeholder="Your email address"
+                        value={emailForReport}
+                        onChange={(e) => setEmailForReport(e.target.value)}
+                        disabled={emailSent}
+                      />
+                      <div className="flex items-start space-x-2">
+                        <Checkbox
+                          id="newsletter"
+                          checked={subscribeNewsletter}
+                          onCheckedChange={(checked) => setSubscribeNewsletter(checked as boolean)}
+                          disabled={emailSent}
+                        />
+                        <div className="grid gap-1.5 leading-none">
+                          <Label htmlFor="newsletter" className="text-xs">
+                            Subscribe to our newsletter for diversification tips
+                          </Label>
+                        </div>
+                      </div>
+                      <Button
+                        className="w-full"
+                        size="sm"
+                        onClick={handleSendReport}
+                        disabled={!emailForReport || emailSent}
+                      >
+                        {emailSent ? (
+                          <>
+                            <Check className="mr-1 h-4 w-4" />
+                            Report Sent!
+                          </>
+                        ) : (
+                          <>
+                            <Mail className="mr-1 h-4 w-4" />
+                            Send Detailed Report
+                          </>
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Middle Column - Score Components */}
+                <div className="md:col-span-2">
+                  <h4 className="font-medium mb-3 flex items-center">
+                    <Zap className="h-4 w-4 mr-1 text-blue-500" />
+                    Diversification Components
+                  </h4>
+                  <div className="grid grid-cols-1 gap-2 max-h-[400px] overflow-y-auto pr-2">
+                    {scoreData.components.map((component, index) => (
+                      <div key={index} className="bg-white p-2.5 rounded-md border">
+                        <div className="flex justify-between items-center">
+                          <div className="flex items-center">
+                            {component.icon}
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger asChild>
+                                  <span className="text-sm font-medium ml-2 cursor-help flex items-center">
+                                    {component.name}
+                                    <HelpCircle className="h-3 w-3 ml-1 text-muted-foreground" />
+                                  </span>
+                                </TooltipTrigger>
+                                <TooltipContent className="w-80 p-3">
+                                  <p className="text-sm">{component.tooltip}</p>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
+                          </div>
+                          <Badge
+                            variant="outline"
+                            className={
+                              component.score >= 80
+                                ? "text-green-500 border-green-500"
+                                : component.score >= 60
+                                  ? "text-amber-500 border-amber-500"
+                                  : "text-red-500 border-red-500"
+                            }
+                          >
+                            {component.score}
+                          </Badge>
+                        </div>
+                        <div className="mt-1">
+                          <Progress
+                            value={component.score}
+                            className="h-1.5"
+                            indicatorClassName={
+                              component.score >= 80
+                                ? "bg-green-500"
+                                : component.score >= 60
+                                  ? "bg-amber-500"
+                                  : "bg-red-500"
+                            }
+                          />
+                        </div>
+                        <p className="text-xs text-muted-foreground mt-1">{component.description}</p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+
+              {/* Recommendation Section */}
+              <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-md mt-2">
+                <div className="flex items-start gap-3">
+                  <div className="bg-blue-600 rounded-full p-2 flex-shrink-0">
+                    <Bot className="h-5 w-5 text-white" />
+                  </div>
+                  <div className="flex-1">
+                    <h4 className="font-medium text-blue-800">Get Personalized Recommendations</h4>
+                    <p className="text-sm text-blue-700 mt-1 mb-3">
+                      Unlock a full portfolio assessment including benchmarking against similar investors, personalized
+                      improvement strategies, and specific investment recommendations tailored to your goals.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      <Button className="bg-blue-600 hover:bg-blue-700">
+                        Get Free Portfolio Assessment
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </Button>
+                      <Button variant="outline" className="border-blue-600 text-blue-600">
+                        <Share2 className="mr-1 h-4 w-4" />
+                        Share Results
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Methodology Section (Collapsible) */}
+              <Collapsible open={showMethodology} onOpenChange={setShowMethodology} className="mt-4 border-t pt-3">
+                <CollapsibleTrigger asChild>
+                  <Button variant="ghost" size="sm" className="w-full flex justify-between">
+                    <span className="text-sm font-medium flex items-center">
+                      <Info className="h-4 w-4 mr-1" />
+                      How We Calculate Your Score
+                    </span>
+                    {showMethodology ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
+                  </Button>
+                </CollapsibleTrigger>
+                <CollapsibleContent className="pt-2">
+                  <p className="text-xs text-muted-foreground">
+                    Your Diversification Score is calculated using PortfolioPilot's proprietary algorithm that evaluates
+                    your portfolio across 10 key dimensions. The score ranges from 0-100, with higher scores indicating
+                    better diversification. Our methodology considers not just the number of holdings, but how they work
+                    together to reduce risk while maintaining growth potential.
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    This analysis is for educational purposes only and should not be considered investment advice. For a
+                    complete assessment, including personalized recommendations, visit PortfolioPilot.com.
+                  </p>
+                </CollapsibleContent>
+              </Collapsible>
+
+              <DialogFooter className="mt-4 pt-2 border-t">
+                {!skipInputStep && (
+                  <Button variant="outline" onClick={handleBack}>
+                    <ArrowLeft className="mr-2 h-4 w-4" />
+                    Back
+                  </Button>
+                )}
+                <Button onClick={handleClose}>Close</Button>
+              </DialogFooter>
+            </>
           )}
 
           {showDisclosure && (
@@ -492,15 +759,7 @@ SPY, $75,000"
                   {loadingSteps.map((step, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <div className={`flex-shrink-0 ${index === loadingStep ? "opacity-100" : "opacity-40"}`}>
-                        {index === loadingStep ? (
-                          <div className="h-6 w-6 rounded-full border-2 border-blue-500 border-t-transparent animate-spin"></div>
-                        ) : index < loadingStep ? (
-                          <div className="h-6 w-6 rounded-full bg-blue-500 flex items-center justify-center">
-                            <Check className="h-4 w-4 text-white" />
-                          </div>
-                        ) : (
-                          <div className="h-6 w-6 rounded-full border-2 border-gray-300"></div>
-                        )}
+                        {step.icon}
                       </div>
                       <div className="flex-1">
                         <div className="flex justify-between mb-1">
@@ -508,22 +767,15 @@ SPY, $75,000"
                             {step.title}
                           </span>
                           <span className="text-xs text-gray-500">
-                            {index < loadingStep ? "Complete" : index === loadingStep ? "In progress" : "Pending"}
+                            {index < loadingStep ? "100%" : index === loadingStep ? "In progress" : "Pending"}
                           </span>
                         </div>
-                        <div className="w-full h-1.5 bg-gray-200 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-blue-500 transition-all duration-300"
-                            style={{
-                              width:
-                                index < loadingStep
-                                  ? "100%"
-                                  : index === loadingStep
-                                    ? `${(Date.now() % 2000) / 20}%`
-                                    : "0%",
-                            }}
-                          ></div>
-                        </div>
+                        <Progress
+                          value={
+                            index < loadingStep ? 100 : index === loadingStep ? ((Date.now() % 2000) / 2000) * 100 : 0
+                          }
+                          className="h-1.5"
+                        />
                       </div>
                     </div>
                   ))}

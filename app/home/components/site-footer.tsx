@@ -1,7 +1,26 @@
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-import { Facebook, Twitter, Linkedin, Instagram, Send } from "lucide-react"
+import { Instagram, Linkedin, Send, Youtube } from "lucide-react"
+
+// Add this custom X icon component after the imports
+function XIcon() {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M4 4l11.5 11.5M4 20l16-16" />
+    </svg>
+  )
+}
 
 export function SiteFooter() {
   return (
@@ -20,20 +39,20 @@ export function SiteFooter() {
             </p>
             <div className="flex space-x-4">
               <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600">
-                <Facebook className="h-5 w-5" />
-                <span className="sr-only">Facebook</span>
+                <Instagram className="h-5 w-5" />
+                <span className="sr-only">Instagram</span>
               </Button>
               <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600">
-                <Twitter className="h-5 w-5" />
-                <span className="sr-only">Twitter</span>
+                <XIcon className="h-5 w-5" />
+                <span className="sr-only">X</span>
               </Button>
               <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600">
                 <Linkedin className="h-5 w-5" />
                 <span className="sr-only">LinkedIn</span>
               </Button>
               <Button variant="ghost" size="icon" className="h-8 w-8 text-gray-500 hover:text-blue-600">
-                <Instagram className="h-5 w-5" />
-                <span className="sr-only">Instagram</span>
+                <Youtube className="h-5 w-5" />
+                <span className="sr-only">YouTube</span>
               </Button>
             </div>
           </div>
@@ -162,8 +181,8 @@ export function SiteFooter() {
             <p>
               <strong>REGULATORY INFORMATION:</strong> For Global Predictions' Form ADV Part 2A and other regulatory
               disclosures, please visit{" "}
-              <a href="https://portfoliopilot.com/disclosures" className="underline hover:text-blue-600">
-                portfoliopilot.com/disclosures
+              <a href="https://globalpredictions.com/disclosures" className="underline hover:text-blue-600">
+                globalpredictions.com/disclosures
               </a>
               .
             </p>

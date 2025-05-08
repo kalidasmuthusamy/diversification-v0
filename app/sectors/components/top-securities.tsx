@@ -1,7 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowUp, ArrowDown } from "lucide-react"
+import { ArrowUp, ArrowDown, HelpCircle } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface TopSecuritiesProps {
   sector: string
@@ -46,7 +47,25 @@ export default function TopSecurities({ sector }: TopSecuritiesProps) {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg">Top Securities to Track</CardTitle>
+        <div className="flex items-center">
+          <CardTitle className="text-lg">Popular Securities to Track</CardTitle>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Button variant="ghost" className="h-8 w-8 p-0 ml-1">
+                  <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                  <span className="sr-only">Info</span>
+                </Button>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="max-w-xs">
+                  These securities are selected based on market capitalization, trading volume, and popularity among
+                  investors.
+                </p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </CardHeader>
       <CardContent>
         <div className="space-y-3">
