@@ -3,6 +3,8 @@
 import { useState } from "react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { BarChart2 } from "lucide-react"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { HelpCircle } from "lucide-react"
 
 export default function SectorPerformance() {
   const [timeframe, setTimeframe] = useState("ytd")
@@ -71,7 +73,19 @@ export default function SectorPerformance() {
   return (
     <div>
       <div className="flex justify-between items-center mb-4">
-        <h3 className="font-medium">Returns by Sector</h3>
+        <div className="flex items-center">
+          <h3 className="font-medium">Returns by Sector</h3>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <p className="text-xs">Data updated daily</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
         <Tabs defaultValue="ytd" className="w-auto" onValueChange={setTimeframe}>
           <TabsList className="h-8">
             <TabsTrigger value="ytd" className="text-xs px-2">

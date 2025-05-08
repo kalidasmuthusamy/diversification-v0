@@ -3,6 +3,8 @@ import { ArrowUp, ArrowDown, PieChart, ArrowRight } from "lucide-react"
 import { cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
+import { HelpCircle } from "lucide-react"
 
 export default function AssetClassPerformance() {
   const assetClasses = [
@@ -22,6 +24,16 @@ export default function AssetClassPerformance() {
           <div className="flex items-center">
             <PieChart className="h-5 w-5 mr-2 text-primary" />
             <CardTitle className="text-lg">Asset Class Performance</CardTitle>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p className="text-xs">Data updated daily</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           <Link href="/asset-classes">
             <Button variant="ghost" size="sm" className="text-primary">
@@ -52,11 +64,6 @@ export default function AssetClassPerformance() {
               </span>
             </div>
           ))}
-
-          <div className="pt-2 text-xs text-center text-muted-foreground">
-            <span className="font-medium text-primary">Diversified portfolios</span> outperformed concentrated ones by
-            3.2% YTD
-          </div>
         </div>
       </CardContent>
     </Card>

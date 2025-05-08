@@ -1,7 +1,4 @@
 import { Suspense } from "react"
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { ArrowRight } from "lucide-react"
 
 import HeroSection from "./components/hero-section"
 import AssetClassPerformance from "./components/asset-class-performance"
@@ -46,16 +43,6 @@ export default function HomePage() {
             <VideoRecap />
 
             <ClientDiversificationWrapper />
-
-            <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold">Popular Stocks</h3>
-              <Link href="/stocks">
-                <Button variant="link" size="sm" className="text-primary p-0">
-                  View All
-                  <ArrowRight className="ml-1 h-4 w-4" />
-                </Button>
-              </Link>
-            </div>
 
             <PopularStocks />
 

@@ -19,7 +19,7 @@ export function MainNav() {
     { label: "Sectors", href: "/sectors" },
     { label: "Tools", href: "/tools" },
     { label: "Education", href: "/education" },
-    { label: "Diversification Marketplace", href: "/partners" },
+    { label: "Alternatives Marketplace", href: "/alternatives" },
   ]
 
   // Determine visible nav items based on device type

@@ -4,10 +4,15 @@ import { MarketTicker } from "../home/components/market-ticker"
 
 export function SiteHeader() {
   return (
-    <div className="sticky top-0 z-50 bg-white">
+    <div>
+      {/* TopNav is not sticky and will scroll away */}
       <TopNav />
-      <MainNav />
-      <MarketTicker />
+
+      {/* Only MainNav and MarketTicker are sticky */}
+      <div className="sticky top-0 z-50 bg-white">
+        <MainNav />
+        <MarketTicker />
+      </div>
     </div>
   )
 }
