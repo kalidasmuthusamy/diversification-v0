@@ -64,89 +64,138 @@ export default function AssetClassesPage() {
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-2">
-            <CardTitle>Current Trends</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-3">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                  <Link href="/asset-classes/us-stocks" className="font-medium hover:underline">
-                    US Stocks
-                  </Link>
-                </div>
-                <Badge variant="outline" className="text-green-600 border-green-600">
-                  Bullish
-                </Badge>
+        <div className="space-y-6">
+          <Card>
+            <CardHeader className="pb-2">
+              <div className="flex items-center">
+                <CardTitle>Current Trends</CardTitle>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+                    </TooltipTrigger>
+                    <TooltipContent className="w-80">
+                      <p className="text-xs font-medium mb-1">About Market Sentiment Indicators:</p>
+                      <p className="text-xs mb-1">These indicators reflect the current market sentiment based on:</p>
+                      <ul className="text-xs space-y-1 mb-1">
+                        <li>• Recent price action and technical indicators</li>
+                        <li>• Analyst consensus and research reports</li>
+                        <li>• News sentiment analysis</li>
+                      </ul>
+                      <p className="text-xs mb-1">Sentiment categories:</p>
+                      <ul className="text-xs space-y-1">
+                        <li>
+                          • <span className="text-green-600 font-medium">Bullish</span>: Positive sentiment and outlook
+                        </li>
+                        <li>
+                          • <span className="text-amber-600 font-medium">Neutral</span>: Mixed or uncertain sentiment
+                        </li>
+                        <li>
+                          • <span className="text-red-600 font-medium">Bearish</span>: Negative sentiment and outlook
+                        </li>
+                      </ul>
+                      <p className="text-xs mt-1">
+                        Sentiment indicators are updated daily based on multiple data sources.
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-green-500"></div>
-                  <span className="font-medium">Int'l Stocks</span>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="space-y-3">
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-blue-500"></div>
+                    <Link href="/asset-classes/us-stocks" className="font-medium hover:underline">
+                      US Stocks
+                    </Link>
+                  </div>
+                  <Badge variant="outline" className="text-green-600 border-green-600">
+                    Bullish
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="text-green-600 border-green-600">
-                  Bullish
-                </Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-amber-500"></div>
-                  <Link href="/asset-classes/bonds" className="font-medium hover:underline">
-                    Bonds
-                  </Link>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-green-500"></div>
+                    <span className="font-medium">Int'l Stocks</span>
+                  </div>
+                  <Badge variant="outline" className="text-green-600 border-green-600">
+                    Bullish
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="text-amber-600 border-amber-600">
-                  Neutral
-                </Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-red-500"></div>
-                  <Link href="/asset-classes/real-estate" className="font-medium hover:underline">
-                    Real Estate
-                  </Link>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-amber-500"></div>
+                    <Link href="/asset-classes/bonds" className="font-medium hover:underline">
+                      Bonds
+                    </Link>
+                  </div>
+                  <Badge variant="outline" className="text-amber-600 border-amber-600">
+                    Neutral
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="text-amber-600 border-amber-600">
-                  Neutral
-                </Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-orange-500"></div>
-                  <span className="font-medium">Commodities</span>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-red-500"></div>
+                    <Link href="/asset-classes/real-estate" className="font-medium hover:underline">
+                      Real Estate
+                    </Link>
+                  </div>
+                  <Badge variant="outline" className="text-amber-600 border-amber-600">
+                    Neutral
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="text-red-600 border-red-600">
-                  Bearish
-                </Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-purple-500"></div>
-                  <span className="font-medium">Crypto</span>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-orange-500"></div>
+                    <span className="font-medium">Commodities</span>
+                  </div>
+                  <Badge variant="outline" className="text-red-600 border-red-600">
+                    Bearish
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="text-green-600 border-green-600">
-                  Bullish
-                </Badge>
-              </div>
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-gray-500"></div>
-                  <span className="font-medium">Cash</span>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-purple-500"></div>
+                    <span className="font-medium">Crypto</span>
+                  </div>
+                  <Badge variant="outline" className="text-green-600 border-green-600">
+                    Bullish
+                  </Badge>
                 </div>
-                <Badge variant="outline" className="text-amber-600 border-amber-600">
-                  Neutral
-                </Badge>
+                <div className="flex justify-between items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-3 h-3 rounded-full bg-gray-500"></div>
+                    <span className="font-medium">Cash</span>
+                  </div>
+                  <Badge variant="outline" className="text-amber-600 border-amber-600">
+                    Neutral
+                  </Badge>
+                </div>
               </div>
-            </div>
 
-            <div className="pt-2 text-sm text-center">
-              <span className="text-muted-foreground">Last updated: </span>{" "}
-              <span>{new Date().toLocaleDateString()}</span>
-            </div>
-          </CardContent>
-        </Card>
+              <div className="pt-2 text-sm text-center">
+                <span className="text-muted-foreground">Last updated: </span>{" "}
+                <span>{new Date().toLocaleDateString()}</span>
+              </div>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-[#0066cc] text-white">
+            <CardContent className="p-4">
+              <h3 className="text-lg font-semibold mb-2">Calculate Your Optimal Asset Diversification</h3>
+              <p className="text-sm text-white/90 mb-3">
+                Find the right balance for your portfolio based on your risk tolerance and financial goals.
+              </p>
+              <Button asChild className="w-full bg-white text-[#0066cc] hover:bg-white/90">
+                <a href="https://portfoliopilot.com/diversification" target="_blank" rel="noopener noreferrer">
+                  Try PortfolioPilot Free
+                </a>
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       <Tabs defaultValue="stocks" className="w-full mb-6">
