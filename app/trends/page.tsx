@@ -1,7 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import { ArrowUpRight, TrendingUp, Info } from "lucide-react"
+import { ArrowUpRight, TrendingUp, Info, HelpCircle } from "lucide-react"
 import Link from "next/link"
 import TrendNews from "./components/trend-news"
 import TrendImpact from "./components/trend-impact"
@@ -13,6 +13,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 export default function TrendsPage() {
   return (
@@ -149,7 +150,38 @@ export default function TrendsPage() {
 
         <Card>
           <CardHeader className="pb-2">
-            <CardTitle>Trend Impact Analysis</CardTitle>
+            <div className="flex items-center">
+              <CardTitle>Trend Impact Analysis</CardTitle>
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
+                  </TooltipTrigger>
+                  <TooltipContent className="w-80">
+                    <p className="text-xs mb-2">
+                      This analysis shows the current relationship between macro trends and different asset classes
+                      based on historical correlations and market sentiment indicators.
+                    </p>
+                    <p className="text-xs mb-2">
+                      <strong>Positive:</strong> Current sentiment and trend analysis suggests a generally favorable
+                      environment for this asset class.
+                    </p>
+                    <p className="text-xs mb-2">
+                      <strong>Neutral:</strong> Current sentiment and trend analysis suggests a mixed or uncertain
+                      environment for this asset class.
+                    </p>
+                    <p className="text-xs mb-2">
+                      <strong>Negative:</strong> Current sentiment and trend analysis suggests a challenging environment
+                      for this asset class.
+                    </p>
+                    <p className="text-xs">
+                      This information is for educational purposes only and should not be considered investment advice.
+                      Historical relationships between trends and asset classes may not continue in the future.
+                    </p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-3">

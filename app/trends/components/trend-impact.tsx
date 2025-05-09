@@ -15,16 +15,17 @@ export default function TrendImpact() {
               </TooltipTrigger>
               <TooltipContent className="w-80">
                 <p className="text-xs mb-2">
-                  Investment implications are determined through analysis of historical correlations, sensitivity
-                  studies, and expert assessments of how macro trends affect various industries and asset classes.
+                  This analysis presents educational information about how market trends may relate to different sectors
+                  and industries based on historical patterns and expert opinions.
                 </p>
                 <p className="text-xs mb-2">
-                  Our methodology evaluates multiple factors including: competitive landscape shifts, regulatory
-                  impacts, consumer adoption patterns, and supply chain dependencies.
+                  The information is derived from multiple sources including: industry research, market sentiment
+                  indicators, and historical correlation analysis.
                 </p>
                 <p className="text-xs">
-                  This analysis is updated quarterly and represents potential opportunities and challenges, not specific
-                  investment recommendations.
+                  This is for informational purposes only. Past relationships between trends and markets may not
+                  continue in the future. This should not be considered investment advice or a recommendation to buy or
+                  sell any security.
                 </p>
               </TooltipContent>
             </Tooltip>
