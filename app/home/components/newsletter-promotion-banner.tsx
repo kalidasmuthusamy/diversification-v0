@@ -42,8 +42,14 @@ export function NewsletterPromotionBanner() {
   if (!isVisible || isDismissed) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 animate-fade-in">
-      <div className="bg-white rounded-lg shadow-xl w-[90%] max-w-2xl">
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 animate-fade-in"
+      onClick={handleDismiss} // Add this line to dismiss when clicking outside
+    >
+      <div
+        className="bg-white rounded-lg shadow-xl w-[90%] max-w-2xl"
+        onClick={(e) => e.stopPropagation()} // Add this to prevent clicks on the modal from dismissing
+      >
         <div className="relative p-6">
           <button
             onClick={handleDismiss}

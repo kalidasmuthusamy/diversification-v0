@@ -42,7 +42,7 @@ export function TopTrendsSection() {
       <div className="flex items-center justify-between">
         <div className="flex items-center">
           <TrendingUp className="h-5 w-5 mr-2 text-primary" />
-          <h2 className="text-2xl font-bold">Top Macro Trends</h2>
+          <h2 className="text-2xl font-bold">Top Trends</h2>
         </div>
         <Link href="/trends">
           <Button variant="outline" size="sm">
