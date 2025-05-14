@@ -41,8 +41,18 @@ export default function AssetClassPerformance() {
                 <TooltipTrigger asChild>
                   <HelpCircle className="h-4 w-4 ml-2 text-muted-foreground cursor-help" />
                 </TooltipTrigger>
-                <TooltipContent>
-                  <p className="text-xs">Data updated daily</p>
+                <TooltipContent className="w-80">
+                  <p className="text-xs font-medium mb-1">Data Sources by Asset Class:</p>
+                  <ul className="text-xs space-y-1">
+                    <li>• US Stocks: S&P 500 Index (SPY)</li>
+                    <li>• Int'l Stocks: MSCI EAFE Index (EFA)</li>
+                    <li>• Bonds: Bloomberg US Aggregate Bond Index (AGG)</li>
+                    <li>• Real Estate: Dow Jones US Real Estate Index (IYR)</li>
+                    <li>• Commodities: Bloomberg Commodity Index (DBC)</li>
+                    <li>• Crypto: CoinDesk Bitcoin Price Index (BTC)</li>
+                    <li>• Cash: 3-Month US Treasury Bill Rate</li>
+                  </ul>
+                  <p className="text-xs mt-1">Data updated daily. Performance figures may vary from other sources.</p>
                 </TooltipContent>
               </Tooltip>
             </TooltipProvider>
