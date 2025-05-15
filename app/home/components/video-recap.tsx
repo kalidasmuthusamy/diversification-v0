@@ -7,7 +7,7 @@ export function VideoRecap() {
     <Card className="overflow-hidden">
       <CardHeader className="pb-0">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl font-bold">Today's Top Stories</CardTitle>
+          <CardTitle className="text-xl font-bold">Today's video recap</CardTitle>
           <div className="flex items-center text-sm text-muted-foreground">
             <Calendar className="mr-1 h-4 w-4" />
             {new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" })}

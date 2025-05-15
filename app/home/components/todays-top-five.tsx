@@ -46,7 +46,9 @@ export function TodaysTopFive() {
     <Card>
       <CardHeader className="pb-3">
         <div className="flex items-center justify-between">
-          <CardTitle className="text-xl font-bold">Today's Top 5</CardTitle>
+          <Link href="/most-impactful-stories" className="hover:text-primary hover:underline">
+            <CardTitle className="text-xl font-bold">Today's stories that matter</CardTitle>
+          </Link>
           <Badge variant="outline" className="font-normal">
             {new Date().toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" })}
           </Badge>
@@ -60,7 +62,7 @@ export function TodaysTopFive() {
                 {item.icon}
               </div>
               <div className="flex-1">
-                <Link href="/top-stories" className="group-hover:text-primary group-hover:underline">
+                <Link href="/most-impactful-stories" className="group-hover:text-primary group-hover:underline">
                   <p className="font-medium">{item.title}</p>
                 </Link>
                 <div className="flex items-center gap-2 mt-1">
@@ -72,14 +74,17 @@ export function TodaysTopFive() {
                   </Badge>
                 </div>
               </div>
-              <Link href="/top-stories" className="flex-shrink-0">
+              <Link href="/most-impactful-stories" className="flex-shrink-0">
                 <ArrowUpRight className="h-4 w-4 opacity-0 group-hover:opacity-100 transition-opacity" />
               </Link>
             </li>
           ))}
         </ul>
         <div className="mt-4 text-center">
-          <Link href="/top-stories" className="text-sm text-primary hover:underline inline-flex items-center">
+          <Link
+            href="/most-impactful-stories"
+            className="text-sm text-primary hover:underline inline-flex items-center"
+          >
             View detailed analysis for long-term investors
             <ArrowUpRight className="h-3.5 w-3.5 ml-1" />
           </Link>

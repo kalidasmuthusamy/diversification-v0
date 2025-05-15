@@ -13,7 +13,7 @@ export function MainNav() {
 
   const navItems = [
     { label: "Home", href: "/home" },
-    { label: "Diversification Score", href: "/calculate-score", highlight: true },
+    { label: "Diversification Score", href: "/diversification-score", highlight: true },
     { label: "Trends", href: "/trends" },
     { label: "Asset Classes", href: "/asset-classes" },
     { label: "Sectors", href: "/sectors" },

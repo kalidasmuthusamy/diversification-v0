@@ -25,11 +25,10 @@ import {
   Bitcoin,
   AlertTriangle,
   ExternalLink,
+  Mail,
 } from "lucide-react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
-import { Slider } from "@/components/ui/slider"
-import { Separator } from "@/components/ui/separator"
 import {
   Dialog,
   DialogContent,
@@ -87,12 +86,10 @@ export default function AlternativeInvestmentsPage() {
   // Generate all investments by combining base investments with additional ones
   const [investments, setInvestments] = useState<Investment[]>([])
   const [filteredInvestments, setFilteredInvestments] = useState<Investment[]>([])
-  const [sortBy, setSortBy] = useState("rating")
   const [filterCategory, setFilterCategory] = useState("all")
   const [filterRiskLevel, setFilterRiskLevel] = useState("all")
-  const [filterMinInvestment, setFilterMinInvestment] = useState(100000)
+  const [filterMinInvestment, setFilterMinInvestment] = useState("all")
   const [filterAccredited, setFilterAccredited] = useState("all")
-  const [filterLiquidity, setFilterLiquidity] = useState("all")
   const [currentPage, setCurrentPage] = useState(1)
   const [selectedInvestment, setSelectedInvestment] = useState<Investment | null>(null)
   const [showWarningDialog, setShowWarningDialog] = useState(false)
@@ -112,7 +109,7 @@ export default function AlternativeInvestmentsPage() {
     setFilteredInvestments(allInvestments)
   }, [])
 
-  // Filter and sort investments based on user selections
+  // Filter investments based on user selections
   useEffect(() => {
     let results = [...investments]
 
@@ -127,47 +124,26 @@ export default function AlternativeInvestmentsPage() {
     }
 
     // Apply minimum investment filter
-    results = results.filter((investment) => {
-      const value = Number.parseInt(investment.minInvestment.replace(/\D/g, ""), 10) || 0
-      return value <= filterMinInvestment
-    })
+    if (filterMinInvestment !== "all") {
+      const maxAmount = Number.parseInt(filterMinInvestment)
+      results = results.filter((investment) => {
+        const value = Number.parseInt(investment.minInvestment.replace(/\D/g, ""), 10) || 0
+        return value <= maxAmount
+      })
+    }
 
     // Apply accredited filter
     if (filterAccredited !== "all") {
-      const isAccreditedOnly = filterAccredited === "accredited"
-      results = results.filter((investment) => investment.accreditedOnly === isAccreditedOnly)
+      const isNonAccreditedOnly = filterAccredited === "non-accredited"
+      results = results.filter((investment) => investment.accreditedOnly === !isNonAccreditedOnly)
     }
 
-    // Apply liquidity filter
-    if (filterLiquidity !== "all") {
-      results = results.filter((investment) => investment.liquidityLevel === Number.parseInt(filterLiquidity))
-    }
-
-    // Apply sorting
-    switch (sortBy) {
-      case "rating":
-        results.sort((a, b) => Number.parseFloat(b.rating.toString()) - Number.parseFloat(a.rating.toString()))
-        break
-      case "correlation":
-        const correlationOrder = { "Very Low": 0, Low: 1, Medium: 2, High: 3 }
-        results.sort(
-          (a, b) =>
-            correlationOrder[a.marketCorrelation as keyof typeof correlationOrder] -
-            correlationOrder[b.marketCorrelation as keyof typeof correlationOrder],
-        )
-        break
-      case "minInvestment":
-        results.sort((a, b) => {
-          const aValue = Number.parseInt(a.minInvestment.replace(/\D/g, ""), 10) || 0
-          const bValue = Number.parseInt(b.minInvestment.replace(/\D/g, ""), 10) || 0
-          return aValue - bValue
-        })
-        break
-    }
+    // Default sort by rating
+    results.sort((a, b) => Number.parseFloat(b.rating.toString()) - Number.parseFloat(a.rating.toString()))
 
     setFilteredInvestments(results)
     setCurrentPage(1) // Reset to first page when filters change
-  }, [filterCategory, filterRiskLevel, filterMinInvestment, filterAccredited, filterLiquidity, sortBy, investments])
+  }, [filterCategory, filterRiskLevel, filterMinInvestment, filterAccredited, investments])
 
   // Handle learn more button click
   const handleLearnMore = (investment: Investment) => {
@@ -220,9 +196,13 @@ export default function AlternativeInvestmentsPage() {
         </div>
 
         <div className="bg-muted/30 p-4 rounded-lg mb-6">
-          <p className="text-sm text-center">
+          <p className="text-sm text-center mb-2">
             <strong>Note:</strong> diversification.com does not receive compensation from any of the listed companies.
             This marketplace is provided for educational purposes only.
+          </p>
+          <p className="text-sm text-center">
+            <strong>Inclusion criteria:</strong> All listed platforms have a minimum of 3.0 TrustPilot stars and at
+            least 10 reviews.
           </p>
         </div>
       </div>
@@ -272,19 +252,13 @@ export default function AlternativeInvestmentsPage() {
                   </p>
                   <ul className="list-disc pl-5 text-sm text-muted-foreground space-y-1">
                     <li>
-                      <strong>Level 1 (Very Low):</strong> Minimal volatility, strong capital preservation
+                      <strong>Low:</strong> Below-average volatility, good capital preservation
                     </li>
                     <li>
-                      <strong>Level 2 (Low):</strong> Below-average volatility, good capital preservation
+                      <strong>Medium:</strong> Average volatility, moderate risk of capital loss
                     </li>
                     <li>
-                      <strong>Level 3 (Medium):</strong> Average volatility, moderate risk of capital loss
-                    </li>
-                    <li>
-                      <strong>Level 4 (High):</strong> Above-average volatility, significant risk of capital loss
-                    </li>
-                    <li>
-                      <strong>Level 5 (Very High):</strong> High volatility, potential for substantial capital loss
+                      <strong>High:</strong> Above-average volatility, significant risk of capital loss
                     </li>
                   </ul>
 
@@ -305,7 +279,7 @@ export default function AlternativeInvestmentsPage() {
             </Dialog>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             <div>
               <Select value={filterCategory} onValueChange={setFilterCategory}>
                 <SelectTrigger>
@@ -328,11 +302,9 @@ export default function AlternativeInvestmentsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">Any Risk Level</SelectItem>
-                  <SelectItem value="1">Very Low Risk</SelectItem>
                   <SelectItem value="2">Low Risk</SelectItem>
                   <SelectItem value="3">Medium Risk</SelectItem>
                   <SelectItem value="4">High Risk</SelectItem>
-                  <SelectItem value="5">Very High Risk</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -343,60 +315,25 @@ export default function AlternativeInvestmentsPage() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all">All Investors</SelectItem>
-                  <SelectItem value="accredited">Accredited Only</SelectItem>
+                  <SelectItem value="non-accredited">Non-accredited only</SelectItem>
                 </SelectContent>
               </Select>
             </div>
             <div>
-              <Select value={filterLiquidity} onValueChange={setFilterLiquidity}>
+              <Select value={filterMinInvestment} onValueChange={setFilterMinInvestment}>
                 <SelectTrigger>
-                  <SelectValue placeholder="Liquidity" />
+                  <SelectValue placeholder="Minimum Investment" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="all">Any Liquidity</SelectItem>
-                  <SelectItem value="1">Very Low</SelectItem>
-                  <SelectItem value="2">Low</SelectItem>
-                  <SelectItem value="3">Medium</SelectItem>
-                  <SelectItem value="4">High</SelectItem>
+                  <SelectItem value="all">Any Amount</SelectItem>
+                  <SelectItem value="1000">Under $1,000</SelectItem>
+                  <SelectItem value="5000">Under $5,000</SelectItem>
+                  <SelectItem value="10000">Under $10,000</SelectItem>
+                  <SelectItem value="25000">Under $25,000</SelectItem>
+                  <SelectItem value="50000">Under $50,000</SelectItem>
+                  <SelectItem value="100000">Under $100,000</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
-            <div>
-              <Select value={sortBy} onValueChange={setSortBy}>
-                <SelectTrigger>
-                  <SelectValue placeholder="Sort by" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="rating">Highest Rated</SelectItem>
-                  <SelectItem value="correlation">Lowest Market Correlation</SelectItem>
-                  <SelectItem value="minInvestment">Lowest Minimum</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <Separator className="my-4" />
-
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <label className="text-sm font-medium">Maximum Investment: ${filterMinInvestment.toLocaleString()}</label>
-              <Button variant="ghost" size="sm" className="h-6 text-xs" onClick={() => setFilterMinInvestment(100000)}>
-                Reset
-              </Button>
-            </div>
-            <Slider
-              value={[filterMinInvestment]}
-              min={10}
-              max={100000}
-              step={10}
-              onValueChange={(value) => setFilterMinInvestment(value[0])}
-              className="mb-2"
-            />
-            <div className="flex justify-between text-xs text-gray-500">
-              <span>$10</span>
-              <span>$1,000</span>
-              <span>$10,000</span>
-              <span>$100,000</span>
             </div>
           </div>
         </CardContent>
@@ -628,6 +565,20 @@ export default function AlternativeInvestmentsPage() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Suggestions Section */}
+      <div className="mt-8 mb-8 border border-blue-100 bg-blue-50 rounded-lg p-4 text-center">
+        <h3 className="text-lg font-medium text-blue-800 mb-1">Know of other alternative investments?</h3>
+        <div className="inline-flex items-center justify-center">
+          <a
+            href="mailto:support@diversification.com"
+            className="text-blue-600 hover:text-blue-800 font-medium flex items-center"
+          >
+            <Mail className="h-4 w-4 mr-2" />
+            Email us at support@diversification.com
+          </a>
+        </div>
+      </div>
 
       {/* Warning Dialog */}
       <Dialog open={showWarningDialog} onOpenChange={setShowWarningDialog}>
