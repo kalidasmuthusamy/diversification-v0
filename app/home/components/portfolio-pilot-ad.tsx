@@ -1,6 +1,7 @@
 import { Card, CardContent } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Bot, Shield, BarChart3, TrendingUp } from "lucide-react"
+import Link from "next/link"
 
 export default function PortfolioPilotAd() {
   return (
@@ -46,10 +47,10 @@ export default function PortfolioPilotAd() {
 
             <div className="flex flex-wrap gap-3">
               <Button asChild size="lg" className="bg-white text-[#0066cc] hover:bg-white/90">
-                <a href="https://portfoliopilot.com/signup" target="_blank" rel="noopener noreferrer">
+                <Link href="/diversification-score">
                   Start Free Trial
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </a>
+                </Link>
               </Button>
               <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
                 Learn More

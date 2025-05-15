@@ -106,7 +106,7 @@ export function DiversificationScoreBanner({ score, lastCalculated = "2 weeks ag
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <Link href="/diversification">
+              <Link href="/diversification-score">
                 <Button variant="outline" size="sm" className="text-blue-600 border-blue-600">
                   Recalculate Score
                   <RefreshCw className="ml-1 h-3 w-3" />

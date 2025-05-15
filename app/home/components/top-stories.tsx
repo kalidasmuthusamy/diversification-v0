@@ -38,12 +38,14 @@ export default function TopStories() {
   return (
     <Card>
       <CardHeader className="pb-2">
-        <CardTitle className="text-lg font-semibold">Top Stories</CardTitle>
+        <Link href="/most-impactful-stories" className="hover:text-primary hover:underline">
+          <CardTitle className="text-lg font-semibold">Today's video recap</CardTitle>
+        </Link>
       </CardHeader>
       <CardContent className="p-0">
         <div className="divide-y">
           {stories.map((story) => (
-            <Link key={story.id} href={`/news/${story.id}`} className="block hover:bg-gray-50 transition-colors">
+            <Link key={story.id} href="/most-impactful-stories" className="block hover:bg-gray-50 transition-colors">
               <div className="p-4 flex gap-4">
                 <div className="flex-shrink-0">
                   <img

@@ -1,7 +1,12 @@
+"use client"
+
+import type React from "react"
+
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Instagram, Linkedin, Send, Youtube } from "lucide-react"
+import { useState } from "react"
 
 // Add this custom X icon component after the imports
 function XIcon() {
@@ -23,6 +28,26 @@ function XIcon() {
 }
 
 export function SiteFooter() {
+  const [email, setEmail] = useState("")
+  const [frequency, setFrequency] = useState({
+    daily: true,
+    weekly: true,
+  })
+
+  const handleFrequencyChange = (type: "daily" | "weekly") => {
+    setFrequency((prev) => ({
+      ...prev,
+      [type]: !prev[type],
+    }))
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    // Handle newsletter subscription
+    alert("Thanks for subscribing!")
+    setEmail("")
+  }
+
   return (
     <footer className="bg-gray-50 border-t border-gray-200">
       <div className="container py-12">
@@ -129,12 +154,43 @@ export function SiteFooter() {
             <p className="text-gray-600 mb-4 text-sm">
               Get the latest market insights and diversification strategies delivered to your inbox.
             </p>
-            <div className="flex">
-              <Input type="email" placeholder="Your email" className="rounded-r-none border-gray-300" />
-              <Button className="rounded-l-none bg-blue-600 hover:bg-blue-700">
-                <Send className="h-4 w-4" />
-              </Button>
-            </div>
+            <form onSubmit={handleSubmit}>
+              <div className="flex mb-2">
+                <Input
+                  type="email"
+                  placeholder="Your email"
+                  className="rounded-r-none border-gray-300"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                />
+                <Button type="submit" className="rounded-l-none bg-blue-600 hover:bg-blue-700">
+                  <Send className="h-4 w-4" />
+                </Button>
+              </div>
+              <div className="flex space-x-4 text-sm mt-2">
+                <div className="flex items-center space-x-1">
+                  <input
+                    type="checkbox"
+                    id="daily-footer"
+                    checked={frequency.daily}
+                    onChange={() => handleFrequencyChange("daily")}
+                    className="text-blue-600 focus:ring-blue-500"
+                  />
+                  <label htmlFor="daily-footer">Daily (M-F)</label>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <input
+                    type="checkbox"
+                    id="weekly-footer"
+                    checked={frequency.weekly}
+                    onChange={() => handleFrequencyChange("weekly")}
+                    className="text-blue-600 focus:ring-blue-500"
+                  />
+                  <label htmlFor="weekly-footer">Weekly (Sa)</label>
+                </div>
+              </div>
+            </form>
           </div>
         </div>
 
@@ -174,9 +230,9 @@ export function SiteFooter() {
               is complete, accurate, or timely.
             </p>
             <p>
-              <strong>USER COUNT DISCLOSURE:</strong> References to "30,000 users/subscribers" reflect the combined user
-              base across Global Predictions, PortfolioPilot.com, and diversification.com platforms as of February 15,
-              2025.
+              <strong>USER COUNT DISCLOSURE:</strong> References to "30,000+ users/subscribers" reflect the combined
+              user base across Global Predictions, PortfolioPilot.com, and diversification.com platforms as of February
+              15, 2025.
             </p>
             <p>
               <strong>REGULATORY INFORMATION:</strong> For Global Predictions' Form ADV Part 2A and other regulatory
