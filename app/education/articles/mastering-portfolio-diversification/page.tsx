@@ -241,8 +241,8 @@ export default function MasteringPortfolioDiversificationPage() {
           </div>
         </div>
 
-        {/* Sidebar */}
-        <div className="lg:col-span-1 space-y-6">
+        {/* Sidebar - Now with sticky positioning */}
+        <div className="lg:col-span-1 space-y-6 lg:sticky lg:top-24 lg:self-start lg:max-h-screen lg:overflow-y-auto">
           {/* CTA Card */}
           <Card className="bg-primary/5 border-primary/20">
             <CardContent className="p-4">

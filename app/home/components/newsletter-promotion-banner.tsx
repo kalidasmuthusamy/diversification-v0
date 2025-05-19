@@ -10,6 +10,10 @@ import { Mail } from "lucide-react"
 export function NewsletterPromotionBanner() {
   const [isVisible, setIsVisible] = useState(false)
   const [email, setEmail] = useState("")
+  const [frequency, setFrequency] = useState({
+    daily: true,
+    weekly: true,
+  })
   const [isDismissed, setIsDismissed] = useState(false)
 
   useEffect(() => {
@@ -31,10 +35,21 @@ export function NewsletterPromotionBanner() {
     sessionStorage.setItem("newsletterBannerDismissed", "true")
   }
 
+  const handleFrequencyChange = (type: "daily" | "weekly") => {
+    setFrequency((prev) => ({
+      ...prev,
+      [type]: !prev[type],
+    }))
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     // Handle newsletter subscription
-    alert("Thanks for subscribing!")
+    const selectedOptions = []
+    if (frequency.daily) selectedOptions.push("daily")
+    if (frequency.weekly) selectedOptions.push("weekly")
+
+    alert(`Thanks for subscribing to our ${selectedOptions.join(" and ")} newsletter!`)
     setEmail("")
     handleDismiss()
   }
@@ -63,7 +78,7 @@ export function NewsletterPromotionBanner() {
             <Mail className="h-10 w-10 text-blue-600 mx-auto mb-3" />
             <h2 className="text-2xl md:text-3xl font-bold text-gray-900 mb-2">The Long-Term Investor's Newsletter</h2>
             <p className="text-sm md:text-base mb-4">
-              Join over <span className="font-bold">30,000</span> long-term investors receiving our free market
+              Join over <span className="font-bold">30,000+</span> long-term investors receiving our free market
               insights, diversification strategies, and investment opportunities.
             </p>
           </div>
@@ -96,8 +111,36 @@ export function NewsletterPromotionBanner() {
                   onChange={(e) => setEmail(e.target.value)}
                   required
                 />
+
+                <div className="flex justify-center space-x-6">
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="daily-popup"
+                      checked={frequency.daily}
+                      onChange={() => handleFrequencyChange("daily")}
+                      className="mr-2 text-blue-600 focus:ring-blue-500"
+                    />
+                    <label htmlFor="daily-popup" className="text-sm">
+                      Daily (M-F)
+                    </label>
+                  </div>
+                  <div className="flex items-center">
+                    <input
+                      type="checkbox"
+                      id="weekly-popup"
+                      checked={frequency.weekly}
+                      onChange={() => handleFrequencyChange("weekly")}
+                      className="mr-2 text-blue-600 focus:ring-blue-500"
+                    />
+                    <label htmlFor="weekly-popup" className="text-sm">
+                      Weekly (Sa)
+                    </label>
+                  </div>
+                </div>
+
                 <Button type="submit" className="w-full bg-blue-600 hover:bg-blue-700">
-                  Join 30,000 Informed Investors
+                  Subscribe
                 </Button>
                 <p className="text-xs text-center text-gray-500">You can unsubscribe at any time.</p>
               </form>

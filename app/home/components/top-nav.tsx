@@ -36,17 +36,19 @@ export function TopNav() {
 
         {/* Desktop newsletter signup */}
         <div className="hidden md:flex items-center flex-1 justify-end">
-          <div className="flex items-center w-full max-w-md">
+          <div className="flex items-center w-full max-w-xl">
             <form onSubmit={handleSubscribe} className="flex items-center w-full">
               <div className="flex-shrink-0 flex items-center mr-2">
                 <Mail className="h-4 w-4 text-blue-600 mr-2" />
-                <span className="text-sm font-medium hidden lg:inline whitespace-nowrap">Join 30,000 investors:</span>
+                <span className="text-sm font-medium hidden lg:inline whitespace-nowrap">
+                  Join 30,000+ long-term investors:
+                </span>
               </div>
               <div className="flex flex-1 min-w-0">
                 <Input
                   type="email"
                   placeholder="Your email"
-                  className="w-full h-9 rounded-r-none border-r-0"
+                  className="w-full h-9 rounded-r-none border-r-0 min-w-[180px]"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
@@ -73,7 +75,7 @@ export function TopNav() {
           </DialogTrigger>
           <DialogContent className="sm:max-w-md">
             <DialogHeader>
-              <DialogTitle>Join 30,000 informed investors</DialogTitle>
+              <DialogTitle>Join 30,000+ long-term informed investors</DialogTitle>
             </DialogHeader>
             <form onSubmit={handleSubscribe} className="space-y-4 mt-2">
               <p className="text-sm text-muted-foreground">
