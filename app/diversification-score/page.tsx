@@ -1,11 +1,22 @@
 "use client"
-
-import type React from "react"
 import Link from "next/link"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-import { Check, Upload, Copy, Lock, Trophy, ArrowRight } from "lucide-react"
+import {
+  Check,
+  Upload,
+  Copy,
+  Lock,
+  Trophy,
+  ArrowRight,
+  ExternalLink,
+  Wallet,
+  BarChart4,
+  Camera,
+  MoreHorizontal,
+  RefreshCw,
+} from "lucide-react"
 import { useState, useRef } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
 import DiversificationScoreModal from "@/app/home/components/diversification-score-modal"
@@ -56,8 +67,8 @@ export default function DiversificationPage() {
 function DiversificationCalculator() {
   const [portfolioText, setPortfolioText] = useState("")
   const [modalOpen, setModalOpen] = useState(false)
-  const [uploadedFile, setUploadedFile] = useState<File | null>(null)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const [activeTab, setActiveTab] = useState("copy-paste")
 
   // Sample portfolio text - updated to use dollar amounts and include real estate
   const samplePortfolio = `AAPL, $45,000
@@ -67,23 +78,9 @@ SPY, $75,000
 QQQ, $54,000
 BND, $30,000
 GLD, $15,000
-Real Estate, $15,000`
-
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setUploadedFile(file)
-
-      // Simulate reading the file and extracting portfolio data
-      setTimeout(() => {
-        setPortfolioText(samplePortfolio)
-      }, 1000)
-    }
-  }
-
-  const triggerFileUpload = () => {
-    fileInputRef.current?.click()
-  }
+Real Estate, $15,000
+Bitcoin, 5%
+International Stocks, 12%`
 
   return (
     <Card className="shadow-lg">
@@ -101,33 +98,41 @@ Real Estate, $15,000`
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="space-y-6">
-            <Tabs defaultValue="copy-paste" className="w-full">
+            <Tabs defaultValue="copy-paste" className="w-full" onValueChange={(value) => setActiveTab(value)}>
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="copy-paste" className="flex items-center gap-1">
                   <Copy className="h-4 w-4" />
                   <span>Copy/Paste Portfolio</span>
                 </TabsTrigger>
-                <TabsTrigger value="upload" className="flex items-center gap-1">
-                  <Upload className="h-4 w-4" />
-                  <span>Upload Statement</span>
+                <TabsTrigger value="other-options" className="flex items-center gap-1">
+                  <MoreHorizontal className="h-4 w-4" />
+                  <span>Other Options</span>
                 </TabsTrigger>
               </TabsList>
 
               <TabsContent value="copy-paste" className="space-y-4 mt-4">
                 <div className="space-y-2">
-                  <label className="text-sm font-medium">Enter your portfolio holdings (ticker, dollar amount)</label>
+                  <label className="text-sm font-medium">Enter your portfolio holdings (any format)</label>
                   <Textarea
                     placeholder="Example:
 AAPL, $45,000
 MSFT, $36,000
-SPY, $75,000"
+SPY, $75,000
+Real Estate, 10%
+Crypto, $5,000"
                     className="min-h-[250px]"
                     value={portfolioText}
                     onChange={(e) => setPortfolioText(e.target.value)}
                   />
-                  <p className="text-xs text-muted-foreground">
-                    Enter one holding per line with ticker symbol and dollar amount
-                  </p>
+                  <div className="text-xs text-muted-foreground space-y-1">
+                    <p>
+                      <span className="font-medium">Super flexible format:</span> Enter one holding per line with any
+                      identifier and value
+                    </p>
+                    <p>• Use any asset name: stocks, ETFs, "Real Estate", "Crypto", "International Stocks", etc.</p>
+                    <p>• Values can be in dollars (e.g., $45,000) or percentages (e.g., 15%)</p>
+                    <p>• No need for exact precision - our algorithm handles approximations well</p>
+                  </div>
                 </div>
 
                 <div className="bg-muted/30 p-4 rounded-md">
@@ -141,54 +146,90 @@ SPY, $75,000"
                 </div>
               </TabsContent>
 
-              <TabsContent value="upload" className="space-y-4 mt-4">
-                <div className="border-2 border-dashed border-gray-300 rounded-lg p-6 text-center">
-                  <input
-                    type="file"
-                    ref={fileInputRef}
-                    onChange={handleFileUpload}
-                    className="hidden"
-                    accept=".csv,.xlsx,.pdf"
-                  />
-                  {!uploadedFile ? (
-                    <>
-                      <Upload className="h-10 w-10 text-gray-400 mx-auto mb-2" />
-                      <h3 className="text-lg font-medium mb-1">Upload your brokerage statement</h3>
-                      <p className="text-sm text-muted-foreground mb-4">
-                        We support CSV, Excel, and PDF files from major brokerages
-                      </p>
-                      <Button onClick={triggerFileUpload}>Select File</Button>
-                    </>
-                  ) : (
-                    <>
-                      <Check className="h-10 w-10 text-green-500 mx-auto mb-2" />
-                      <h3 className="text-lg font-medium mb-1">File uploaded successfully</h3>
-                      <p className="text-sm text-green-600 mb-4">{uploadedFile.name}</p>
-                      <Button variant="outline" onClick={() => setUploadedFile(null)}>
-                        Change File
-                      </Button>
-                    </>
-                  )}
-                </div>
+              <TabsContent value="other-options" className="space-y-4 mt-4">
+                <Card className="border border-blue-100 bg-blue-50/50">
+                  <CardContent className="p-4">
+                    <div className="flex items-center gap-3 mb-3">
+                      <RefreshCw className="h-5 w-5 text-blue-600 flex-shrink-0" />
+                      <h3 className="font-medium text-blue-800">Continuous portfolio monitoring</h3>
+                    </div>
+                    <p className="text-sm text-blue-700 mb-4">
+                      PortfolioPilot offers <span className="font-medium">completely free</span> ongoing portfolio
+                      tracking with weekly Diversification Score updates. Connect once and get insights automatically.
+                    </p>
+
+                    <div className="grid grid-cols-1 gap-4 mt-4">
+                      <div className="flex items-start gap-3 border-b border-blue-100 pb-3">
+                        <div className="bg-blue-100 p-2 rounded-full">
+                          <Upload className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Upload Statement</h4>
+                          <p className="text-sm text-blue-700 mt-1">
+                            Upload brokerage statements (CSV, PDF, Excel) for automatic portfolio analysis
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3 border-b border-blue-100 pb-3">
+                        <div className="bg-blue-100 p-2 rounded-full">
+                          <Camera className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Take a Screenshot</h4>
+                          <p className="text-sm text-blue-700 mt-1">
+                            Take a screenshot of your portfolio and our AI will extract the data automatically
+                          </p>
+                        </div>
+                      </div>
+
+                      <div className="flex items-start gap-3">
+                        <div className="bg-blue-100 p-2 rounded-full">
+                          <Wallet className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div>
+                          <h4 className="font-medium">Connect Your Accounts</h4>
+                          <p className="text-sm text-blue-700 mt-1">
+                            Connect to 13,000+ brokerages, institutions, and crypto wallets for complete financial
+                            tracking
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 flex items-center">
+                      <div className="flex items-center gap-2">
+                        <BarChart4 className="h-4 w-4 text-blue-600" />
+                        <span className="text-sm font-medium text-blue-800">100% Free Net Worth Tracking</span>
+                      </div>
+                    </div>
+                  </CardContent>
+                </Card>
               </TabsContent>
             </Tabs>
 
             <div className="flex gap-3">
-              <Button
-                onClick={() => setModalOpen(true)}
-                disabled={portfolioText.trim() === "" && !uploadedFile}
-                className="flex-1"
-              >
-                Calculate Score
-              </Button>
+              {activeTab === "copy-paste" ? (
+                <Button onClick={() => setModalOpen(true)} className="flex-1" disabled={portfolioText.trim() === ""}>
+                  Calculate Score
+                </Button>
+              ) : (
+                <a href="https://portfoliopilot.com" target="_blank" rel="noopener noreferrer" className="flex-1">
+                  <Button className="w-full flex items-center justify-center gap-2">
+                    Try PortfolioPilot
+                    <ExternalLink className="h-4 w-4" />
+                  </Button>
+                </a>
+              )}
 
-              {/* Modal without trigger button, skipping input step */}
+              {/* Modal without trigger button, immediately starting calculation */}
               <DiversificationScoreModal
                 triggerButton={false}
                 initialPortfolioText={portfolioText}
                 defaultOpen={modalOpen}
                 onOpenChange={setModalOpen}
                 skipInputStep={true}
+                startCalculationImmediately={true}
               />
             </div>
           </div>
