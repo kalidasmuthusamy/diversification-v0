@@ -7,6 +7,7 @@ import { Mail } from "lucide-react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Label } from "@/components/ui/label"
 import { useState } from "react"
+import Link from "next/link"
 
 export default function NewsletterSignup({ compact = false }: { compact?: boolean }) {
   const [frequency, setFrequency] = useState({
@@ -61,6 +62,15 @@ export default function NewsletterSignup({ compact = false }: { compact?: boolea
             </div>
 
             <Button className="w-full">Subscribe</Button>
+
+            <div className="text-center">
+              <Link
+                href="/newsletter/archives"
+                className="text-xs text-primary hover:underline inline-flex items-center"
+              >
+                Read previous newsletters →
+              </Link>
+            </div>
           </div>
         </CardContent>
       </Card>
@@ -113,8 +123,13 @@ export default function NewsletterSignup({ compact = false }: { compact?: boolea
                 </div>
               </div>
 
-              <Button className="w-full">Subscribe to Newsletter</Button>
-              <p className="text-xs text-center text-muted-foreground">You can unsubscribe at any time.</p>
+              <Button className="w-full">Subscribe</Button>
+              <p className="text-xs text-center text-muted-foreground">
+                You can unsubscribe at any time.
+                <Link href="/newsletter/archives" className="text-primary hover:underline ml-1">
+                  Read previous newsletters
+                </Link>
+              </p>
             </div>
           </div>
         </div>

@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
-import DiversificationScoreModal from "./diversification-score-modal"
+// import DiversificationScoreModal from "./diversification-score-modal"
 
 // Define the slides for the carousel
 const slides = [
@@ -17,7 +17,7 @@ const slides = [
     imageAlt: "Portfolio diversification visualization",
     primaryButton: {
       text: "Calculate Your Score",
-      action: "modal", // Special handling for modal
+      href: "/diversification-score",
     },
     secondaryButton: {
       text: "Learn More",
@@ -133,21 +133,12 @@ export default function HeroCarousel() {
               {currentSlideData.description}
             </p>
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4">
-              {currentSlideData.primaryButton.action === "modal" ? (
-                <DiversificationScoreModal>
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 w-full sm:w-auto text-sm md:text-base">
-                    {currentSlideData.primaryButton.text}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </DiversificationScoreModal>
-              ) : (
-                <Link href={currentSlideData.primaryButton.href || "#"} className="w-full sm:w-auto">
-                  <Button size="lg" className="bg-blue-600 hover:bg-blue-700 w-full text-sm md:text-base">
-                    {currentSlideData.primaryButton.text}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Button>
-                </Link>
-              )}
+              <Link href={currentSlideData.primaryButton.href || "#"} className="w-full sm:w-auto">
+                <Button size="lg" className="bg-blue-600 hover:bg-blue-700 w-full text-sm md:text-base">
+                  {currentSlideData.primaryButton.text}
+                  <ArrowRight className="ml-2 h-4 w-4" />
+                </Button>
+              </Link>
 
               <Link href={currentSlideData.secondaryButton.href} className="w-full sm:w-auto">
                 <Button variant="outline" size="lg" className="w-full text-sm md:text-base">

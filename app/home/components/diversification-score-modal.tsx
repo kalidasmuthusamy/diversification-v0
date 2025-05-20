@@ -26,7 +26,6 @@ import {
   Info,
   Bot,
   ExternalLink,
-  Share2,
   Upload,
   Copy,
   Lock,
@@ -35,24 +34,23 @@ import {
   PieChart,
   TrendingUp,
   Shield,
-  HelpCircle,
   ChevronDown,
   ChevronUp,
   Mail,
   Zap,
   Layers,
   DollarSign,
-  Clock,
-  Shuffle,
-  Target,
-  LineChart,
-  BarChart,
   Percent,
+  Building,
+  BarChart,
+  Briefcase,
+  CircleDollarSign,
+  HelpCircle,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useDiversification } from "@/app/contexts/diversification-context"
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible"
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip"
 
 interface DiversificationScoreModalProps {
   children?: ReactNode
@@ -61,7 +59,72 @@ interface DiversificationScoreModalProps {
   onOpenChange?: (open: boolean) => void
   defaultOpen?: boolean
   skipInputStep?: boolean
+  startCalculationImmediately?: boolean
 }
+
+// Define the diversification factors based on the image
+const diversificationFactors = [
+  {
+    name: "Holdings Concentration",
+    description: "Too much weight in a single investment (uses look-through analysis)",
+    icon: <Briefcase className="h-4 w-4" />,
+    status: "red" as const,
+  },
+  {
+    name: "Economic Growth Risk",
+    description: "How your portfolio reacts to changing GDP expectations",
+    icon: <TrendingUp className="h-4 w-4" />,
+    status: "red" as const,
+  },
+  {
+    name: "Raw Materials Risk",
+    description: "How much your investments depend on commodity prices",
+    icon: <Building className="h-4 w-4" />,
+    status: "red" as const,
+  },
+  {
+    name: "Inflation Driver Risk",
+    description: "Exposure to rising prices (CPI)",
+    icon: <CircleDollarSign className="h-4 w-4" />,
+    status: "yellow" as const,
+  },
+  {
+    name: "Interest Rate Impact",
+    description: "How changing interest rates affect your investments",
+    icon: <Percent className="h-4 w-4" />,
+    status: "yellow" as const,
+  },
+  {
+    name: "Credit Risk",
+    description: "Risk from changing macro credit conditions",
+    icon: <BarChart className="h-4 w-4" />,
+    status: "yellow" as const,
+  },
+  {
+    name: "Asset Class Concentration",
+    description: "Balance between different types of investments",
+    icon: <Layers className="h-4 w-4" />,
+    status: "green" as const,
+  },
+  {
+    name: "Regional Concentration",
+    description: "Single country or region concentration risk",
+    icon: <Globe className="h-4 w-4" />,
+    status: "green" as const,
+  },
+  {
+    name: "Liquidity Risk",
+    description: "Ability to sell in active markets",
+    icon: <DollarSign className="h-4 w-4" />,
+    status: "green" as const,
+  },
+  {
+    name: "Sector Concentration",
+    description: "Spread of investments across different industries",
+    icon: <PieChart className="h-4 w-4" />,
+    status: "green" as const,
+  },
+]
 
 export default function DiversificationScoreModal({
   children,
@@ -70,6 +133,7 @@ export default function DiversificationScoreModal({
   onOpenChange,
   defaultOpen = false,
   skipInputStep = false,
+  startCalculationImmediately = false,
 }: DiversificationScoreModalProps) {
   const { setScoreData } = useDiversification()
   const [open, setOpen] = useState(defaultOpen)
@@ -156,10 +220,16 @@ export default function DiversificationScoreModal({
   const handleOpen = () => {
     setOpen(true)
 
-    // If we should skip the input step and have portfolio text, go directly to the results
+    // If we should skip the input step and have portfolio text
     if (skipInputStep && portfolioText) {
       if (!calculatedScore) {
-        calculateScore()
+        if (startCalculationImmediately) {
+          // Immediately show disclosure and then calculate
+          setStep(1)
+          setShowDisclosure(true)
+        } else {
+          calculateScore()
+        }
       } else {
         setStep(2)
       }
@@ -267,100 +337,22 @@ BND, $30,000
 GLD, $15,000
 Real Estate, $15,000`
 
-  // Mock diversification score data with 10 components
-  const scoreData = calculatedScore
-    ? {
-        overall: calculatedScore,
-        components: [
-          {
-            name: "Asset Class Diversification",
-            score: Math.max(40, Math.min(95, calculatedScore - 5 + Math.floor(Math.random() * 10))),
-            description: "Balance across stocks, bonds, and alternative investments",
-            tooltip:
-              "Example: A portfolio with 100% stocks is at risk during market downturns, while a mix of stocks, bonds, and alternatives can provide more stability.",
-            icon: <Layers className="h-4 w-4 text-blue-500" />,
-          },
-          {
-            name: "Sector Allocation",
-            score: Math.max(40, Math.min(95, calculatedScore + 5 + Math.floor(Math.random() * 10))),
-            description: "Exposure across different market sectors",
-            tooltip:
-              "Example: Having 80% of your stock investments in technology creates sector risk if tech stocks decline simultaneously.",
-            icon: <PieChart className="h-4 w-4 text-indigo-500" />,
-          },
-          {
-            name: "Geographic Exposure",
-            score: Math.max(40, Math.min(95, calculatedScore + 10 - Math.floor(Math.random() * 15))),
-            description: "Distribution across global markets",
-            tooltip:
-              "Example: A U.S.-only portfolio misses growth opportunities in emerging markets and is vulnerable to U.S.-specific economic issues.",
-            icon: <Globe className="h-4 w-4 text-green-500" />,
-          },
-          {
-            name: "Market Cap Distribution",
-            score: Math.max(40, Math.min(95, calculatedScore - 5 - Math.floor(Math.random() * 10))),
-            description: "Balance between large, mid, and small cap stocks",
-            tooltip:
-              "Example: Large-cap stocks may provide stability, while small-caps can offer growth potential. A mix provides better risk-adjusted returns.",
-            icon: <BarChart className="h-4 w-4 text-amber-500" />,
-          },
-          {
-            name: "Investment Style",
-            score: Math.max(40, Math.min(95, calculatedScore - 2 + Math.floor(Math.random() * 8))),
-            description: "Balance between growth and value investments",
-            tooltip:
-              "Example: Growth stocks may outperform in bull markets, while value stocks often do better in bear markets. A mix helps in different market cycles.",
-            icon: <Shuffle className="h-4 w-4 text-purple-500" />,
-          },
-          {
-            name: "Holdings Concentration",
-            score: Math.max(40, Math.min(95, calculatedScore - 8 + Math.floor(Math.random() * 12))),
-            description: "Reliance on individual securities",
-            tooltip:
-              "Example: Having 25% of your portfolio in a single stock creates significant risk if that company faces problems.",
-            icon: <Target className="h-4 w-4 text-red-500" />,
-          },
-          {
-            name: "Income vs. Growth",
-            score: Math.max(40, Math.min(95, calculatedScore + 3 - Math.floor(Math.random() * 7))),
-            description: "Balance between income-producing and growth assets",
-            tooltip:
-              "Example: Retirees need income-producing assets, while younger investors might focus on growth. A proper balance depends on your life stage.",
-            icon: <DollarSign className="h-4 w-4 text-emerald-500" />,
-          },
-          {
-            name: "Time Horizon Alignment",
-            score: Math.max(40, Math.min(95, calculatedScore - 4 + Math.floor(Math.random() * 9))),
-            description: "Match between investments and time goals",
-            tooltip:
-              "Example: Short-term money (needed within 3 years) should be in stable assets, while long-term investments can withstand more volatility.",
-            icon: <Clock className="h-4 w-4 text-cyan-500" />,
-          },
-          {
-            name: "Correlation Between Assets",
-            score: Math.max(40, Math.min(95, calculatedScore + 7 - Math.floor(Math.random() * 14))),
-            description: "How investments move relative to each other",
-            tooltip:
-              "Example: If all your investments move up and down together, you're not truly diversified. Ideally, some assets should zig when others zag.",
-            icon: <LineChart className="h-4 w-4 text-orange-500" />,
-          },
-          {
-            name: "Fee Efficiency",
-            score: Math.max(40, Math.min(95, calculatedScore - 6 + Math.floor(Math.random() * 11))),
-            description: "Impact of investment fees on returns",
-            tooltip:
-              "Example: A portfolio with an average expense ratio of 1.5% will significantly underperform a similar portfolio with 0.3% fees over time.",
-            icon: <Percent className="h-4 w-4 text-rose-500" />,
-          },
-        ],
-      }
-    : {
-        overall: 0,
-        components: [],
-      }
-
   const handleBack = () => {
     setStep(1)
+  }
+
+  // Helper function to get status icon
+  const getStatusIcon = (status: string) => {
+    switch (status) {
+      case "green":
+        return <Check className="h-4 w-4 text-green-500" />
+      case "yellow":
+        return <Info className="h-4 w-4 text-amber-500" />
+      case "red":
+        return <AlertTriangle className="h-4 w-4 text-red-500" />
+      default:
+        return null
+    }
   }
 
   return (
@@ -374,7 +366,7 @@ Real Estate, $15,000`
           else handleOpen()
         }}
       >
-        <DialogContent className="sm:max-w-[800px] max-h-[90vh] overflow-y-auto">
+        <DialogContent className="sm:max-w-[800px]">
           {step === 1 && (
             <>
               <DialogHeader>
@@ -491,74 +483,95 @@ SPY, $75,000"
                 </div>
               </DialogHeader>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-6 py-4">
-                {/* Left Column - Score Overview */}
-                <div className="flex flex-col items-center justify-start">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-6 py-4">
+                {/* Top Left: Score and Email Report */}
+                <div className="flex flex-col items-center">
                   <div className="relative">
-                    <svg className="w-36 h-36">
+                    <svg className="w-32 h-32">
                       <circle
                         className="text-gray-200 stroke-current"
                         strokeWidth="10"
                         stroke="currentColor"
                         fill="transparent"
-                        r="63"
-                        cx="72"
-                        cy="72"
+                        r="56"
+                        cx="64"
+                        cy="64"
                       />
                       <circle
                         className={
-                          scoreData.overall >= 80
+                          calculatedScore && calculatedScore >= 75
                             ? "text-green-500 stroke-current"
-                            : scoreData.overall >= 60
+                            : calculatedScore && calculatedScore >= 50
                               ? "text-amber-500 stroke-current"
                               : "text-red-500 stroke-current"
                         }
                         strokeWidth="10"
-                        strokeDasharray={396}
-                        strokeDashoffset={396 - (scoreData.overall / 100) * 396}
+                        strokeDasharray={352}
+                        strokeDashoffset={352 - ((calculatedScore || 0) / 100) * 352}
                         strokeLinecap="round"
                         fill="transparent"
-                        r="63"
-                        cx="72"
-                        cy="72"
+                        r="56"
+                        cx="64"
+                        cy="64"
                       />
                     </svg>
                     <div className="absolute inset-0 flex flex-col items-center justify-center">
-                      <span className="text-5xl font-bold">{scoreData.overall}</span>
+                      <span className="text-4xl font-bold">{calculatedScore}</span>
                       <span className="text-xs text-muted-foreground">Overall Score</span>
                     </div>
                   </div>
 
-                  <Badge
-                    className={`mt-2 px-3 py-1 text-sm ${
-                      scoreData.overall >= 80 ? "bg-green-500" : scoreData.overall >= 60 ? "bg-amber-500" : "bg-red-500"
-                    }`}
-                  >
-                    {scoreData.overall >= 80 ? (
-                      <Check className="h-3.5 w-3.5 mr-1" />
-                    ) : scoreData.overall >= 60 ? (
-                      <Info className="h-3.5 w-3.5 mr-1" />
-                    ) : (
-                      <AlertTriangle className="h-3.5 w-3.5 mr-1" />
-                    )}
-                    {scoreData.overall >= 80
-                      ? "Well Diversified"
-                      : scoreData.overall >= 60
-                        ? "Moderately Diversified"
-                        : "Poorly Diversified"}
-                  </Badge>
+                  <div className="flex flex-col items-center">
+                    <Badge
+                      className={`mt-1 px-3 py-1 text-sm ${
+                        calculatedScore && calculatedScore >= 75
+                          ? "bg-green-500"
+                          : calculatedScore && calculatedScore >= 50
+                            ? "bg-amber-500"
+                            : "bg-red-500"
+                      }`}
+                    >
+                      {calculatedScore && calculatedScore >= 75 ? (
+                        <Check className="h-3.5 w-3.5 mr-1" />
+                      ) : calculatedScore && calculatedScore >= 50 ? (
+                        <Info className="h-3.5 w-3.5 mr-1" />
+                      ) : (
+                        <AlertTriangle className="h-3.5 w-3.5 mr-1" />
+                      )}
+                      {calculatedScore && calculatedScore >= 75
+                        ? "Well Diversified"
+                        : calculatedScore && calculatedScore >= 50
+                          ? "Moderately Diversified"
+                          : "Poorly Diversified"}
+                    </Badge>
 
-                  <div className="mt-6 w-full">
-                    <div className="text-center mb-2">
-                      <h4 className="font-medium text-sm">Email Report</h4>
-                    </div>
-                    <div className="space-y-3">
+                    <TooltipProvider>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <div className="flex items-center mt-1 cursor-help">
+                            <span className="text-xs font-medium text-blue-600">94th percentile</span>
+                            <HelpCircle className="h-3 w-3 ml-1 text-blue-600" />
+                          </div>
+                        </TooltipTrigger>
+                        <TooltipContent className="p-3 max-w-xs">
+                          <p className="text-sm">
+                            Your diversification score is better than 94% of investors with similar portfolio sizes.
+                            Higher percentiles indicate stronger diversification compared to peers.
+                          </p>
+                        </TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
+                  </div>
+
+                  <div className="mt-5 w-full">
+                    <div className="space-y-2">
                       <Input
                         type="email"
                         placeholder="Your email address"
                         value={emailForReport}
                         onChange={(e) => setEmailForReport(e.target.value)}
                         disabled={emailSent}
+                        className="text-sm"
                       />
                       <div className="flex items-start space-x-2">
                         <Checkbox
@@ -567,7 +580,7 @@ SPY, $75,000"
                           onCheckedChange={(checked) => setSubscribeNewsletter(checked as boolean)}
                           disabled={emailSent}
                         />
-                        <div className="grid gap-1.5 leading-none">
+                        <div className="grid gap-1 leading-none">
                           <Label htmlFor="newsletter" className="text-xs">
                             Subscribe to our newsletter for diversification tips
                           </Label>
@@ -591,96 +604,61 @@ SPY, $75,000"
                           </>
                         )}
                       </Button>
+                      <p className="text-xs text-center text-muted-foreground">
+                        Includes comparison to popular investors and detailed analysis
+                      </p>
                     </div>
                   </div>
                 </div>
 
-                {/* Middle Column - Score Components */}
-                <div className="md:col-span-2">
-                  <h4 className="font-medium mb-3 flex items-center">
-                    <Zap className="h-4 w-4 mr-1 text-blue-500" />
-                    Diversification Components
-                  </h4>
-                  <div className="grid grid-cols-1 gap-2 max-h-[400px] overflow-y-auto pr-2">
-                    {scoreData.components.map((component, index) => (
-                      <div key={index} className="bg-white p-2.5 rounded-md border">
-                        <div className="flex justify-between items-center">
-                          <div className="flex items-center">
-                            {component.icon}
-                            <TooltipProvider>
-                              <Tooltip>
-                                <TooltipTrigger asChild>
-                                  <span className="text-sm font-medium ml-2 cursor-help flex items-center">
-                                    {component.name}
-                                    <HelpCircle className="h-3 w-3 ml-1 text-muted-foreground" />
-                                  </span>
-                                </TooltipTrigger>
-                                <TooltipContent className="w-80 p-3">
-                                  <p className="text-sm">{component.tooltip}</p>
-                                </TooltipContent>
-                              </Tooltip>
-                            </TooltipProvider>
-                          </div>
-                          <Badge
-                            variant="outline"
-                            className={
-                              component.score >= 80
-                                ? "text-green-500 border-green-500"
-                                : component.score >= 60
-                                  ? "text-amber-500 border-amber-500"
-                                  : "text-red-500 border-red-500"
-                            }
-                          >
-                            {component.score}
-                          </Badge>
-                        </div>
-                        <div className="mt-1">
-                          <Progress
-                            value={component.score}
-                            className="h-1.5"
-                            indicatorClassName={
-                              component.score >= 80
-                                ? "bg-green-500"
-                                : component.score >= 60
-                                  ? "bg-amber-500"
-                                  : "bg-red-500"
-                            }
-                          />
-                        </div>
-                        <p className="text-xs text-muted-foreground mt-1">{component.description}</p>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Recommendation Section */}
-              <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-md mt-2">
-                <div className="flex items-start gap-3">
-                  <div className="bg-blue-600 rounded-full p-2 flex-shrink-0">
-                    <Bot className="h-5 w-5 text-white" />
-                  </div>
-                  <div className="flex-1">
-                    <h4 className="font-medium text-blue-800">Get Personalized Recommendations</h4>
-                    <p className="text-sm text-blue-700 mt-1 mb-3">
-                      Unlock a full portfolio assessment including benchmarking against similar investors, personalized
-                      improvement strategies, and specific investment recommendations tailored to your goals.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      <Button className="bg-blue-600 hover:bg-blue-700">
-                        Get Free Portfolio Assessment
+                {/* Top Right: PortfolioPilot Ad */}
+                <div className="bg-gradient-to-r from-blue-50 to-blue-100 p-4 rounded-md flex flex-col justify-center">
+                  <div className="flex items-start gap-3">
+                    <div className="bg-blue-600 rounded-full p-2 flex-shrink-0">
+                      <Bot className="h-5 w-5 text-white" />
+                    </div>
+                    <div className="flex-1">
+                      <h4 className="font-medium text-blue-800">
+                        Get a full portfolio assessment and optimization suggestions
+                      </h4>
+                      <p className="text-sm text-blue-700 mt-1 mb-3">
+                        PortfolioPilot offers a complete portfolio assessment including benchmarking against similar
+                        investors, personalized improvement strategies, and specific investment recommendations tailored
+                        to your goals.
+                      </p>
+                      <Button className="bg-blue-600 hover:bg-blue-700" size="sm">
+                        Try PortfolioPilot Free
                         <ExternalLink className="ml-2 h-4 w-4" />
                       </Button>
-                      <Button variant="outline" className="border-blue-600 text-blue-600">
-                        <Share2 className="mr-1 h-4 w-4" />
-                        Share Results
-                      </Button>
                     </div>
                   </div>
                 </div>
               </div>
 
-              {/* Methodology Section (Collapsible) */}
+              {/* Risk Factors Section */}
+              <div className="mt-5">
+                <h4 className="font-medium mb-4 flex items-center">
+                  <Zap className="h-4 w-4 mr-1 text-blue-500" />
+                  Factors affecting your score
+                </h4>
+
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 gap-y-3">
+                  {diversificationFactors.map((factor, index) => (
+                    <div key={index} className="flex gap-2">
+                      <div className="flex-shrink-0 mt-0.5">{factor.icon}</div>
+                      <div>
+                        <div className="flex items-center gap-1">
+                          <span className="font-medium text-sm">{factor.name}</span>
+                          {getStatusIcon(factor.status)}
+                        </div>
+                        <p className="text-xs text-muted-foreground">{factor.description}</p>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Bottom: Methodology Section (Collapsible) */}
               <Collapsible open={showMethodology} onOpenChange={setShowMethodology} className="mt-4 border-t pt-3">
                 <CollapsibleTrigger asChild>
                   <Button variant="ghost" size="sm" className="w-full flex justify-between">
@@ -691,12 +669,32 @@ SPY, $75,000"
                     {showMethodology ? <ChevronUp className="h-4 w-4" /> : <ChevronDown className="h-4 w-4" />}
                   </Button>
                 </CollapsibleTrigger>
-                <CollapsibleContent className="pt-2">
+                <CollapsibleContent className="pt-2 max-h-[200px] overflow-y-auto pr-2">
                   <p className="text-xs text-muted-foreground">
                     Your Diversification Score is calculated using PortfolioPilot's proprietary algorithm that evaluates
-                    your portfolio across 10 key dimensions. The score ranges from 0-100, with higher scores indicating
-                    better diversification. Our methodology considers not just the number of holdings, but how they work
-                    together to reduce risk while maintaining growth potential.
+                    your portfolio across multiple key risk dimensions. The score ranges from 0-100, with higher scores
+                    indicating better diversification. Our methodology considers not just the number of holdings, but
+                    how they work together to reduce risk while maintaining growth potential.
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    We analyze your portfolio for concentration risks in holdings, sectors, and geographic regions, as
+                    well as sensitivity to economic factors like inflation, interest rates, and credit conditions. The
+                    analysis helps identify potential vulnerabilities in your investment strategy.
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    The algorithm examines each holding in your portfolio and evaluates how it interacts with other
+                    investments. We look at historical correlations between assets, volatility patterns, and how your
+                    portfolio might perform under different market scenarios. This multi-dimensional analysis provides a
+                    more comprehensive view of your diversification than simply counting the number of holdings.
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    For stocks and ETFs, we perform a look-through analysis to understand the underlying exposures. For
+                    example, if you own an S&P 500 ETF, we consider the sector and industry breakdown of the underlying
+                    companies rather than treating it as a single position.
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-2">
+                    Your percentile ranking compares your score to other investors with similar portfolio sizes, giving
+                    you context for how well-diversified your investments are relative to peers.
                   </p>
                   <p className="text-xs text-muted-foreground mt-2">
                     This analysis is for educational purposes only and should not be considered investment advice. For a

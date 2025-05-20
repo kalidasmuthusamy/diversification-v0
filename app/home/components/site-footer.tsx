@@ -190,6 +190,11 @@ export function SiteFooter() {
                   <label htmlFor="weekly-footer">Weekly (Sa)</label>
                 </div>
               </div>
+              <div className="text-xs text-muted-foreground mt-1">
+                <Link href="/newsletter/archives" className="hover:text-blue-600">
+                  Read previous newsletters →
+                </Link>
+              </div>
             </form>
           </div>
         </div>

@@ -36,7 +36,7 @@ export function PortfolioPilotSidebarAd() {
       <CardFooter className="bg-gray-50 px-6 py-4">
         <Link href="/advisor" className="w-full">
           <Button className="w-full bg-blue-600 hover:bg-blue-700">
-            Get started
+            Get started with PortfolioPilot
             <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </Link>
