@@ -46,6 +46,7 @@ import {
   Briefcase,
   CircleDollarSign,
   HelpCircle,
+  Trophy,
 } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { useDiversification } from "@/app/contexts/diversification-context"
@@ -60,6 +61,7 @@ interface DiversificationScoreModalProps {
   defaultOpen?: boolean
   skipInputStep?: boolean
   startCalculationImmediately?: boolean
+  contestMode?: boolean
 }
 
 // Define the diversification factors based on the image
@@ -134,6 +136,7 @@ export default function DiversificationScoreModal({
   defaultOpen = false,
   skipInputStep = false,
   startCalculationImmediately = false,
+  contestMode = false,
 }: DiversificationScoreModalProps) {
   const { setScoreData } = useDiversification()
   const [open, setOpen] = useState(defaultOpen)
@@ -377,6 +380,19 @@ Real Estate, $15,000`
                 </DialogDescription>
               </DialogHeader>
 
+              {contestMode && (
+                <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mb-4 flex items-start gap-2">
+                  <Trophy className="h-5 w-5 text-amber-500 mt-0.5 flex-shrink-0" />
+                  <div>
+                    <p className="text-sm text-amber-800 font-medium">Win over $240,000 in prizes!</p>
+                    <p className="text-xs text-amber-700">
+                      Calculate your score by June 21 to be entered into our contest. 1,000 winners will receive a
+                      PortfolioPilot Gold membership (valued at $240).
+                    </p>
+                  </div>
+                </div>
+              )}
+
               <div className="bg-blue-50 border border-blue-200 rounded-md p-3 mb-4 flex items-start gap-2">
                 <Lock className="h-5 w-5 text-blue-500 mt-0.5 flex-shrink-0" />
                 <div>
@@ -464,7 +480,7 @@ SPY, $75,000"
                   Cancel
                 </Button>
                 <Button onClick={handleNext} disabled={loading || (portfolioText.trim() === "" && !uploadedFile)}>
-                  {loading ? "Analyzing..." : "Calculate Score"}
+                  {loading ? "Analyzing..." : contestMode ? "Calculate & Enter Contest" : "Calculate Score"}
                   {!loading && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
               </DialogFooter>
@@ -573,6 +589,12 @@ SPY, $75,000"
                         disabled={emailSent}
                         className="text-sm"
                       />
+                      {contestMode && (
+                        <p className="text-xs text-amber-600 flex items-center">
+                          <Trophy className="h-3 w-3 mr-1 flex-shrink-0" />
+                          Providing your email automatically enters you in the $240,000 contest
+                        </p>
+                      )}
                       <div className="flex items-start space-x-2">
                         <Checkbox
                           id="newsletter"
