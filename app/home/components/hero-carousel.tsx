@@ -4,72 +4,53 @@ import { useState, useEffect, useCallback } from "react"
 import { Button } from "@/components/ui/button"
 import { ArrowRight, ChevronLeft, ChevronRight } from "lucide-react"
 import Link from "next/link"
-// import DiversificationScoreModal from "./diversification-score-modal"
 
 // Define the slides for the carousel
 const slides = [
   {
     id: "diversification-score",
-    title: "Understand your portfolio's true diversification",
+    title: "How diversified are you really?",
     description:
       "Beyond simple asset allocation, discover how well your investments are protected against market volatility, inflation, and sector risks.",
     image: "/diversified-growth.png",
     imageAlt: "Portfolio diversification visualization",
     primaryButton: {
-      text: "Calculate Your Score",
+      text: "Calculate Score",
       href: "/diversification-score",
-    },
-    secondaryButton: {
-      text: "Learn More",
-      href: "/education",
     },
   },
   {
-    id: "new-standard",
-    title: "Setting a new standard for diversification",
-    description:
-      "Our proprietary methodology goes beyond traditional asset allocation to measure true portfolio resilience against multiple risk factors.",
+    id: "contest",
+    title: "Win over $240,000 in prizes",
+    description: "Calculate your Diversification Score to enter. Let's find out how diversified investors really are!",
     image: "/balanced-growth-path.png",
-    imageAlt: "New standard for diversification visualization",
+    imageAlt: "Contest prize visualization",
     primaryButton: {
-      text: "See How It Works",
-      href: "/diversification",
-    },
-    secondaryButton: {
-      text: "View Case Studies",
-      href: "/education/case-studies",
+      text: "Enter Contest",
+      href: "/diversification-score",
     },
   },
   {
     id: "alternatives",
     title: "Discover alternative investments",
     description:
-      "Expand your portfolio beyond traditional stocks and bonds with our comprehensive marketplace of alternative investment opportunities.",
-    image: "/diverse-alternative-assets.png", // Updated to match style of other images
+      "Look beyond traditional stocks and bonds with our marketplace of alternative investment opportunities.",
+    image: "/diverse-alternative-assets.png",
     imageAlt: "Alternative investments marketplace",
     primaryButton: {
       text: "Explore Alternatives",
       href: "/alternatives",
     },
-    secondaryButton: {
-      text: "Learn About Alternatives",
-      href: "/education/alternative-investments",
-    },
   },
   {
-    id: "newsletter",
+    id: "education",
     title: "Insights for long-term investors",
-    description:
-      "Join over 30,000 long-term investors receiving our analysis on diversification strategies, market trends, and sustainable growth opportunities.",
-    image: "/growth-through-planning.png", // Updated to match style
+    description: "Find articles about tax optimization, portfolio management, financial planning, and more.",
+    image: "/growth-through-planning.png",
     imageAlt: "Long-term investment growth visualization",
     primaryButton: {
-      text: "Subscribe Now",
-      href: "#newsletter-signup",
-    },
-    secondaryButton: {
-      text: "See Past Issues",
-      href: "/newsletter/archive",
+      text: "Education Center",
+      href: "/education",
     },
     conditional: true, // This slide will only show if user hasn't subscribed
   },
@@ -137,12 +118,6 @@ export default function HeroCarousel() {
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700 w-full text-sm md:text-base">
                   {currentSlideData.primaryButton.text}
                   <ArrowRight className="ml-2 h-4 w-4" />
-                </Button>
-              </Link>
-
-              <Link href={currentSlideData.secondaryButton.href} className="w-full sm:w-auto">
-                <Button variant="outline" size="lg" className="w-full text-sm md:text-base">
-                  {currentSlideData.secondaryButton.text}
                 </Button>
               </Link>
             </div>

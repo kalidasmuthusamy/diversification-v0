@@ -9,13 +9,15 @@ import {
   Copy,
   Lock,
   Trophy,
-  ArrowRight,
   ExternalLink,
   Wallet,
   BarChart4,
   Camera,
   MoreHorizontal,
   RefreshCw,
+  Calendar,
+  Gift,
+  AlertCircle,
 } from "lucide-react"
 import { useState, useRef } from "react"
 import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs"
@@ -32,27 +34,38 @@ export default function DiversificationPage() {
               Analyze your portfolio's diversification and get recommendations to improve your risk-adjusted returns
             </p>
           </div>
-          <Link href="/diversification-score/leaderboard" className="mt-4 md:mt-0">
-            <Button className="bg-amber-500 hover:bg-amber-600 text-white flex items-center gap-2">
-              <Trophy className="h-4 w-4" />
-              <span>View Leaderboard</span>
-              <ArrowRight className="h-4 w-4" />
-            </Button>
-          </Link>
         </div>
 
-        <Card className="bg-amber-50 border border-amber-200 mb-8 shadow-sm">
-          <CardContent className="p-4">
-            <div className="flex items-start gap-3">
-              <Trophy className="h-6 w-6 text-amber-500 mt-1 flex-shrink-0" />
-              <div>
-                <h3 className="font-medium text-amber-800">America's Most Diverse Portfolios</h3>
-                <p className="text-sm text-amber-700">
-                  See how your portfolio stacks up against the nation's best diversified portfolios.{" "}
-                  <Link href="/diversification-score/leaderboard" className="font-medium underline">
-                    View the leaderboard
-                  </Link>
+        <Card className="bg-gradient-to-r from-amber-50 to-amber-100 border border-amber-200 mb-8 shadow-sm">
+          <CardContent className="p-6">
+            <div className="flex flex-col md:flex-row items-start gap-4">
+              <div className="flex-shrink-0 bg-amber-200 p-3 rounded-full">
+                <Trophy className="h-8 w-8 text-amber-700" />
+              </div>
+              <div className="space-y-2">
+                <h3 className="text-xl font-bold text-amber-800">Win over $240,000 in prizes!</h3>
+                <p className="text-amber-700">
+                  Calculate your Diversification Score by June 21 to be automatically entered into our 30-day challenge.
+                  Win one of 1,000 PortfolioPilot.com Gold memberships (valued at $240 each) and discover how your
+                  portfolio compares to legendary investors like Bridgewater and Berkshire Hathaway.
                 </p>
+                <div className="flex flex-wrap gap-3 mt-2">
+                  <div className="flex items-center text-sm text-amber-700">
+                    <Calendar className="h-4 w-4 mr-1" />
+                    <span>Contest ends June 21, 2025</span>
+                  </div>
+                  <div className="flex items-center text-sm text-amber-700">
+                    <Gift className="h-4 w-4 mr-1" />
+                    <span>1,000 prizes available</span>
+                  </div>
+                  <Link
+                    href="/contest-terms"
+                    className="text-sm font-medium text-amber-800 underline flex items-center"
+                  >
+                    <AlertCircle className="h-4 w-4 mr-1" />
+                    Contest Terms & Conditions
+                  </Link>
+                </div>
               </div>
             </div>
           </CardContent>
@@ -211,7 +224,7 @@ Crypto, $5,000"
             <div className="flex gap-3">
               {activeTab === "copy-paste" ? (
                 <Button onClick={() => setModalOpen(true)} className="flex-1" disabled={portfolioText.trim() === ""}>
-                  Calculate Score
+                  Calculate Score & Enter Contest
                 </Button>
               ) : (
                 <a href="https://portfoliopilot.com" target="_blank" rel="noopener noreferrer" className="flex-1">
@@ -230,6 +243,7 @@ Crypto, $5,000"
                 onOpenChange={setModalOpen}
                 skipInputStep={true}
                 startCalculationImmediately={true}
+                contestMode={true}
               />
             </div>
           </div>
@@ -262,8 +276,15 @@ Crypto, $5,000"
                 <li className="flex items-start gap-2">
                   <Check className="h-5 w-5 text-green-500 flex-shrink-0 mt-0.5" />
                   <span>
-                    <span className="font-medium">Get personalized recommendations</span> to improve your portfolio's
-                    risk-adjusted returns (via PortfolioPilot.com)
+                    <span className="font-medium">Compare your portfolio</span> to legendary investors like Bridgewater
+                    and Berkshire Hathaway
+                  </span>
+                </li>
+                <li className="flex items-start gap-2">
+                  <Trophy className="h-5 w-5 text-amber-500 flex-shrink-0 mt-0.5" />
+                  <span>
+                    <span className="font-medium">Enter to win</span> one of 1,000 PortfolioPilot Gold memberships
+                    (valued at $240 each)
                   </span>
                 </li>
               </ul>
