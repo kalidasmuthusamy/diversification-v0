@@ -110,6 +110,16 @@ export function SiteFooter() {
                   Investment Partners
                 </Link>
               </li>
+              <li>
+                <Link href="/securities" className="text-gray-600 hover:text-blue-600">
+                  Securities Database
+                </Link>
+              </li>
+              <li>
+                <Link href="/macro" className="text-gray-600 hover:text-blue-600">
+                  Macro Database
+                </Link>
+              </li>
             </ul>
           </div>
 
