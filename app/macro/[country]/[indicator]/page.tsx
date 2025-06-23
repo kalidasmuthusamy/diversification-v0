@@ -1,18 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
-import {
-  ArrowUp,
-  ArrowDown,
-  TrendingUp,
-  BarChart2,
-  Calendar,
-  Clock,
-  Globe,
-  Info,
-  Lock,
-  AlertTriangle,
-} from "lucide-react"
+import { ArrowUp, ArrowDown, TrendingUp, BarChart2, Calendar, Clock, Globe, Info, Lock } from "lucide-react"
 import Link from "next/link"
 import type { Metadata } from "next"
 import { notFound } from "next/navigation"
@@ -148,9 +137,6 @@ export default function MacroIndicatorPage({ params }: Props) {
           </a>
           <a href="#historical" className="px-4 py-2 text-sm font-medium rounded hover:bg-background transition-colors">
             Historical Data
-          </a>
-          <a href="#impact" className="px-4 py-2 text-sm font-medium rounded hover:bg-background transition-colors">
-            Market Impact
           </a>
           <a href="#forecast" className="px-4 py-2 text-sm font-medium rounded hover:bg-background transition-colors">
             Forecast
@@ -300,25 +286,6 @@ export default function MacroIndicatorPage({ params }: Props) {
                       </div>
                     </div>
                   </div>
-
-                  <div className="bg-blue-50 dark:bg-blue-950/20 p-4 rounded-lg">
-                    <h4 className="font-medium text-blue-800 dark:text-blue-200 mb-2">Statistical Interpretation</h4>
-                    <p className="text-sm text-blue-700 dark:text-blue-300">
-                      The current {data.indicator} reading of {formatValue(data.latestValue.value, data.unit)} is
-                      considered <strong>{data.statisticalAnalysis.currentStatus.toLowerCase()}</strong> based on
-                      historical data.{" "}
-                      {data.statisticalAnalysis.percentileRank > 75
-                        ? `This value is higher than ${data.statisticalAnalysis.percentileRank}% of all historical readings.`
-                        : data.statisticalAnalysis.percentileRank < 25
-                          ? `This value is lower than ${100 - data.statisticalAnalysis.percentileRank}% of all historical readings.`
-                          : `This value falls within the typical range for this indicator.`}
-                      {Math.abs(data.statisticalAnalysis.standardDeviations) > 2
-                        ? ` The reading is more than 2 standard deviations from the historical mean, indicating an unusual occurrence.`
-                        : Math.abs(data.statisticalAnalysis.standardDeviations) > 1
-                          ? ` The reading is moderately above/below the typical range.`
-                          : ` The reading is close to the historical average.`}
-                    </p>
-                  </div>
                 </div>
               </CardContent>
             </Card>
@@ -368,67 +335,6 @@ export default function MacroIndicatorPage({ params }: Props) {
                 </div>
                 <div className="mt-4 text-center">
                   <Button variant="outline">Load More Historical Data</Button>
-                </div>
-              </CardContent>
-            </Card>
-          </section>
-
-          {/* Market Impact Section */}
-          <section id="impact">
-            <Card>
-              <CardHeader>
-                <CardTitle>Market Connections</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  {data.marketConnections.map((connection, index) => (
-                    <div key={index} className="border-b last:border-b-0 pb-6 last:pb-0">
-                      <div className="flex justify-between items-start mb-3">
-                        <h3 className="font-medium text-lg">{connection.assetClass}</h3>
-                        <Badge
-                          variant={
-                            connection.relationship === "Positive Correlation"
-                              ? "default"
-                              : connection.relationship === "Negative Correlation"
-                                ? "secondary"
-                                : connection.relationship === "Complex Relationship"
-                                  ? "outline"
-                                  : "secondary"
-                          }
-                        >
-                          {connection.relationship}
-                        </Badge>
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-4">{connection.explanation}</p>
-
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                        <div className="bg-green-50 dark:bg-green-950/20 p-3 rounded-lg">
-                          <h4 className="font-medium text-sm text-green-800 dark:text-green-200 mb-2">When Rising</h4>
-                          <p className="text-xs text-green-700 dark:text-green-300">
-                            {connection.typicalScenarios.whenRising}
-                          </p>
-                        </div>
-                        <div className="bg-red-50 dark:bg-red-950/20 p-3 rounded-lg">
-                          <h4 className="font-medium text-sm text-red-800 dark:text-red-200 mb-2">When Falling</h4>
-                          <p className="text-xs text-red-700 dark:text-red-300">
-                            {connection.typicalScenarios.whenFalling}
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-6 bg-muted/30 p-4 rounded-lg">
-                  <div className="flex items-center gap-2 mb-2">
-                    <AlertTriangle className="h-4 w-4 text-amber-500" />
-                    <span className="text-sm font-medium">Important Note</span>
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    These relationships represent general historical patterns and correlations. Market conditions,
-                    investor sentiment, and other economic factors can cause actual market reactions to differ from
-                    typical patterns. Always consider multiple factors when making investment decisions.
-                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -642,6 +548,11 @@ export default function MacroIndicatorPage({ params }: Props) {
             </CardContent>
           </Card>
         </div>
+      </div>
+
+      {/* Timestamp Section */}
+      <div className="mt-12 pt-8 border-t text-center text-sm text-muted-foreground">
+        <div>Economic data last updated {data.lastUpdated}</div>
       </div>
     </div>
   )

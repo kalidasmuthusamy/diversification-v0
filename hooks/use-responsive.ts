@@ -21,34 +21,25 @@ export function useResponsive() {
   })
 
   useEffect(() => {
-    // Handler to call on window resize
     function handleResize() {
-      // Set window width/height to state
       setWindowSize({
         width: window.innerWidth,
         height: window.innerHeight,
       })
     }
 
-    // Add event listener
     window.addEventListener("resize", handleResize)
-
-    // Call handler right away so state gets updated with initial window size
     handleResize()
 
-    // Remove event listener on cleanup
     return () => window.removeEventListener("resize", handleResize)
-  }, []) // Empty array ensures that effect is only run on mount and unmount
+  }, [])
 
-  // Specific device type detection
-  const isMobile = windowSize.width < breakpoints.md // 0-767px
-  const isTablet = windowSize.width >= breakpoints.md && windowSize.width < breakpoints.lg // 768-1023px
-  const isDesktop = windowSize.width >= breakpoints.lg // 1024px and above
+  const isMobile = windowSize.width < breakpoints.md
+  const isTablet = windowSize.width >= breakpoints.md && windowSize.width < breakpoints.lg
+  const isDesktop = windowSize.width >= breakpoints.lg
 
-  // Get current device type
   const deviceType: DeviceType = isMobile ? "mobile" : isTablet ? "tablet" : "desktop"
 
-  // Original breakpoint checks
   const isXs = windowSize.width < breakpoints.sm
   const isSm = windowSize.width >= breakpoints.sm && windowSize.width < breakpoints.md
   const isMd = windowSize.width >= breakpoints.md && windowSize.width < breakpoints.lg
@@ -67,8 +58,8 @@ export function useResponsive() {
   const isXlUp = windowSize.width >= breakpoints.xl
   const is2XlUp = windowSize.width >= breakpoints["2xl"]
 
-  const below = (breakpoint: Breakpoint) => windowSize.width < breakpoints[breakpoint]
-  const above = (breakpoint: Breakpoint) => windowSize.width >= breakpoints[breakpoint]
+  const below = (bp: Breakpoint) => windowSize.width < breakpoints[bp]
+  const above = (bp: Breakpoint) => windowSize.width >= breakpoints[bp]
   const between = (min: Breakpoint, max: Breakpoint) =>
     windowSize.width >= breakpoints[min] && windowSize.width < breakpoints[max]
 

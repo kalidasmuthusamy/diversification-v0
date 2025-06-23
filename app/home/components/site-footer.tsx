@@ -106,18 +106,31 @@ export function SiteFooter() {
                 </Link>
               </li>
               <li>
-                <Link href="/partners" className="text-gray-600 hover:text-blue-600">
-                  Investment Partners
+                <Link href="/alternatives" className="text-gray-600 hover:text-blue-600">
+                  Alternatives Marketplace
                 </Link>
               </li>
               <li>
-                <Link href="/securities" className="text-gray-600 hover:text-blue-600">
+                <Link
+                  href="/securities"
+                  className="text-gray-600 hover:text-blue-600"
+                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                >
                   Securities Database
                 </Link>
               </li>
               <li>
-                <Link href="/macro" className="text-gray-600 hover:text-blue-600">
+                <Link
+                  href="/macro"
+                  className="text-gray-600 hover:text-blue-600"
+                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                >
                   Macro Database
+                </Link>
+              </li>
+              <li>
+                <Link href="/definitions/index_a" className="text-gray-600 hover:text-blue-600">
+                  Financial Definitions
                 </Link>
               </li>
             </ul>
@@ -133,7 +146,7 @@ export function SiteFooter() {
               </li>
               <li>
                 <Link href="/contact" className="text-gray-600 hover:text-blue-600">
-                  Contact
+                  Contact Us
                 </Link>
               </li>
               <li>
@@ -240,9 +253,10 @@ export function SiteFooter() {
             </p>
             <p>
               <strong>DATA SOURCES:</strong> Market data, asset class information, sector analysis, and other financial
-              information displayed on this website are sourced from StockNewsAPI, Morningstar, AlphaVantage, IEX, and
-              TradingEconomics. We make every effort to ensure data accuracy but cannot guarantee that all information
-              is complete, accurate, or timely.
+              information displayed on this website are sour sector analysis, and other financial information displayed
+              on this website are sourced from StockNewsAPI, Morningstar, AlphaVantage, IEX, and TradingEconomics. We
+              make every effort to ensure data accuracy but cannot guarantee that all information is complete, accurate,
+              or timely.
             </p>
             <p>
               <strong>USER COUNT DISCLOSURE:</strong> References to "30,000+ users/subscribers" reflect the combined

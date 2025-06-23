@@ -53,7 +53,7 @@ export default function CompaniesIndexPage() {
         {stocks.map((stock) => (
           <Link
             key={stock.symbol}
-            href={`/explore/${stock.symbol.toLowerCase()}`}
+            href={`/securities/ticker/${stock.symbol.toLowerCase()}`}
             className="block p-2 hover:bg-muted/30 rounded-md transition-colors"
           >
             <span className="font-medium">{stock.symbol}</span> - {stock.name}

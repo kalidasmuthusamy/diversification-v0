@@ -5,19 +5,14 @@ import { getAllDefinitionIds } from "@/app/data/definitions"
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://diversification.com"
+
+  /* ---------- Securities ---------- */
   const securities = Object.entries(securitiesData as Record<string, any>)
+  const stocks = securities.filter(([_, s]) => s.securityType === "Stock").map(([symbol]) => symbol)
+  const etfs = securities.filter(([_, s]) => s.securityType === "ETF").map(([symbol]) => symbol)
+  const mutualFunds = securities.filter(([_, s]) => s.securityType === "Mutual Fund").map(([symbol]) => symbol)
+  const cryptos = securities.filter(([_, s]) => s.securityType === "Cryptocurrency").map(([symbol]) => symbol)
 
-  // Group securities by type
-  const stocks = securities.filter(([_, security]) => security.securityType === "Stock").map(([symbol]) => symbol)
-  const etfs = securities.filter(([_, security]) => security.securityType === "ETF").map(([symbol]) => symbol)
-  const mutualFunds = securities
-    .filter(([_, security]) => security.securityType === "Mutual Fund")
-    .map(([symbol]) => symbol)
-  const cryptos = securities
-    .filter(([_, security]) => security.securityType === "Cryptocurrency")
-    .map(([symbol]) => symbol)
-
-  // Create URLs for each security type
   const stockPages = stocks.map((symbol) => ({
     url: `${baseUrl}/securities/companies/${symbol.toLowerCase()}`,
     lastModified: new Date(),
@@ -46,6 +41,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
+  /* ---------- Macro Indicators ---------- */
   const macroIndicatorIds = getAllMacroIndicatorIds()
   const macroPages = macroIndicatorIds.map((id) => {
     const [country, ...indicatorParts] = id.split("-")
@@ -58,14 +54,24 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     }
   })
 
+  /* ---------- Definitions ---------- */
   const definitionIds = getAllDefinitionIds()
   const definitionPages = definitionIds.map((id) => ({
-    url: `${baseUrl}/definitions/${id}`,
+    url: `${baseUrl}/definitions/term/${id}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.7,
   }))
 
+  const letters = "abcdefghijklmnopqrstuvwxyz".split("")
+  const letterPages = letters.map((l) => ({
+    url: `${baseUrl}/definitions/index_${l}`,
+    lastModified: new Date(),
+    changeFrequency: "weekly" as const,
+    priority: 0.6,
+  }))
+
+  /* ---------- Static top-level pages ---------- */
   return [
     {
       url: baseUrl,
@@ -73,77 +79,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: "daily",
       priority: 1,
     },
-    {
-      url: `${baseUrl}/home`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/securities`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/securities/companies`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/securities/etfs`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/securities/mutual-funds`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/securities/cryptocurrencies`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/macro`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/macro/us`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/macro/cn`,
-      lastModified: new Date(),
-      changeFrequency: "daily",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/diversification-score`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/definitions`,
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
+    { url: `${baseUrl}/home`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/securities`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/macro`, lastModified: new Date(), changeFrequency: "daily", priority: 0.9 },
+    { url: `${baseUrl}/diversification-score`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${baseUrl}/definitions`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.8 },
+
+    /* dynamic pages */
     ...stockPages,
     ...etfPages,
     ...mutualFundPages,
     ...cryptoPages,
     ...macroPages,
+    ...letterPages,
     ...definitionPages,
   ]
 }

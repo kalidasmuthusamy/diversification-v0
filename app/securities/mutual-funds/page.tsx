@@ -64,7 +64,7 @@ export default function MutualFundsIndexPage() {
         {fundsToDisplay.map((fund) => (
           <Link
             key={fund.symbol}
-            href={`/explore/${fund.symbol.toLowerCase()}`}
+            href={`/securities/ticker/${fund.symbol.toLowerCase()}`}
             className="block p-2 hover:bg-muted/30 rounded-md transition-colors"
           >
             <span className="font-medium">{fund.symbol}</span> - {fund.name}
