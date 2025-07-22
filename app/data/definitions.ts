@@ -1,3 +1,4 @@
+// app/data/definitions.ts
 export interface DefinitionData {
   id: string
   term: string
@@ -36,252 +37,214 @@ export interface DefinitionData {
   }
 }
 
+/* -------------------------  DEFINITIONS DATABASE  ------------------------ */
+
 const definitionsData: Record<string, DefinitionData> = {
+  /* --- Sharpe Ratio --- */
   "sharpe-ratio": {
     id: "sharpe-ratio",
     term: "Sharpe Ratio",
-    category: "Risk Management",
+    category: "Risk-Adjusted Return",
     definition:
-      "Sharpe Ratio is a portfolio metric that measures how much excess return an investment generates for each unit of risk taken. It helps investors evaluate whether the returns they are receiving are a result of intelligent investment decisions or a byproduct of assuming greater risk. The formula incorporates both the return of the investment and the volatility of those returns, offering a way to assess risk-adjusted performance.",
+      "The Sharpe Ratio measures the risk-adjusted return of an investment portfolio. It indicates how much excess return an investor receives for the extra volatility they endure for holding a riskier asset.",
     keyTakeaways: [
-      "Sharpe Ratio measures an investment's excess return relative to its volatility",
-      "It is calculated by subtracting the risk-free rate from the investment return and dividing by standard deviation",
-      "A higher Sharpe Ratio typically suggests better risk-adjusted performance",
-      "The ratio helps compare investments with different levels of risk on a standardized scale",
-      "It assumes that investment returns are normally distributed and that volatility is an accurate proxy for risk",
+      "The Sharpe Ratio is used to understand the return of an investment compared to its risk.",
+      "A higher Sharpe Ratio is better, indicating more return per unit of risk.",
+      "It is calculated by subtracting the risk-free rate from the return of the portfolio and dividing the result by the portfolio's standard deviation.",
     ],
     history: {
       origin:
-        'The Sharpe Ratio was developed by economist William F. Sharpe in 1966. Originally named the "reward-to-variability ratio," it was designed as a tool to assess the performance of investment portfolios by adjusting for risk. The ratio became widely adopted in academic research and financial practice and was later renamed in Sharpe\'s honor. Today, it is one of the most frequently used metrics in modern portfolio theory and investment analysis.',
+        "Developed by Nobel laureate William F. Sharpe in 1966, the Sharpe Ratio has become a standard tool for analyzing portfolio performance.",
       developer: "William F. Sharpe",
       year: 1966,
     },
     formula: {
-      equation: "Sharpe Ratio = (Rp − Rf) / σp",
+      equation: "Sharpe Ratio = (Rp - Rf) / σp",
       variables: [
-        { symbol: "Rp", description: "Return of the portfolio or investment" },
-        {
-          symbol: "Rf",
-          description: "Risk-free rate of return, often based on the yield of short-term U.S. Treasury bills",
-        },
-        { symbol: "σp", description: "Standard deviation of the portfolio's returns, representing total volatility" },
+        { symbol: "Rp", description: "Return of the portfolio" },
+        { symbol: "Rf", description: "Risk-free rate" },
+        { symbol: "σp", description: "Standard deviation of the portfolio's excess return" },
       ],
     },
     interpretation: {
       description:
-        "The Sharpe Ratio provides insight into how efficiently an investment has delivered returns compared to the amount of risk it took on. A positive ratio indicates that the return exceeded the risk-free rate, while a negative ratio suggests underperformance relative to a low-risk benchmark.",
+        "The Sharpe Ratio provides a single number that is easy to interpret. It helps investors understand the risk-adjusted return of their investments.",
       ranges: [
-        { range: "Less than 1.0", meaning: "Lower efficiency in risk-adjusted performance" },
-        { range: "Between 1.0 and 2.0", meaning: "Moderate or acceptable performance" },
-        { range: "Above 2.0", meaning: "Strong performance on a risk-adjusted basis" },
         {
-          range: "Above 3.0",
-          meaning: "Rare and potentially indicative of unusually effective risk management or favorable conditions",
+          range: "< 1.0",
+          meaning: "Considered not good; the investment's return is not much higher than the risk-free rate.",
         },
+        { range: "1.0 - 2.0", meaning: "Adequate; provides reasonable risk-adjusted return." },
+        { range: "2.0 - 3.0", meaning: "Very good; indicates a good risk-adjusted return." },
+        { range: "> 3.0", meaning: "Excellent; suggests a superior risk-adjusted return." },
       ],
     },
     example: {
-      scenario:
-        "An investor holds a portfolio that returned 8% over the past year. The risk-free rate during that time was 3%, and the portfolio's standard deviation was 10%.",
-      calculation: "Sharpe Ratio = (8 − 3) / 10 = 5 / 10 = 0.5",
-      result: "0.5",
-      interpretation:
-        "In this case, the investor earned 0.5 units of excess return for every unit of risk taken. Depending on the investor's goals and the market environment, this may indicate a need for reassessing the risk-return tradeoff.",
+      scenario: "An investment portfolio has a return of 15%, a risk-free rate of 2%, and a standard deviation of 10%.",
+      calculation: "Sharpe Ratio = (15% - 2%) / 10% = 1.3",
+      result: "1.3",
+      interpretation: "The Sharpe Ratio of 1.3 indicates an adequate risk-adjusted return.",
     },
     applications: [
-      "Performance reporting and fund comparison",
-      "Portfolio construction and optimization",
-      "Evaluating which assets or strategies have historically delivered better returns relative to their volatility",
-      "Designing portfolios to balance return expectations with acceptable levels of risk",
-      "Identifying combinations of assets that may optimize returns without significantly increasing volatility",
+      "Portfolio performance evaluation",
+      "Comparing different investment strategies",
+      "Assessing the impact of adding or removing assets from a portfolio",
     ],
     limitations: [
-      "Assumes returns follow a normal distribution, which may not hold true for all asset classes",
-      "Penalizes both upward and downward volatility equally, which may not align with how investors view risk",
-      "Short-term or volatile periods can distort the ratio",
-      "May not be appropriate for evaluating assets with asymmetrical or non-linear return profiles, such as options or hedge fund strategies",
+      "Assumes returns are normally distributed, which may not always be the case.",
+      "Sensitive to the accuracy of the inputs, especially the standard deviation.",
+      "Does not account for all types of risk.",
     ],
     relatedConcepts: [
       {
-        term: "Standard Deviation",
-        comparison:
-          "Standard deviation measures the volatility of returns, while the Sharpe Ratio uses this volatility to assess the efficiency of returns. The Sharpe Ratio adds context by relating performance to risk.",
+        term: "Treynor Ratio",
+        comparison: "Similar to the Sharpe Ratio but uses beta instead of standard deviation to measure risk.",
       },
       {
-        term: "Risk-Adjusted Return",
-        comparison:
-          "Sharpe Ratio is a specific way to measure risk-adjusted return, using standard deviation as the risk component. Other methods, such as the Sortino Ratio, adjust for downside risk only.",
+        term: "Sortino Ratio",
+        comparison: "Focuses on downside risk (negative volatility) rather than total volatility.",
       },
     ],
     faqs: [
       {
-        question: 'What is a "good" Sharpe Ratio?',
+        question: "What is a good Sharpe Ratio?",
         answer:
-          "A Sharpe Ratio above 1.0 is often considered acceptable, while values above 2.0 may indicate strong performance. Context matters based on asset type and time frame.",
+          "A Sharpe Ratio above 1.0 is generally considered acceptable, while a ratio above 2.0 is considered very good.",
       },
       {
-        question: "Can the Sharpe Ratio be negative?",
-        answer:
-          "Yes. A negative Sharpe Ratio means the investment returned less than the risk-free rate or was highly volatile relative to its return.",
+        question: "How is the Sharpe Ratio used in practice?",
+        answer: "It is used to compare the risk-adjusted returns of different investment portfolios or strategies.",
       },
       {
-        question: "What is considered a risk-free rate?",
-        answer:
-          "The yield on a short-term U.S. Treasury bill is commonly used as a proxy for the risk-free rate in Sharpe Ratio calculations.",
-      },
-      {
-        question: "Does the Sharpe Ratio apply to all asset classes?",
-        answer:
-          "While it is widely used, Sharpe Ratio may be less reliable for assets with irregular return distributions or limited liquidity.",
-      },
-      {
-        question: "How often is Sharpe Ratio calculated?",
-        answer:
-          "It can be calculated monthly, quarterly, or annually, depending on the analysis needs and consistency of the input data.",
+        question: "What are the limitations of the Sharpe Ratio?",
+        answer: "It assumes returns are normally distributed and may not accurately reflect all types of risk.",
       },
     ],
-    relatedDefinitions: [
-      "sortino-ratio",
-      "standard-deviation",
-      "beta",
-      "alpha",
-      "risk-adjusted-return",
-      "modern-portfolio-theory",
-    ],
+    relatedDefinitions: ["alpha", "beta"],
     furtherReading: [
       {
-        title: "Modern Portfolio Theory and Risk Management",
-        description: "Comprehensive guide to portfolio optimization techniques and risk metrics",
+        title: "The Sharpe Ratio",
+        description: "Original paper by William F. Sharpe introducing the concept.",
       },
       {
-        title: "Understanding Investment Risk Metrics",
-        description: "Deep dive into various risk-adjusted performance measures used in finance",
-      },
-      {
-        title: "Portfolio Performance Evaluation",
-        description: "Methods and best practices for assessing investment performance",
+        title: "Sharpe Ratio: Uses, Advantages, Limitations, and Examples",
+        description: "Investopedia article providing a comprehensive overview of the Sharpe Ratio.",
       },
     ],
     seoMetadata: {
-      title: "Sharpe Ratio: Definition, Formula, Example, and FAQs",
+      title: "Sharpe Ratio: Definition, Formula, and Interpretation",
       description:
-        "Learn about Sharpe Ratio, a key portfolio metric that measures risk-adjusted returns. Includes formula, calculation examples, interpretation guide, and practical applications.",
+        "Learn about the Sharpe Ratio, a key metric for evaluating risk-adjusted investment returns. Understand its formula, interpretation, and limitations.",
       keywords: [
-        "sharpe ratio",
-        "risk adjusted return",
-        "portfolio metrics",
-        "investment analysis",
-        "volatility",
-        "standard deviation",
+        "Sharpe Ratio",
+        "risk-adjusted return",
+        "investment performance",
+        "portfolio analysis",
         "risk management",
       ],
     },
   },
-  beta: {
-    id: "beta",
-    term: "Beta",
-    category: "Risk Management",
+
+  /* --- Alpha --- */
+  alpha: {
+    id: "alpha",
+    term: "Alpha",
+    category: "Performance Metrics",
     definition:
-      "Beta is a measure of a security's or portfolio's volatility relative to the overall market. It indicates how much a stock's price moves in relation to movements in a market index, typically the S&P 500. Beta helps investors understand the systematic risk of an investment and how it might perform during market fluctuations.",
+      "Alpha is a measure of an investment's performance relative to a benchmark index, representing the excess return generated by an investment manager's skill rather than market movements. It indicates whether an investment has outperformed or underperformed its expected return based on its beta and the market's performance.",
     keyTakeaways: [
-      "Beta measures a security's volatility relative to the overall market",
-      "A beta of 1.0 means the security moves in line with the market",
-      "Beta greater than 1.0 indicates higher volatility than the market",
-      "Beta less than 1.0 suggests lower volatility than the market",
-      "Negative beta indicates the security moves opposite to the market",
+      "Alpha measures excess return above what would be expected given the investment's risk level",
+      "Positive alpha indicates outperformance, while negative alpha indicates underperformance",
+      "Alpha is often used to evaluate the skill of portfolio managers and active investment strategies",
+      "It's calculated by comparing actual returns to expected returns based on the Capital Asset Pricing Model (CAPM)",
+      "Alpha should be considered alongside other metrics like beta, Sharpe ratio, and standard deviation",
     ],
     history: {
       origin:
-        "Beta was developed as part of the Capital Asset Pricing Model (CAPM) in the 1960s by William Sharpe, John Lintner, and Jan Mossin. It became a fundamental concept in modern portfolio theory for measuring systematic risk.",
-      year: 1964,
+        "The concept of alpha was developed as part of the Capital Asset Pricing Model (CAPM) in the 1960s by financial economists including William Sharpe, John Lintner, and Jan Mossin.",
     },
     formula: {
-      equation: "β = Covariance(Ra, Rm) / Variance(Rm)",
+      equation: "α = Rp − [Rf + β (Rm − Rf)]",
       variables: [
-        { symbol: "Ra", description: "Return of the asset" },
+        { symbol: "Rp", description: "Return of the portfolio" },
+        { symbol: "Rf", description: "Risk-free rate" },
+        { symbol: "β", description: "Beta of the portfolio" },
         { symbol: "Rm", description: "Return of the market" },
-        { symbol: "Covariance(Ra, Rm)", description: "Covariance between asset and market returns" },
-        { symbol: "Variance(Rm)", description: "Variance of market returns" },
       ],
     },
     interpretation: {
-      description: "Beta values help investors understand how a security might behave relative to market movements.",
+      description:
+        "Alpha can be positive, negative, or zero. A positive alpha indicates outperformance after adjusting for risk; a negative alpha indicates underperformance.",
       ranges: [
-        { range: "β = 1.0", meaning: "Security moves exactly with the market" },
-        { range: "β > 1.0", meaning: "Security is more volatile than the market" },
-        { range: "β < 1.0", meaning: "Security is less volatile than the market" },
-        { range: "β = 0", meaning: "Security has no correlation with market movements" },
-        { range: "β < 0", meaning: "Security moves opposite to the market" },
+        { range: "α > 2%", meaning: "Strong out-performance" },
+        { range: "0 < α ≤ 2%", meaning: "Modest out-performance" },
+        { range: "α = 0%", meaning: "Performance in-line with expectations" },
+        { range: "−2% ≤ α < 0%", meaning: "Modest under-performance" },
+        { range: "α < −2%", meaning: "Significant under-performance" },
       ],
     },
     example: {
-      scenario:
-        "A stock has a beta of 1.5. If the market rises by 10%, we would expect this stock to rise by approximately 15%. If the market falls by 10%, we would expect this stock to fall by approximately 15%.",
-      calculation: "Expected Stock Movement = Beta × Market Movement = 1.5 × 10% = 15%",
-      result: "15% expected movement",
-      interpretation: "This stock is 50% more volatile than the overall market, amplifying both gains and losses.",
+      scenario: "A fund returned 12% while the risk-free rate was 2%, market return 10%, and the fund's beta 1.2.",
+      calculation: "α = 12% − [2% + 1.2×(10% − 2%)] = 0.4%",
+      result: "0.4%",
+      interpretation: "The fund beat its risk-adjusted expectation by 0.4 percentage points.",
     },
     applications: [
-      "Portfolio risk assessment and management",
-      "Asset allocation and diversification strategies",
-      "Calculating expected returns using CAPM",
-      "Comparing volatility across different securities",
-      "Hedging strategies and risk management",
+      "Evaluating portfolio manager skill",
+      "Comparing active strategies to passive benchmarks",
+      "Determining if management fees are justified",
+      "Selecting investments with consistent positive alpha",
+      "Risk-adjusted performance measurement",
     ],
     limitations: [
-      "Based on historical data and may not predict future volatility",
-      "Assumes linear relationship between security and market returns",
-      "May be unstable over different time periods",
-      "Does not capture all types of risk, only systematic risk",
+      "Depends on an appropriate benchmark",
+      "Historical alpha doesn't guarantee future results",
+      "Short-term alpha may be driven by luck",
+      "CAPM assumptions limit precision",
+      "Ignores other risk factors outside CAPM",
     ],
     relatedConcepts: [
       {
-        term: "Alpha",
-        comparison:
-          "While Beta measures systematic risk relative to the market, Alpha measures excess return above what Beta would predict.",
+        term: "Beta",
+        comparison: "Beta measures systematic risk; alpha measures excess return beyond that risk.",
       },
       {
-        term: "Correlation",
-        comparison:
-          "Beta incorporates both correlation and relative volatility, while correlation only measures the direction of movement.",
+        term: "Sharpe Ratio",
+        comparison: "Sharpe Ratio expresses excess return per unit of total risk, whereas alpha is a residual return.",
       },
     ],
     faqs: [
       {
-        question: "What is a good beta for a stock?",
+        question: "Can alpha be negative?",
         answer:
-          "It depends on your risk tolerance. Conservative investors might prefer beta below 1.0, while aggressive investors might seek beta above 1.0 for higher potential returns.",
+          "Yes. A negative alpha means the investment underperformed relative to its expected, risk-adjusted return.",
       },
       {
-        question: "Can beta change over time?",
-        answer:
-          "Yes, beta can change as a company's business model evolves, market conditions change, or the calculation period shifts.",
-      },
-      {
-        question: "What does negative beta mean?",
-        answer:
-          "Negative beta means the security tends to move opposite to the market. This is rare but can occur with certain assets like gold or inverse ETFs.",
+        question: "Is a higher alpha always better?",
+        answer: "Generally yes, but alpha must be viewed alongside consistency, risk and statistical significance.",
       },
     ],
-    relatedDefinitions: ["alpha", "sharpe-ratio", "correlation", "capm", "systematic-risk", "volatility"],
+    relatedDefinitions: ["sharpe-ratio"],
     furtherReading: [
       {
-        title: "Capital Asset Pricing Model (CAPM) Explained",
-        description: "Understanding the theoretical framework behind beta and expected returns",
+        title: "The Capital Asset Pricing Model: Theory and Evidence",
+        description: "Foundational academic paper on CAPM and alpha.",
       },
       {
-        title: "Systematic vs. Unsystematic Risk",
-        description: "Learn the difference between market risk and company-specific risk",
+        title: "Active Portfolio Management and Alpha Generation",
+        description: "Comprehensive guide to understanding and generating alpha.",
       },
     ],
     seoMetadata: {
-      title: "Beta: Definition, Formula, Calculation, and Investment Applications",
+      title: "Alpha: Definition, Formula & Investing Example",
       description:
-        "Understand Beta, a key measure of investment volatility relative to the market. Learn how to calculate and interpret beta for better investment decisions.",
-      keywords: ["beta", "systematic risk", "market volatility", "CAPM", "investment risk", "portfolio management"],
+        "Learn what Alpha is, how to calculate it, and how investors use alpha to evaluate portfolio manager performance.",
+      keywords: ["alpha", "excess return", "CAPM", "investment performance", "portfolio alpha"],
     },
   },
 }
+
+/* ----------------------------  HELPER FUNCTIONS  -------------------------- */
 
 export function getDefinition(id: string): DefinitionData | null {
   return definitionsData[id] || null
@@ -292,23 +255,21 @@ export function getAllDefinitionIds(): string[] {
 }
 
 export function getDefinitionsByCategory(category: string): DefinitionData[] {
-  return Object.values(definitionsData).filter((def) => def.category === category)
+  return Object.values(definitionsData).filter((d) => d.category === category)
 }
 
 export function getRelatedDefinitions(currentId: string, limit = 6): DefinitionData[] {
   const current = definitionsData[currentId]
   if (!current) return []
-
-  const related = current.relatedDefinitions
+  return current.relatedDefinitions
     .map((id) => definitionsData[id])
     .filter(Boolean)
     .slice(0, limit)
-
-  return related
 }
 
 export const definitionCategories = [
   "Risk Management",
+  "Performance Metrics",
   "Portfolio Theory",
   "Valuation",
   "Technical Analysis",

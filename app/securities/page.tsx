@@ -62,7 +62,7 @@ export default function SecuritiesIndexPage() {
         {popularSecurities.map((security) => (
           <Link
             key={security.symbol}
-            href={`/securities/${security.type.toLowerCase().replace(/\s+/g, "-")}s/${security.symbol.toLowerCase()}`}
+            href={`/securities/ticker/${security.symbol.toLowerCase()}`}
             className="block p-2 hover:bg-muted/30 rounded-md transition-colors"
           >
             <span className="font-medium">{security.symbol}</span> - {security.name}

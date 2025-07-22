@@ -64,7 +64,7 @@ export default function CryptocurrenciesIndexPage() {
         {cryptosToDisplay.map((crypto) => (
           <Link
             key={crypto.symbol}
-            href={`/explore/${crypto.symbol.toLowerCase()}`}
+            href={`/securities/ticker/${crypto.symbol.toLowerCase()}`}
             className="block p-2 hover:bg-muted/30 rounded-md transition-colors"
           >
             <span className="font-medium">{crypto.symbol}</span> - {crypto.name}

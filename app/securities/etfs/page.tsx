@@ -64,7 +64,7 @@ export default function ETFsIndexPage() {
         {etfsToDisplay.map((etf) => (
           <Link
             key={etf.symbol}
-            href={`/explore/${etf.symbol.toLowerCase()}`}
+            href={`/securities/ticker/${etf.symbol.toLowerCase()}`}
             className="block p-2 hover:bg-muted/30 rounded-md transition-colors"
           >
             <span className="font-medium">{etf.symbol}</span> - {etf.name}
